@@ -1,0 +1,146 @@
+<html><head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="manifest" href="manifest.json">
+        <title>ToolKit</title>
+        <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAAAAXNSR0IArs4c6QAAABtQTFRFAAAAAH8AAH8AAH8AAIAAAIAAAIAAAIAAAH8AS4/2/wAAAAl0Uk5TACBggJ+/3/9Aan6BKAAAAwVJREFUeJztnO16gyAMhVe/6P1f8VY3LWhCAjYEn533XxXCOZAWFerXFwAAAAAAAAAAAAAAAAAAAABgZZhCP8xjqfzRW/KJqUT+w1stid7C7C2V43Fz/SGo9D+9VebQGPDWmGWQ9Q/eGvPcfAAUBjofANlAT/Mvxd0zCAbcgQFvYMAbGPAGBryBAW9gwBsY8AYGvPk/BsSCzZlgwBkY8AYGvIEBb2DAGxjwBga8gYFqgmp9WsTNwBpuuR7Hy8BfvOtj4GzgekAnAwEGNloYeFUcz4figEQRJQ0M/NZM9oXtu6eGJHxNdHMDM1V1SQ8u9eHNDbx3qlHhwuFjhQNjA4HWxhoon9psDUTKlAaKu8jUQOCUbcf+Nq0+uXIKDA2kGzXPjUYHl7hkWRYZGmD1E9NYsim7aEIwM5ButKajjUzxkjGwMpDIP+7Pzg9LWUcZGZhzcgb6eJ0DGwN5LdyZpJb2i2BhQMpn1lrNF8HCgJQL26nzXxeSzNONwecNZNP/3SR9bpAqM9HEYgUhYwVztoBYXZNFHzcQ77LOx5JO6/rr4wbkDhTkxd9kubnPG5il9vchIvPLfwREAftJ+s9HQap/wNYAJTKvLvkNU7RmMQ8IV5bbGfIPbKX97zETZ0L1MhOn/XgQwlzJnevpmrK6GuWl8AKT9H9qW2pyPzBSJ7I11O3Y3ZExeiZOI+tYwO6eOLlR3zNCpb+glWY39eF4MFO2pBHT50LJr+J4UEqGf1H4bM70wVYypR2kUtErmmj9bJS+manvf/un0wcDUgYVx7dfHygyoJ6+3tiv0ExxbtAGHvXRWywxrfLmqDUiTlX6RyHFYlcM/FzAbTMrn+vPqSJ9XrRdZr3wZeXwMVD0QpE8bQ1MHx+A1iv1y90NrHctdUvyDNix5Q0MeAMD3sCANzDgDQx4ozQw393A2K2BWafrynMDW7S6Os0hfcf2+abLHYXXjt8VqcwLb5EZmDX/Ax2/7lKlv98x0PX/Sn+v3A3d/S4CAAAAAAAAAAAAAAAAAAAAAP4p3zdg4GWrLZCeAAAAAElFTkSuQmCC">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <style>
+            body {
+                margin: 0px;
+                padding: 0px;
+            }
+        </style>
+        <style id="customStyle"></style>
+        <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+    <div id="customHTML"></div>
+    <script>
+        const customHTML = document.getElementById("customHTML");
+        const customStyle = document.getElementById("customStyle");
+        //MARK1
+        let toolKit = ["//Home\n\nwindow.home = function() {\n\n    customStyle.innerHTML = ``\n\n    const templateIcon = \"https://drive.google.com/thumbnail?id=1A1FGKgktqL5aCCfQn9bYPXAxrEZRg4Dl\"\n\n    customHTML.innerHTML = `\n        <div id=\"page\" style=\"position: absolute; width: 100%; height: 100%; z-index: 1;\">\n            <img style=\"position: absolute; width: 100%; height: 100%; object-fit: cover;\" src=\"https://lh3.googleusercontent.com/d/1LTVdiaax08-DvdQLlKg_ticEoKHgzyuQ\">\n        </div>\n        <div id=\"toggleMenuButton\" style=\"position: absolute; top: 5px; right: 5px; width: 50px; height: 50px; background-color: white; border: solid black 2px; border-radius: 6px; z-index: 2;\" onclick=\"toggleMenu();\"></div>\n        <div id=\"menuPanel\" style=\"position: absolute; left: calc(-100% + 60px); top: 0px; width: calc(100% - 60px); height: 100%; background-color: rgba(0, 0, 0, 0.9); transition: left 0.5s ease; z-index: 2; display: flex; flex-direction: column; gap: 20px; padding-top: 40px; overflow-y: auto; scrollbar-width: none;\">\n            <div style = \"display: flex; align-items: center; justify-content: center; height: 60px; font-size: 24px;\">\n                <button style=\"width: 200px; height: 60px;\">Login</button>\n            </div>\n            <hr style=\"background-color: white; height: 1px; width: calc(100% - 80px);\">\n            <div onclick=\"home();\" style = \"display: flex; align-items: center; text-align: left; height: 60px; font-size: 24px; color: white; padding-left: 40px;\"><img style=\"height: 50px; width: 50px; border: solid white 1px; border-radius: 4px; margin-right: 10px;\" src=\"${templateIcon}\"></img>Home</div>\n            <div onclick=\"toggleMenu();\" style = \"display: flex; align-items: center; text-align: left; height: 60px; font-size: 24px; color: white; padding-left: 40px;\"><img style=\"height: 50px; width: 50px; border: solid white 1px; border-radius: 4px; margin-right: 10px;\" src=\"${templateIcon}\"></img>Password Manager</div>\n            <div onclick=\"toggleMenu();\" style = \"display: flex; align-items: center; text-align: left; height: 60px; font-size: 24px; color: white; padding-left: 40px;\"><img style=\"height: 50px; width: 50px; border: solid white 1px; border-radius: 4px; margin-right: 10px;\" src=\"${templateIcon}\"></img>Game Engine</div>\n            <div onclick=\"toggleMenu();\" style = \"display: flex; align-items: center; text-align: left; height: 60px; font-size: 24px; color: white; padding-left: 40px;\"><img style=\"height: 50px; width: 50px; border: solid white 1px; border-radius: 4px; margin-right: 10px;\" src=\"${templateIcon}\"></img>Tasks</div>\n            <div onclick=\"toggleMenu();\" style = \"display: flex; align-items: center; text-align: left; height: 60px; font-size: 24px; color: white; padding-left: 40px;\"><img style=\"height: 50px; width: 50px; border: solid white 1px; border-radius: 4px; margin-right: 10px;\" src=\"${templateIcon}\"></img>Notes</div>\n            <div onclick=\"toggleMenu();\" style = \"display: flex; align-items: center; text-align: left; height: 60px; font-size: 24px; color: white; padding-left: 40px;\"><img style=\"height: 50px; width: 50px; border: solid white 1px; border-radius: 4px; margin-right: 10px;\" src=\"${templateIcon}\"></img>Import</div>\n            <div onclick=\"exportHTML(); toggleMenu();\" style = \"display: flex; align-items: center; text-align: left; height: 60px; font-size: 24px; color: white; padding-left: 40px;\"><img style=\"height: 50px; width: 50px; border: solid white 1px; border-radius: 4px; margin-right: 10px;\" src=\"${templateIcon}\"></img>Export</div>\n            <div onclick=\"editToolKit(); toggleMenu();\" style = \"display: flex; align-items: center; text-align: left; height: 60px; font-size: 24px; color: white; padding-left: 40px;\"><img style=\"height: 50px; width: 50px; border: solid white 1px; border-radius: 4px; margin-right: 10px;\" src=\"${templateIcon}\"></img>Edit</div>\n            <div style = \"height: 60px;\"></div>\n        </div>\n    `;\n\n    window.page = document.getElementById(\"page\");\n    window.menuPanel = document.getElementById(\"menuPanel\");\n    window.toggleMenuButton = document.getElementById(\"toggleMenuButton\");\n\n    window.toggleMenu = function() {\n        menuPanel.style.left = (menuPanel.style.left == 'calc(-100% + 60px)') ? '0px' : 'calc(-100% + 60px)';\n    }\n}\n\n\nhome();\n\n\n\n\n\n","//Login\n\n","//PW Manager\n","//Game Engine\n\n","//Tasks\n\n","//Notes\n\n","//Import\n\n","//Export\n\nwindow.exportHTML = function() {\n    document.getElementById(`ToolKitScript`).remove();\n    customHTML.innerHTML = \"\";\n    customStyle.innerHTML = \"\";\n    let htmlContent = document.documentElement.outerHTML;\n\n    const htmlStart = htmlContent.split(\"//MARK1\").shift();\n    const htmlFinish =  htmlContent.split(\"//MARK2\").pop();\n    const newHTML = htmlStart + `//MARK1\\n        let toolKit = ` + JSON.stringify(toolKit) + \";\\n        let persistent = \" +  JSON.stringify(persistent) + \";\\n        //MARK2\" + htmlFinish;\n\n    const blob = new Blob([newHTML], {type: 'text/html'});\n    const a = document.createElement('a');\n    a.href = URL.createObjectURL(blob);\n    a.download = 'ToolKit.html';\n    a.click();\n    URL.revokeObjectURL(a.href);\n    home();\n}\n\n\n","//Edit\n\nwindow.editToolKit = function(editingPage=0) {\n    window.page.innerHTML = '';\n    if (editingPage == toolKit.length-1) toolKit.push(`//Page ${editingPage+1}\\n`)\n    if (editingPage > 0) page.innerHTML += `<button onclick=\"toolKit[${editingPage}] = editArea.value; saveData(); editToolKit(${editingPage-1});\" style=\"position:absolute; top:10px; left:10px; height:40px; width:calc(50% - 60px); font-size: 24px; border-radius: 6px;\">${toolKit[editingPage-1].split(\"\\n\")[0].substring(2)}</button>`;\n    page.innerHTML += `\n            <textarea id=\"editArea\" style=\"position:absolute; border:solid black 2px; width:calc(100% - 34px); height:calc(100% - 84px); left:10px; top:60px; padding:5px; overflow-y:auto;\" wrap=off></textarea>\n            <button onclick=\"toolKit[${editingPage}] = editArea.value; saveData(); createScript(); home();\" style=\"position:absolute; top:10px; left:calc(50% - 40px); height:40px; width: 80px; font-size: 24px; border-radius: 6px;\">Save</button>\n            <button onclick=\"toolKit[${editingPage}] = editArea.value; saveData(); editToolKit(${editingPage+1});\" style=\"position:absolute; top:10px; right:10px; height:40px; width:calc(50% - 60px); font-size: 24px; border-radius: 6px;\">${toolKit[editingPage+1].split(\"\\n\")[0].substring(2)}</button>\n        `;\n    window.editArea = document.getElementById(\"editArea\");\n    editArea.value = toolKit[editingPage];\n    editArea.addEventListener('keydown', function(event) {\n        if (event.key === 'Tab') {\n            event.preventDefault();\n            const start = editArea.selectionStart;\n            const end = editArea.selectionEnd;\n            editArea.value = editArea.value.substring(0, start) + '    ' + editArea.value.substring(end);\n            editArea.selectionStart = editArea.selectionEnd = start + 4;\n        }\n    });\n}\n\n\n","//Page 9\n"];
+        let persistent = {};
+        //MARK2
+        window.db;
+        window.openDB = function() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open("myDataDB", 1);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    window.db = request.result;
+                    resolve();
+                };
+                request.onupgradeneeded = (event) => {
+                    window.db = event.target.result;
+                    window.db.createObjectStore("data", { keyPath: "id" });
+                };
+            });
+        }
+        window.saveData = function() {
+            return window.openDB().then(() => {
+                const transaction = window.db.transaction(["data"], "readwrite");
+                const objectStore = transaction.objectStore("data");
+                const request = objectStore.put({
+                    id: "allData",
+                    toolKit: JSON.stringify(toolKit),
+                    persistent: JSON.stringify(persistent)
+                });
+                return new Promise((resolve, reject) => {
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            });
+        }
+        window.loadData = function() {
+            return window.openDB().then(() => {
+                const transaction = window.db.transaction(["data"], "readonly");
+                const objectStore = transaction.objectStore("data");
+                const request = objectStore.get("allData");
+                return new Promise((resolve, reject) => {
+                    request.onsuccess = () => {
+                        if (request.result) {
+                            toolKit = JSON.parse(request.result.toolKit);
+                            persistent = JSON.parse(request.result.persistent);
+                            resolve({
+                                toolKit: true,
+                                persistent: true
+                            });
+                        } else {
+                            resolve({ toolKit: null, persistent: null });
+                        }
+                    };
+                    request.onerror = () => reject(request.error);
+                });
+            });
+        }
+        window.reset = function() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.deleteDatabase("myDataDB");
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve();
+            });
+        }        
+        window.loadData().then(data => {
+            if (data.toolKit === null || data.persistent === null) {
+                console.log("No data found or data not yet saved so using default.");
+                window.saveData();
+            }
+            createScript();
+        });
+        function createScript() {
+            if (document.getElementById(`ToolKitScript`)) document.getElementById(`ToolKitScript`).remove();
+            let funcText = "";
+            for (let i=0; i<toolKit.length; i++) {
+                funcText += toolKit[i] + "\n";
+            } 
+            let scriptTag = document.createElement('script');
+            scriptTag.innerHTML = funcText;
+            scriptTag.id = `ToolKitScript`;
+            document.body.appendChild(scriptTag);
+        }
+    </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body></html>
