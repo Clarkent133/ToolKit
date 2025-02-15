@@ -1,7 +1,7 @@
 {
     "name": "ToolKit",
     "short_name": "ToolKit",
-    "start_url": "/index",
+    "start_url": "/index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",
