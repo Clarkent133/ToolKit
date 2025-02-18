@@ -18,7 +18,9 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div id="customHTML"><button onclick="toolKit = defaultToolKit; createScript()">Error Occured</button></div>
+        <div id="customHTML">
+                <button onclick="const brokenToolKit = JSON.parse(JSON.stringify(toolKit)); toolKit = defaultToolKit; createScript(); toolKit = brokenToolKit;" style="position: absolute; width: 300px; height: 300px; left: calc(100% - 150px); top: calc(100% - 150px); font-size: 24px;">Fatal Error!<br>Click to run Default</button>
+        </div>
         <script>
             const customHTML = document.getElementById("customHTML");
             const customStyle = document.getElementById("customStyle");
