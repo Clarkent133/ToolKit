@@ -119,27 +119,33 @@
                 }
                 createScript();
             });
-                function createScript(backup=false) {
-                    if (document.getElementById(`ToolKitScript`)) {
-                        document.getElementById(`ToolKitScript`).remove();
-                    }
-                    let funcText = "";
-                    for (let i = 0; i < toolKit.length; i++) {
-                        funcText += toolKit[i] + "\n";
-                    }
+            function createScript(backup = false) {
+                if (document.getElementById(`ToolKitScript`)) {
+                    document.getElementById(`ToolKitScript`).remove();
+                }
+            
+                let funcText = "";
+                for (let i = 0; i < toolKit.length; i++) {
+                    funcText += toolKit[i] + "\n";
+                }
+            
+                try {
                     let scriptTag = document.createElement('script');
                     scriptTag.innerHTML = funcText;
                     scriptTag.id = `ToolKitScript`;
-                    scriptTag.onerror = function(event) {
-                        alert("An error occurred in the ToolKit script so running the default.");
-                        if (!backup) {
-                                toolKit = defaultToolKit;
-                                createScript(true);
-                        }
-                    }; 
-                
                     document.body.appendChild(scriptTag);
+                } catch (error) { // Catch any errors
+                    alert("A critical error occurred in the ToolKit script. Loading default.");
+                    console.error("ToolKit Error:", error); // Log the error!
+                    if (!backup) {
+                        toolKit = defaultToolKit;
+                        createScript(true); // Retry with the backup
+                    } else {
+                        alert("Original ToolKit data corrupted.")
+                    }
                 }
+            }
+
 
         </script>
 
