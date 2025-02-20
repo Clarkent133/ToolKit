@@ -18,7 +18,9 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div id="customHTML"></div>
+        <div id="customHTML">
+                <button onclick="const broken=JSON.parse(JSON.stringify(toolKit)); toolKit=defaultToolKit; createScript(); toolKit=broken;" style="position:absolute; width: 200px; height: 200px; left: calc(50% - 100px); top: calc(50% - 100px); border: solid black 4px; border-radius: 8px;">Fatal Error! Press to Load Default.</button>
+        </div>
         <script>
             const customHTML = document.getElementById("customHTML");
             const customStyle = document.getElementById("customStyle");
