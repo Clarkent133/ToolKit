@@ -1,7 +1,7 @@
 {
-    "name": "ConsoleX",
-    "short_name": "ConsoleX",
-    "start_url": "https://clarkent133.github.io/ConsoleX/",
+    "name": "Console",
+    "short_name": "Console",
+    "start_url": "https://clarkent133.github.io/ToolKit/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",
