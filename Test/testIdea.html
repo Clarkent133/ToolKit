@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+
+    <style>
+        body {
+            margin: 0;
+            background-color: #848484;
+        }
+        #customHTML {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        #options {
+            min-width: calc(100% - 10px);
+            min-height: auto;
+            border: solid black 5px;
+            background-color: #151515;
+            display: flex;
+            flex-direction: column;
+
+        }
+        #output {
+            width: 100%;
+            min-height: auto;
+        }
+        @media (min-width: 800px) {
+            #customHTML {
+                flex-direction: row;
+            }
+            #options {
+                height: calc(100% - 10px);
+                min-width: 360px;
+                overflow-y: auto;
+                scrollbar-width: none;
+            }
+            #output {
+                overflow-y: auto;
+                scrollbar-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="customHTML">
+        <div id="options"></div>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const customHTML = document.getElementById("customHTML");
+        const optionsArea = document.getElementById("options");
+        const outputArea = document.getElementById("output");
+        let path = [];
+        
+        let notes = {
+            "Study" : {
+                "Maths" : {
+                    "Return" : function() {path.pop(); showOption();}
+                },
+                "Physics" : {
+                    "Return" : function() {path.pop(); showOption();}
+                },
+                "Car Mechanics" : "",
+                "First Aid" : {
+                    "Return" : function() {path.pop(); showOption();}
+                },
+                "Programming" : {
+                    "HTML" : "This is test HTML text.<hr><hr>What do you think?",
+                    "CSS" : "",
+                    "JavaScript" : "",
+                    "CMD" : "",
+                    "PowerShell" : "",
+                    "Lua" : "",
+                    "Python" : "",
+                    "Java" : "",
+                    "Shell" : "",
+                    "Speak" : function() {
+                        speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));
+                    },
+                    "Return" : function() {path.pop(); showOption();}
+                },
+                "IT" : {
+                    "Compontents and Architectures" : "",
+                    "Networking Fundamentals" : "",
+                    "Cyber Security Fundamentals" : "",
+                    "Return" : function() {path.pop(); showOption();}
+                },
+                "Return" : function() {path.pop(); showOption();}
+            },
+            "Notes" : "<center><h1><u>Notes </u></h1></center><hr><br><ul><li>Random Note.</li><li>Random Note.</li></ul>",
+            "Tasks" : "Tasks",
+            "Card Game Creator" : "Cards",
+            "Export" : function() {
+                optionsArea.innerHTML = "";
+                outputArea.innerHTML = "";
+                let htmlContent = document.documentElement.outerHTML;
+                const blob = new Blob([htmlContent], {type: 'text/html'});
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'newTestIdea.html';
+                a.click();
+                URL.revokeObjectURL(a.href);
+                showOption();
+            }
+        }
+
+
+
+        function showOption(highlightButton = -1) {
+            let option = notes;
+            for (let i=0; i<path.length; i++) {
+                option = option[path[i]];   
+            }
+            if (typeof option === 'object' && option !== null && !Array.isArray(option)) {
+                optionsArea.innerHTML = "";
+                outputArea.innerHTML = "";
+                for (let i=0; i<Object.keys(option).length; i++) {
+                    const optionName = Object.keys(option)[i];
+                    if (optionName[0] != "!") {
+                        let buttonColour = (i%2 == 0) ? "#393939" : "#262626";
+                        if (optionName == highlightButton) buttonColour = "black";
+                        newOptionButton(optionName, buttonColour, function() {
+                            path.push(optionName);
+                            showOption();
+                            scrollToBottomSmooth();
+                        });
+                    }
+                }
+            } else if (typeof option === 'function') {
+                path.pop();
+                option();
+            } else if (typeof option === 'string') {
+                const chosenOption = path.pop();
+                showOption(chosenOption);
+                outputArea.innerHTML = `<div style="margin: 10px; border: 5px solid black; width: calc(100% - 40px); min-height: calc(100% - 40px); padding: 5px; border-radius: 8px; background-color: white; font-size: 22px;">${option}</div>`;
+            } 
+        }
+
+        function newOptionButton(name, colour, click) {
+            let newOption = document.createElement("button");
+            newOption.innerHTML = name;
+            newOption.style.color = "white";
+            newOption.style.backgroundColor = colour;
+            newOption.style.minHeight = "60px";
+            newOption.style.fontSize = "22px";
+            newOption.onclick = click;
+            optionsArea.appendChild(newOption);
+            return newOption;
+        }
+        
+        function scrollToBottomSmooth() {
+            const optionsAreaBottom = optionsArea.offsetTop + optionsArea.offsetHeight;
+            customHTML.scrollTo({
+                top: optionsAreaBottom,
+                behavior: 'smooth'
+            });
+        }
+
+        showOption();
+    </script>
+</body>
+</html>
