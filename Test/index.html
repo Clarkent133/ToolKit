@@ -1,0 +1,310 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScriptingDex</title>
+
+    <style>
+        body {
+            margin: 0;
+            background-color: #848484;
+        }
+        #customHTML {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        #options {
+            min-width: calc(100% - 10px);
+            min-height: auto;
+            border: solid black 5px;
+            background-color: #151515;
+            display: flex;
+            flex-direction: column;
+
+        }
+        #output {
+            width: 100%;
+            min-height: auto;
+        }
+        @media (min-width: 800px) {
+            #customHTML {
+                flex-direction: row;
+            }
+            #options {
+                height: calc(100% - 10px);
+                min-width: 360px;
+                overflow-y: auto;
+                scrollbar-width: none;
+            }
+            #output {
+                overflow-y: auto;
+                scrollbar-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="customHTML">
+        <div id="options"></div>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const customHTML = document.getElementById("customHTML");
+        const optionsArea = document.getElementById("options");
+        const outputArea = document.getElementById("output");
+        let editMode = false;
+        let path = [];
+        let db;
+        
+//MARK
+let notes = {
+    "Study": {
+        "Maths": {
+            "Return": "J:path.pop(); showOption();"
+        },
+        "Physics": {
+            "Return": "J:path.pop(); showOption();"
+        },
+        "Car Mechanics": "T:",
+        "First Aid": {
+            "Return": "J:path.pop(); showOption();"
+        },
+        "Programming": {
+            "HTML": "T:This is test HTML text.<hr><hr>What do you think?",
+            "CSS": "T:",
+            "JavaScript": "T:",
+            "CMD": "T:",
+            "PowerShell": "T:",
+            "Lua": "T:",
+            "Python": "T:",
+            "Java": "T:",
+            "Shell": "T:This should be editable text.",
+            "Speak": "J:speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));",
+            "Return": "J:path.pop(); showOption();"
+        },
+        "IT": {
+            "Compontents and Architectures": "T:",
+            "Networking Fundamentals": "T:",
+            "Cyber Security Fundamentals": "T:",
+            "Return": "J:path.pop(); showOption();"
+        },
+        "Return": "J:path.pop(); showOption();"
+    },
+    "Notes": "T:<center><h1><u>Notes </u></h1></center>\n<hr>\n<br>\n<ul>\n    <li>Random Note.</li>\n    <li>Random Note.</li>\n</ul>",
+    "Tasks": "T:Tasks",
+    "Card Game Creator": "T:Cards",
+    "Dev": {
+        "Toggle Edit Mode": "J:editMode = !editMode; showOption();",
+        "Edit Notes": "J:editPath([]);",
+        "Export": "J:optionsArea.innerHTML = \"\";\noutputArea.innerHTML = \"\";\nlet htmlContent = document.documentElement.outerHTML.split(\"//MARK\");\nconst last = htmlContent.pop();\nconst init = htmlContent.shift();\nconst newHTMLContent = init + \"//MARK\\nlet notes = \" + JSON.stringify(notes, null, 4) + \";\\n//MARK\" + last;\nconst blob = new Blob([newHTMLContent], {type: 'text/html'});\nconst a = document.createElement('a');\na.href = URL.createObjectURL(blob);\na.download = 'ScriptingDex.html';\na.click();\nURL.revokeObjectURL(a.href);\nshowOption();",
+        "Reset": "J:resetData(); saveData();",
+        "Return": "J:path.pop(); showOption();"
+    }
+};
+//MARK
+
+
+
+        function showOption(highlightButton = -1) {
+            let option = notes;
+            for (let i=0; i<path.length; i++) {
+                option = option[path[i]];   
+            }
+            if (typeof option === 'object' && option !== null && !Array.isArray(option)) {
+                optionsArea.innerHTML = "";
+                outputArea.innerHTML = "";
+                for (let i=0; i<Object.keys(option).length; i++) {
+                    const optionName = Object.keys(option)[i];
+                    if (optionName[0] != "!") {
+                        let buttonColour = (i%2 == 0) ? "#393939" : "#262626";
+                        if (editMode) buttonColour = (i%2 == 0) ? "#6a0000" : "#450000";
+                        if (optionName == highlightButton) buttonColour = "black";
+                        newOptionButton(optionName, buttonColour, function() {
+                            path.push(optionName);
+                            showOption();
+                            scrollToBottomSmooth();
+                        });
+                    }
+                }
+            } else {
+                if (editMode) {
+                    editPath([...path]);
+                    path.pop();
+                } else {
+                    if (option.startsWith('J:')) {
+                        path.pop();
+                        let customJS = new Function(option.substring(2));
+                        customJS();   
+                    } else if (option.startsWith('T:')) {
+                        const chosenOption = path.pop();
+                        showOption(chosenOption);
+                        outputArea.innerHTML = `<div style="margin: 10px; border: 5px solid black; width: calc(100% - 40px); min-height: calc(100% - 40px); padding: 5px; border-radius: 8px; background-color: white; font-size: 22px;">${option.substring(2)}</div>`;
+                    } else {
+                        path.pop();
+                        showOption();
+                    }
+                }
+            }
+
+        }
+
+        function newOptionButton(name, colour, click) {
+            let newOption = document.createElement("button");
+            newOption.innerHTML = name;
+            newOption.style.color = "white";
+            newOption.style.backgroundColor = colour;
+            newOption.style.minHeight = "60px";
+            newOption.style.fontSize = "22px";
+            newOption.onclick = click;
+            optionsArea.appendChild(newOption);
+            return newOption;
+        }
+        
+        function scrollToBottomSmooth() {
+            const optionsAreaBottom = optionsArea.offsetTop + optionsArea.offsetHeight;
+            customHTML.scrollTo({
+                top: optionsAreaBottom,
+                behavior: 'smooth'
+            });
+        }
+
+        function editPath(pathLink) {
+            let option = notes;
+            let parent = null;
+            let lastKey = null;
+
+            for (let part of pathLink) {
+                parent = option;
+                lastKey = part;
+                option = option[part];
+            }
+            const isObj = (typeof option === 'object' && option !== null && !Array.isArray(option));
+
+            optionsArea.innerHTML = "";
+            outputArea.innerHTML = `<textarea id="textArea" wrap="off" style="margin: 10px; border: 5px solid black; width: calc(100% - 20px); min-height: calc(100% - 20px); padding: 5px; border-radius: 8px; background-color: white; font-size: 22px;"></textarea>`;
+            const textArea = document.getElementById("textArea");
+
+            textArea.addEventListener('keydown', function(event) {
+                if (event.key === 'Tab') {
+                    event.preventDefault();
+                    const start = textArea.selectionStart;
+                    const end = textArea.selectionEnd;
+                    textArea.value = textArea.value.substring(0, start) + '    ' + textArea.value.substring(end);
+                    textArea.selectionStart = textArea.selectionEnd = start + 4;
+                }
+            });
+
+            textArea.value = (isObj) ? JSON.stringify(option, null, 4) : option.substring(2);
+            if (!isObj && option.startsWith('J:')){
+                newOptionButton("Run" , "#393939", function() { 
+                    if(parent){
+                        parent[lastKey] = `${option[0]}:${textArea.value}`;
+                    }
+                    saveData();
+                    try{
+                        let customJS = new Function(textArea.value);
+                        customJS();
+                    } catch(e){
+                        alert("Error running function")
+                    }
+                    showOption();
+                })
+            }
+            newOptionButton("Save", "#393939", function() {
+                try {
+                    if (isObj) {
+                        if(parent){
+                            parent[lastKey] = JSON.parse(textArea.value);
+                        } else {
+                            notes = JSON.parse(textArea.value);
+                        }
+                    } else {
+                        if(parent){
+                            parent[lastKey] = `${option[0]}:${textArea.value}`;
+                        }
+                    }
+                    saveData();
+                    showOption();
+                } catch (error) {
+                    alert("Invalid format. Please correct it.");
+                }
+            });
+        }
+        
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open("ScriptingDexDB", 1);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    window.db = request.result;
+                    resolve();
+                };
+                request.onupgradeneeded = (event) => {
+                    window.db = event.target.result;
+                    window.db.createObjectStore("data", { keyPath: "id" });
+                };
+            });
+        }
+
+        function saveData() {
+            return window.openDB().then(() => {
+                const transaction = window.db.transaction(["data"], "readwrite");
+                const objectStore = transaction.objectStore("data");
+                const request = objectStore.put({
+                    id: "allData",
+                    notes: JSON.stringify(notes)
+                });
+                console.log("Saved")
+                return new Promise((resolve, reject) => {
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            });
+        }
+
+        function loadData() {
+            return window.openDB().then(() => {
+                const transaction = window.db.transaction(["data"], "readonly");
+                const objectStore = transaction.objectStore("data");
+                const request = objectStore.get("allData");
+                return new Promise((resolve, reject) => {
+                    request.onsuccess = () => {
+                        if (request.result) {
+                            notes = JSON.parse(request.result.notes);
+                            resolve({
+                                notes: true
+                            });
+                        } else {
+                            resolve({ notes : null });
+                        }
+                    };
+                    request.onerror = () => reject(request.error);
+                });
+            });
+        }
+
+        function resetData() {
+            return new Promise((resolve, reject) => {
+                console.log("Data Reset")
+                const request = indexedDB.deleteDatabase("ScriptingDexDB");
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve();
+            });
+        }
+
+        loadData().then(data => {
+            if (data.notes === null) {
+                console.log("No notes found so using default.");
+                window.saveData();
+            }
+            showOption();
+        });
+    </script>
+
+</body></html>
