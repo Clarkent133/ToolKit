@@ -876,7 +876,48 @@ let notes = {
 };
 //MARK
 
+        function readNovel(novelTxt) {
+            window.sections = {};
+            window.currentSection = "";
+            let availablePassages = [];
+            let vars = {};
+            let currentSectionSearch = "";
+            let currentPassageSearch = "";
+            novelTxt.split("\n").forEach((elem) => {
+                if (elem.includes("[[") && elem.includes("]]:")) {
+                    currentSectionSearch = elem.split("[[")[1].split("]]:")[0];
+                    sections[currentSectionSearch] = {"text":[] , passages:{}};
+                    currentPassageSearch = "";
+                } else {
+                    if (currentSectionSearch == "") return;
+                    if (elem.includes("[") && elem.includes("]:")) {
+                        currentPassageSearch = elem.split("[")[1].split("]:")[0];
+                        sections[currentSectionSearch].passages[currentPassageSearch] = [];
+                    } else if (currentPassageSearch != "") {
+                        sections[currentSectionSearch].passages[currentPassageSearch].push(elem);
+                    }
+                    if (currentPassageSearch == "") sections[currentSectionSearch].text.push(elem); 
+                    
+                }
+            });
 
+            console.log(sections)
+
+            function showSection(section) {
+                currentSection = section;
+                availablePassages = Object.keys(sections[section].passages);
+                outputArea.innerHTML = updateText(sections[section].text.join("\n"), availablePassages)
+            }
+
+            function updateText(txt, passageAry) {
+                passageAry.forEach((elem) => {
+                    txt = txt.replaceAll(`[${elem}]`, `<a onclick="alert(sections['${currentSection}'].passages['${elem}'].join('\\n'))">${elem}</a>`)
+                })
+                return txt;
+            }
+
+            showSection("Test1")
+        }
 
         function showOption(highlightButton = -1) {
             outputArea.style.height = "auto";
@@ -1018,16 +1059,34 @@ let notes = {
             });
         }
 
-        loadData().then(data => {
-            if (data.notes === null) {
-                console.log("No notes found so using default.");
-                window.saveData();
-            }
-            showOption();
-        });
+        // loadData().then(data => {
+        //     if (data.notes === null) {
+        //         console.log("No notes found so using default.");
+        //         window.saveData();
+        //     }
+        //     showOption();
+        // });
 
-        // showOption();
+        showOption();
+
+readNovel(`
+[[Test1]]:
+
+This is the [Pass2] text for Test 1.
+
+[Pass1]:
+
+Here is text for pass1.
+And more.
+
+[Pass2]:
+
+Here is text for pass2.
+
+[[Test2]]:
+
+This is the text for Test 2.
+
+`);
     </script>
-
-
 </body></html>
