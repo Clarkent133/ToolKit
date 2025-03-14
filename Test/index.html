@@ -878,46 +878,129 @@ let notes = {
 
         function readNovel(novelTxt) {
             window.sections = {};
+            window.textList = [];
+            window.vars = {};
             window.currentSection = "";
-            let availablePassages = [];
-            let vars = {};
+
             let currentSectionSearch = "";
             let currentPassageSearch = "";
             novelTxt.split("\n").forEach((elem) => {
                 if (elem.includes("[[") && elem.includes("]]:")) {
                     currentSectionSearch = elem.split("[[")[1].split("]]:")[0];
-                    sections[currentSectionSearch] = {"text":[] , passages:{}};
+                    sections[currentSectionSearch] = { "text": [], "shown": false, passages: {} };
                     currentPassageSearch = "";
                 } else {
                     if (currentSectionSearch == "") return;
+
                     if (elem.includes("[") && elem.includes("]:")) {
                         currentPassageSearch = elem.split("[")[1].split("]:")[0];
-                        sections[currentSectionSearch].passages[currentPassageSearch] = [];
+                        sections[currentSectionSearch].passages[currentPassageSearch] = { shown: false, text: [] };
                     } else if (currentPassageSearch != "") {
-                        sections[currentSectionSearch].passages[currentPassageSearch].push(elem);
+                        sections[currentSectionSearch].passages[currentPassageSearch].text.push(elem);
                     }
-                    if (currentPassageSearch == "") sections[currentSectionSearch].text.push(elem); 
-                    
+                    if (currentPassageSearch == "") sections[currentSectionSearch].text.push(elem);
+
                 }
             });
 
-            console.log(sections)
+            outputArea.innerHTML = `<div id="novel" style="margin: 10px; border: 5px solid black; width: calc(100% - 40px); min-height: calc(100% - 40px); padding: 5px; border-radius: 8px; background-color: white; font-size: 22px;"></div>`;
+            const novel = document.getElementById("novel");
 
-            function showSection(section) {
-                currentSection = section;
-                availablePassages = Object.keys(sections[section].passages);
-                outputArea.innerHTML = updateText(sections[section].text.join("\n"), availablePassages)
-            }
-
-            function updateText(txt, passageAry) {
-                passageAry.forEach((elem) => {
-                    txt = txt.replaceAll(`[${elem}]`, `<a onclick="alert(sections['${currentSection}'].passages['${elem}'].join('\\n'))">${elem}</a>`)
+            function processSection(obj) {
+                obj.shown = true;
+                obj.text.forEach((elem, index) => {
+                    if (elem.startsWith("    ")) {
+                        let customJS = new Function(elem);
+                        customJS();
+                    } else if (elem.startsWith("@clear")) {
+                        obj.text.splice(index, 1)
+                        textList = [];
+                    } else if (elem.startsWith("@set")) {
+                        const setBroken = elem.split(" ");
+                        let output = (!isNaN(parseInt(setBroken[2]))) ? parseInt(setBroken[2]) : setBroken[2];
+                        vars[setBroken[1]] = output;
+                        obj.text.splice(index, 1)
+                    } else if (elem.startsWith("@inc")) {
+                        let output = (!isNaN(parseInt(setBroken[2]))) ? parseInt(setBroken[2]) : setBroken[2];
+                        vars[setBroken[1]] += output;
+                        obj.text.splice(index, 1)
+                    } else if (elem.startsWith("@dec")) {
+                        let output = (!isNaN(parseInt(setBroken[2]))) ? parseInt(setBroken[2]) : setBroken[2];
+                        vars[setBroken[1]] -= output;
+                        obj.text.splice(index, 1)
+                    }
                 })
-                return txt;
             }
 
-            showSection("Test1")
+            window.showSection = function (section) {
+                if (currentSection != "") {
+                    for (const passage in sections[currentSection].passages) {
+                        sections[currentSection].passages[passage].shown = true;
+                    }
+                }
+                currentSection = section;
+                processSection(sections[section]);
+                textList.push({ section: section, text: sections[section].text.join("<br>") });
+                showAllTexts();
+            }
+
+            window.showPassage = function (section, passage) {
+                processSection(sections[section].passages[passage]);
+                textList.push({ section: section, text: sections[section].passages[passage].text.join("<br>") });
+                let tally = 0;
+                for (const passageCheck in sections[section].passages) {
+                    if (sections[section].passages[passageCheck].shown && !passageCheck.startsWith("@")) tally += 1;
+                }
+                showAllTexts();
+                if (passage.startsWith("@")) return;
+                if (`@${tally}` in sections[section].passages) showPassage(section, `@${tally}`);
+            }
+
+            window.showAllTexts = function () {
+                novel.innerHTML = "<hr>";
+                textList.forEach((elem) => {
+                    let txt = elem.text;
+                    let section = elem.section;
+                    for (const passage in sections[section].passages) {
+                        if (!sections[section].passages[passage].shown) {
+                            txt = txt.replaceAll(`[${passage}]`, `<a style="cursor: pointer; color: blue; text-decoration: underline;" onclick="showPassage('${section}' , '${passage}')">${passage}</a>`);
+                        } else {
+                            txt = txt.replaceAll(`[${passage}]`, passage)
+                        }
+                    }
+                    for (const newSection in sections) {
+                        if (newSection != section) { // If any text box is looking at another section
+                            if (section == currentSection && !sections[newSection].shown) {
+                                // Modified Section: Handling [[Section]](Text) or [[Section]](Link)
+                                const regex = new RegExp(`\\[\\[${newSection}\\]\\]\\((.*?)\\)`, 'g');
+                                txt = txt.replaceAll(regex, (match, display) => {
+                                    return `<a style="cursor: pointer; color: blue; text-decoration: underline;" onclick="showSection('${newSection}')">${display}</a>`;
+                                });
+                                txt = txt.replaceAll(`[[${newSection}]]`, `<a style="cursor: pointer; color: blue; text-decoration: underline;" onclick="showSection('${newSection}')">${newSection}</a>`);
+                            } else {
+                                const regex = new RegExp(`\\[\\[${newSection}\\]\\]\\((.*?)\\)`, 'g');
+                                txt = txt.replaceAll(regex, "$1");
+                                txt = txt.replaceAll(`[[${newSection}]]`, newSection);
+                            }
+                        } else {
+                            const regex = new RegExp(`\\[\\[${newSection}\\]\\]\\((.*?)\\)`, 'g');
+                            txt = txt.replaceAll(regex, "$1");
+                            txt = txt.replaceAll(`[[${newSection}]]`, newSection);
+                        }
+                    }
+                    novel.innerHTML += txt + "<hr>";
+                });
+            }
+
+            showSection(Object.keys(sections)[0])
         }
+
+
+
+
+
+
+
 
         function showOption(highlightButton = -1) {
             outputArea.style.height = "auto";
@@ -1070,22 +1153,24 @@ let notes = {
         showOption();
 
 readNovel(`
-[[Test1]]:
+[[House]]:
+You are in a house. You can go to the [Lounge] or [Kitchen].
 
-This is the [Pass2] text for Test 1.
+[Lounge]:
+You are in the Lounge, would you like to go to the [Kitchen] or [[Outside]](Text)?
+@set toast 3
 
-[Pass1]:
+[Kitchen]:
+You are in the Kitchen, would you like to go to the [Lounge] or [[Outside]]?
 
-Here is text for pass1.
-And more.
+[@2]:
+This is a timer.
 
-[Pass2]:
+[[Outside]]:
+@clear
+You are now outside. what would you like to do?
 
-Here is text for pass2.
-
-[[Test2]]:
-
-This is the text for Test 2.
+Go back to the [[House]]?
 
 `);
     </script>
