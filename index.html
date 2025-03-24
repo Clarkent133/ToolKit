@@ -1,0 +1,1402 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAG6ElEQVR4Ae3dbVqjOhQA4HgfF+Ks5Do78a7EupJxJ+NOZnbiJTpV7BAgtKSc9u0fKZDk8CaHj5ZKSl4ECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQOB6BG5Cb+pj2qWb9Bh6Gy4h+Nf0X3pKzxE3JWYC7NJrROyLjznvjoK9/gkWb+r2+T/CxXwtAecdUz4qB3rFS4CUHgL5Xl+owU5JYyWAvX+MhNqlnzECTSlWAtj7RxlX91ECjZYAUVzFGURAAgTpKGGuIyAB1nFVaxABCRCko4S5joAEWMdVrUEEJECQjhLmOgISYB1XtQYRkABBOkqY6whIgHVc1RpEQAIE6ShhriMgAdZxVWsQAQkQpKOEuY6ABFjHVa1BBCRAkI4S5joCt+tU27DWgD/Da6jTrqmgP1N1BGg3RLS0QQEJsMFOEVI7AQnQzlpLGxSQABvsFCG1E5AA7ay1tEEBCbDBThFSOwEJ0M5aSxsUkAAb7BQhtROQAO2stbRBAQmwwU4RUjuB+LdCtLNat6X+rQRu71jXule7I0AP4yyTu/Sr+3/KX//d++H7swR2HY1KgPP38935Q7jeCCTA9fa9Le8EXAOcchj0T11e07fusUG/T1b9Y7rrnr/y66M+1wkfFMdMOAIco9cv2x/8eX5/sPbXWzL9/iy0z8Gf6zhsb0m9yoR7PsD2uiw/tGPpYCyVyw+d679KT13J5YM9kqi/WVuYdgQ4phce031X/OGYKgbL1jxxMSfHexyDVZk5LiABxn3KS/Pe96bRo4Be0/dyIN2SVnGMBhFzoQRY0m+lU5d+Xae8SH1KL91p1vgjSHNMc+Lqx2jaNUD1GJgeZNODNTdaOncfG+hjy/YbMh3ffk1/OwFHgJphMGdw7SZOV/btlS5s98tLf+clwY9ScfO/CkiArx7ld9OD/3nyNKVce92SnASv3bcM5deD06EyTn/Jbf+N6QGB6YGfTjjwnwciGJ711LW6S/92C++HV+jm5tjnHDGKFVz+AkeAY/t46hOaofpLD/zeHXz+P1S2Py+fbh1+Z9BfnqfnJPBhmSt6LwHGOntq8OS9a/6Epv71UF+kUCJ/ZzC1l5/ajkLV1zBbAizt5alBt7TepeXyvUde1QISoJrsT4F8H/+WXqe892hL27VyLLcr1x+7+rxXLQ+su7fz61Pf9VkrdniX6FD5rR2thmI80zxHgDH4fDvz1EVmOUGGay5fAI9/0ztUWz63n2rf4B+S+5gnAT4oChP5InPq/LruIvOh0NLpZxv8k6ZOgSaJuhXef9hy83bKU1p/nwQtBt2+rVIseX6LOMbaD7LMEaCmo+YMqjmDs6bNw3Xn1D8nzsN6r/S9BKjt+DmDqzRId8Xbp19mhVGqt194Tnz99a98WgIsGQBzBtnwYL0fbG7qBrr8g5fh+j6ryzHNieuzhKlOQAIsHQYtB9zUD14M/KW9KAEWy30WfP6cXDR1bPmXRa0q9CbgCHDsQMg3sE19TJrbKJ3CzLkBrnTr8/tR6Puxm3DN5SXAKXo/f0x6eBpy+P6Ydt5vff76Rdkp6z8mtuBlb4PHv63w1x6Ua9e/Lc0m0TgCNGHWyFYFJMA5e8Ye/Zz6b21LgFZd8Pdg/92qae2UBVwDlG1Ov+TvJDh9G2qsEnAEqOKy8qUJSIBL61HbUyUgAaq4rHxpAhLg0nrU9lQJSIAqLitfmoAEuLQetT1VAhKgisvKlyYgAS6tR21PlYAEqOKy8qBA+aeeg6tvaWasb4Lz/+i56R5K13/l++xL98v31zO9jsDQcw6m/pfSOpEsqvXrPeaLqmhcqPTDksZhaG5EINAtH/ESILtLgpHRd+ZFgQZ/lop6DfBy5m7W/JBAsMGfNyHmEWCP70iwlzj/34CD//xoIiBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIEGgm8D9fZLEvqyRhqAAAAABJRU5ErkJggg==">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>ToolKit</title>
+    <style>
+        * {
+            font-family: "Rajdhani", sans-serif;
+            font-weight: 500;
+            font-style: normal;
+        }
+        body {
+            margin: 0;
+            background-color: #848484;
+        }
+        #customHTML {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        #options {
+            min-width: calc(100% - 10px);
+            min-height: auto;
+            border: solid black 5px;
+            background-color: #151515;
+            display: flex;
+            flex-direction: column;
+        }
+        #output {
+            width: 100%;
+            min-height: auto;
+        }
+        @media (min-width: 800px) {
+            #customHTML {
+                flex-direction: row;
+            }
+            #options {
+                height: calc(100% - 10px);
+                min-width: 360px;
+                overflow-y: auto;
+                scrollbar-width: none;
+            }
+            #output {
+                overflow-y: auto;
+                scrollbar-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="customHTML">
+        <div id="options" style="display: flex;"></div>
+        <div id="output" style="height: auto;"></div>
+    </div>
+
+    <script>
+        const customHTML = document.getElementById("customHTML");
+        const optionsArea = document.getElementById("options");
+        const outputArea = document.getElementById("output");
+        let editMode = false;
+        let path = [];
+        let db;
+        
+//MARK
+let notes = {
+    "Games": {
+        "TIC80 Editor": "J:window.location.href = \"https://clarkeharrison.co.uk/Games/Editor/\";",
+        "htmlGame": "J:window.location.href = \"https://clarkeharrison.co.uk/Games/htmlGame/\";",
+        "Text Adventure Game": "J:window.adventureGameText = `\n\n[[Welcome]]:\nThis is a simple Framework that I have created which allows you to make Text Adventure games as simply as possible.\nBelow is an option to play through a basic demo I have created using this Framework to show a little what it can do, also is an option to a tutorial explaining how to create your own Text Adventure Games.\n\n[[Demo]] | [[Tutorial]]\n\n[[Demo]]:\nTBD.\n\n\n[[Tutorial]]:\nTDB.\n\n[CharacterNameSetup]:\n@clear\n@prompt PlayerName Please enter the name for your character.\nIs your character [CharacterSetup, PlayerGen=Male](Male) or [CharacterSetup, PlayerGen=Female](Female)?\n\n[CharacterSetup]:\n@show Game Setup\nJust to confirm your character is {PlayerGen} and has the name {PlayerName}.\nIs that right?\n\n[[Begin Game]](Yes)   |   [CharacterNameSetup](No)\n\n[[Begin Game]]:\n@clear\nThe Game begins.\n[Male Passage, PlayerGen==Male, Female Passage](Next Passage)\n\n[Male Passage]:\nYou have chosen Male.\n\n[Female Passage]:\nYou have chosen Female.\n\n`;\n\n\n\n\n\nreadNovel(adventureGameText);",
+        "Card Game Creator": "J:const cardIcons = [\"Slow\" , \"Tap\" , \"Power\" , \"Agility\" , \"Wisdom\"];\nconst cardIconImage = \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAQCAYAAACBSfjBAAAAAXNSR0IArs4c6QAAAORJREFUWIXtl+sOgyAMhWHZ+79y92cm2J1eaJkY0y8hIlIutT1ia0Wxk87uKWgn2aJ+j+IN2qxNa04ebYldV48fGcM7t9Tv5/nLuaAMfShZPBmi9fFmmBsUgdTsNzALgbrl0Ki8rLJ3wSPwmBRN5t04gts8RhtRCiMnZpzHx50Zg4YSIWPrskcpnMFabDbyroxcHkBwbkkD29eA1zV9lI42Xbla7HK4JmEneAoj5x3tmj5K8LSNpPFOzNODpIHSG5jduOTsv3wRF9OF+glJA1dFyEy63wm0PhhYK3/lEFkNLIpC5QPRVTgksfcGbAAAAABJRU5ErkJggg==\";\nconst cardFont = \"'Courier New', monospace\";\nconst xCoord = 4;\nconst yCoord = 15;\n\n\n\nfunction drawCard(deckName, cardTitle, x=0, y=0) {\n\n    cardCtx.fillStyle = \"black\";\n    cardCtx.fillRect(x, y, 512, 768);\n    cardCtx.fillStyle = \"white\";\n    cardCtx.fillRect(x+8, y+8, 512-16, 768-16);\n    const cardData = notes[\"!Decks\"][deckName][cardTitle];\n\n    if (cardData.durability == 0) {\n        drawShape([{x:x , y:y+16} , {x:x+436 , y:y+16} , {x:x+436-48 , y:y+16+48} , {x:x , y:y+16+48}], 4); // <---- T I T L E   A R E A   ---- T E X T   A R E A ----> X+0 -> X+388\n        drawCenteredAndWrappedText(cardCtx, cardData.title, x+4, y+40, 388-8, `bold 32px ${cardFont}`, \"black\", \"center\"); // <---- T I T L E   T E X T\n    } else {\n        drawShape([{x:x , y:y+16} , {x:x+342 , y:y+16} , {x:x+342-48 , y:y+16+48} , {x:x , y:y+16+48}], 4); // <---- T I T L E   A R E A   ---- T E X T   A R E A ----> X+0 -> X+294\n        drawShape([{x:x+436 , y:y+16} , {x:x+358 , y:y+16} , {x:x+358-48 , y:y+16+48} , {x:x+436-48 , y:y+16+48}], 4); // <---- D U R A B I L I T Y   A R E A   ---- T E X T   A R E A ----> X+358 -> X+388\n        drawCenteredAndWrappedText(cardCtx, cardData.title, x+4, y+40, 294-8, `bold 32px ${cardFont}`, \"black\", \"center\"); // <---- T I T L E   T E X T\n        drawCenteredAndWrappedText(cardCtx, `${cardData.durability}`, x+358, y+40, 30, `bold 32px ${cardFont}`, \"black\", \"center\"); // <---- D U R A B I L I T Y   T E X T\n    }\n\n\n    drawShape([{x:x+512 , y:y+16} , {x:x+452 , y:y+16} , {x:x+452-48 , y:y+16+48} , {x:x+512 , y:y+16+48}], 4); // <---- S U I T   V A L U E   A R E A   ---- T E X T   A R E A ----> X+452 -> X+512\n    drawCenteredAndWrappedText(cardCtx, `${cardData.suitValue}`, x+444, y+40, 60, `bold 32px ${cardFont}`, \"black\", \"left\"); // <---- S U I T   V A L U E   T E X T\n\n    for (let i=0; i<cardData.abilities.length; i++) {\n        const ability = cardData.abilities[cardData.abilities.length-1-i];\n        if (ability.textType == \"whole\") {\n            drawCenteredAndWrappedText(cardCtx, ability.text.replace(/\\\\n/g, '\\n'), x+12, y+400, 512-24, `bold 16px ${cardFont}`, \"black\", \"left\"); // <---- W H O L E   T E X T\n        } else {\n            cardCtx.fillStyle = \"black\";\n            cardCtx.fillRect(x+24, y+768-24-96-(i*112)-24, 464, 96); // <---- A B I L I T Y   O U T E R   A R E A\n            cardCtx.fillStyle = \"white\";\n            cardCtx.fillRect(x+24+4, y+768-24-96-(i*112)+4-24, 464-8, 96-8); // <---- A B I L I T Y   I N N E R   A R E A\n\n            for (let j=0; j<ability.cost.length; j++) {\n                drawCircle(x+40+(56*j) , y+768-24-96-(i*112)+16-24 , 24 , \"black\"); // <---- A B I L I T Y   C O S T   O U T E R   A R E A\n                drawCircle(x+40+(56*j) , y+768-24-96-(i*112)+16-24 , 20 , \"white\"); // <---- A B I L I T Y   C O S T   I N N E R   A R E A\n                cardCtx.imageSmoothingEnabled = false;\n                cardCtx.drawImage(icons[ability.cost[j]], x+40+(56*j)-16 , y+768-24-96-(i*112)+16-16-24, 32, 32); // <---- D R A W   A B I L I T Y   I C O N\n            }\n            drawCenteredAndWrappedText(cardCtx, ability.title, x+24+4+(ability.cost.length*56), y+768-24-96-(i*112)+4+16-24, 512-56-(ability.cost.length*56), `bold 24px ${cardFont}`, \"black\", \"left\"); // <---- A B I L I T Y   T I T L E   T E X T\n\n            if (ability.textType == \"normal\") drawCenteredAndWrappedText(cardCtx, ability.text.replace(/\\\\n/g, '\\n'), x+24+4+4, y+768-24-96-(i*112)+66-24, 512-64, `bold 14px ${cardFont}`, \"black\", \"left\"); // <---- A B I L I T Y   T E X T\n            if (ability.textType == \"italic\") drawCenteredAndWrappedText(cardCtx, ability.text.replace(/\\\\n/g, '\\n'), x+24+4+4, y+768-24-96-(i*112)+44-24, 512-64, `italic bold 14px ${cardFont}`, \"black\", \"center\"); // <---- A B I L I T Y   F L A V O U R   T E X T\n        }\n\n    }\n    drawShape([{x:x , y:y+768} , {x:x+32 , y:y+768-32} , {x:x+512-32 , y:y+768-32} , {x:x+512 , y:y+768}], 4); // <---- D R A W   F O O T E R   A R E A\n    drawCenteredAndWrappedText(cardCtx, cardData.footer, x+32, y+768-20, 512-64, `16px ${cardFont}`, \"black\", \"center\"); // <---- F O O T E R   T E X T\n}\n\n\n\n\nfunction splitBase64Image(base64String, numOfImages, deckName) {\n    var img = new Image();\n    img.onload = function() {\n        var tempCnv = document.createElement('canvas');\n        var tempCtx = tempCnv.getContext('2d');\n        tempCnv.width = img.width;\n        tempCnv.height = img.height;\n        tempCtx.drawImage(img, 0, 0);\n\n        var subWidth = Math.floor(img.width / numOfImages);\n        var loadedCount = 0;\n\n        for (let i = 0; i < numOfImages; i++) {\n            var subCnv = document.createElement('canvas');\n            var subCtx = subCnv.getContext('2d');\n            subCnv.width = subWidth;\n            subCnv.height = img.height;\n\n            subCtx.drawImage(tempCnv, \n                        i * subWidth, 0, \n                        subWidth, img.height, \n                        0, 0, \n                        subWidth, img.height);\n\n            var subImage = new Image();\n            subImage.onload = function() {\n                loadedCount++;\n                if (loadedCount === numOfImages) {\n                    downloadCardsFromDeck(deckName);\n                }\n            };\n            subImage.src = subCnv.toDataURL('image/png');\n            icons[Object.keys(icons)[i]] = subImage;\n        }\n    };\n    img.src = base64String;\n}\n\n\n\nfunction downloadCardsFromDeck(deckToDownload) {\n    cardCtx.clearRect(0, 0, cardCnv.width, cardCnv.height);\n    let snapTrack = 0;\n    let yTrack = 0;\n    let xTrack = 0;\n    cardCnv.width = xCoord*512;\n    cardCnv.height = yCoord*768;\n\n    for (const cardTitle in notes[\"!Decks\"][deckToDownload]) {\n        drawCard(deckToDownload , cardTitle , xTrack*512 , yTrack*768);\n        if (xTrack < (xCoord-1)) {\n            xTrack += 1;\n        } else {\n            xTrack = 0;\n            if (yTrack < (yCoord-1)) {\n                yTrack += 1;\n            } else {\n                snapCanvas(`Cards_${snapTrack}`);\n                snapTrack += 1;\n                cardCtx.clearRect(0, 0, cardCnv.width, cardCnv.height);\n                yTrack = 0;\n            }\n        } \n    }\n    if (!(xTrack == 0 && yTrack == 0)) {\n        snapCanvas(`Cards_${snapTrack}`);\n        cardCtx.clearRect(0, 0, cardCnv.width, cardCnv.height);\n    }\n}\n\n\n\n\nfunction snapCanvas(name) {\n    cardCtx.imageSmoothingEnabled = false;\n    let cardCnvImage = cardCnv.toDataURL(\"image/png\", 1.0);\n    let link = document.createElement('a');\n    link.download = `${name}.png`;\n    link.href = cardCnvImage;\n    document.body.appendChild(link);\n    link.click();\n    document.body.removeChild(link);\n}\n\n\n\nfunction drawCircle(centerX , centerY , radius , colour) {\n    cardCtx.beginPath();\n    cardCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);\n    cardCtx.fillStyle = colour;\n    cardCtx.fill();\n}\n\n\n\nfunction drawShape(locations, width) {\n    cardCtx.beginPath();\n    cardCtx.moveTo(locations[0].x, locations[0].y);\n    for (let i=1; i<locations.length; i++) {\n        cardCtx.lineTo(locations[i].x, locations[i].y);\n    }\n    cardCtx.closePath();\n    cardCtx.lineWidth = width;\n    cardCtx.strokeStyle = \"black\";\n    cardCtx.stroke();\n}\n\nfunction drawCenteredAndWrappedText(canvasCtx, text, x, y, maxWidth, font, textStyle, align) {\n    canvasCtx.fillStyle = textStyle;\n    let xCoord = (align == \"left\") ? x : x + (maxWidth / 2);\n    canvasCtx.font = font;\n    let fontSize = parseInt(font.match(/\\d+px/)[0]);\n    let lineHeight = fontSize * 1.2;\n    canvasCtx.textAlign = align;\n    canvasCtx.textBaseline = \"middle\";\n\n    // Split the text by \\n and keep track of empty lines for multiple newlines\n    let parts = text.split('\\n');\n    let lines = [];\n    \n    for (let part of parts) {\n        let words = part.split(' ');\n        let currentLine = '';\n\n        for (let word of words) {\n            let testLine = currentLine + word + ' ';\n            let metrics = canvasCtx.measureText(testLine);\n            \n            if (metrics.width > maxWidth) {\n                if (currentLine) lines.push(currentLine.trim());\n                currentLine = word + ' ';\n            } else {\n                currentLine = testLine;\n            }\n        }\n        \n        if (currentLine.trim().length > 0) lines.push(currentLine.trim());\n        // If there's an empty part (i.e., \\n\\n), just push a blank line\n        if (part === '') lines.push('');\n    }\n\n    // Calculate total height including any extra space for blank lines (multiple \\n)\n    let totalHeight = lines.length * lineHeight;\n    let startY = y - totalHeight / 2 + lineHeight / 2;\n    \n    lines.forEach((line, index) => {\n        // If the line is empty (for consecutive \\n), add more vertical space\n        let yOffset = line === '' ? lineHeight * 1.5 : lineHeight; // Increase the gap for blank lines\n        canvasCtx.fillText(line, xCoord, startY + index * yOffset);\n    });\n}\n\nconst cardCnv = document.createElement('canvas');\nconst cardCtx = cardCnv.getContext('2d');\nlet icons = {};\nfor (let i=0; i<cardIcons.length; i++) {\n    icons[cardIcons[i]] = \"\"\n}\n\nsplitBase64Image(cardIconImage, cardIcons.length, \"Deck 1\");\n\n\n",
+        "Return": "J:path.pop(); showOption();"
+    },
+    "Study": {
+        "Maths": {
+            "Algebra I": "T:<center style='font-size: 42px;'>Algebra I</center>\n<hr>\n<u>Fundamentals</u>\n<br><br>\nAlgebra is the start of the transition from manipulating known values and numbers to unknown values represented with symbols, these symbols are commonly known as variables. At first this might seem relatively initially useless, but is the foundation for everything going forwards, so it's important to make sure that you know how they work.\n<br><br>\nFor example let's look at the algebraic example 3 + a = 8. In this example we have the letter/variable 'a'. This can be read as 3 plus something equals 8.\n<br>\nIntuitively we work out that a must be equal to 5 as we know that 3 + 5 = 8. However to algebraicly calculate that what we can do is apply a mathematical operation to both sides of the = sign.\n<br>\nFor example we can add a '-3' to both sides of the equal sign which would make:\n<br>\n3 + a - 3   =   8 - 3\n<br>\nOn the left side you'll notice that you have 3 - 3 , which equals 0 and can be ignored, this turns the equation into:\n<br>\na = 8 - 3\n<br>\nor\n<br>\na = 5\n<br><br>\nThis solution involved adding -3 to both sides of the equal sign but you can also apply any value (known or unknown) to both sides of an equal sign in any way you wish, as long as its applied the same way on both sides.\n<br>\nMeaning that you can Add, Subtract, Multiply or Divide both sides of an equation with the same value and it would maintain equality and remain true.\n<br><br>\nAdditionally when we have a something times a variable, we normally hide the times sign for clarity, for example instead of writting 2 * a = 8. We would write 2a = 8.\n<br><br>\nBelow is a table covering some of the key terms in Algebra that you are likely to come across.\n<br><br>\n<table border=1 style=\"width: 100%;\">\n    <tr>\n        <th style=\"width: 33%;\">Term</th>\n        <th style=\"width: 33%;\">Definition</th>\n        <th style=\"width: 33%;\">Example</th>\n    </tr>\n    <tr>\n        <td>Variable</td>\n        <td>A symbol (usually a letter) representing an unknown or changing numerical value.</td>\n        <td>x, y, z</td>\n    </tr>\n    <tr>\n        <td>Constant</td>\n        <td>A fixed numerical value in an algebraic expression.</td>\n        <td>3, -7, π</td>\n    </tr>\n    <tr>\n        <td>Coefficient</td>\n        <td>A number multiplied by a variable in a term.</td>\n        <td>In 5x, 5 is the coefficient of x.</td>\n    </tr>\n    <tr>\n        <td>Term</td>\n        <td>A number, a variable, or the product of a number and one or more variables.</td>\n        <td>4y, -2, 3x²</td>\n    </tr>\n    <tr>\n        <td>Algebraic Expression</td>\n        <td>A meaningful combination of numbers, variables, and operation signs.</td>\n        <td>2a + 3b - 5</td>\n    </tr>\n    <tr>\n        <td>Equation</td>\n        <td>A mathematical statement showing the equality between two expressions, separated by an equal sign.</td>\n        <td>3x + 1 = 10</td>\n    </tr>\n<table>\n<br><br>\n<u>Linear Algebra</u>\n<br><br>\nNot all variables have definite values such as y = 3. Some equations which have multiple variables such as 2x = y. Has no set answer like the equations before, and this one simple states that whatever value x is, y is 2 times bigger.\n<br>\nFor example if x = 6, the equation would be 2 * 6 = y, so y would equal 12, double that of x.\n<br><br>\nIf you had a graph with x values along the bottom and y values going up. If for each value of x you drew a dot at the y value satisfying the equation 2x = y. For example at x coordinate 4, it would have a y coordinate of 8, so you would draw the dot at (4, 8).\n<br>\nYou would then quickly start to notice a straight line occurring going through the origin of the graph (0, 0), this line would have quite a steep angle, also known as its gradient.\n<br>\nThis gradient is completely determined by the coefficient of x, in this case it's 2. If you used the equation y = 3x, it would have a much steeper gradient.\n<br><br>\nAdditionally you could add another value into the equation, for example: y = 2x + 4. With this equation if you did the same test you would find it draw a line identical to before, excect all the y values are 4 greater than before.\n<br>\nThis also means that the line no longer goes through the origin, for example if x = 0, you would get y = 2 * 0 + 4. As any value times 0 is 0, you are left with y = 4.\n<br>\nThis final equation y = 2x + 4, if we substituted the values 2 and 4 as the variables m and c respectively, we get the equation:\n<br><br>\ny = mx + c\n<br><br>\nThis equation represents that of a straight line, where m is the gradient and y is the y-intercept (where the line passes through the y axis when x=0).\n<br><br>\n<u>Polynomials</u>\n<br>\nThe technical definition of a polynomial is defined as an expression consisting of variables (also called indeterminates) and constants (coefficients), combined using the operations of addition, subtraction, and multiplication, where the exponents of the variables are non-negative integers. Division by a variable is not permitted in polynomials. Examples of polynomials include x² - 4x + 7 and 3x³ + 2x - 1. Each seperate part of the expression is called a term.\n<br><br>\nPolynomials can be classified in two primary ways: by the number of terms they contain and by their degree, which is the highest exponent of the variable in the polynomial.\n<br><br>\nBased on the <b>number of terms</b>, polynomials are classified as follows:\n<br>\n<ul>\n    <li><b>Monomial: </b>A polynomial with exactly one term. Examples include 5x, 7, and -3x².</li>\n    <li><b>Binomial: </b>A polynomial with exactly two terms. Examples include x + 2, 3x² - 5, and y³ + 1.</li>\n    <li><b>Trinomial: </b>A polynomial with exactly three terms. Examples include x² + 2x + 1, 4a² - 7a + 3, and p³ - 2p + 9.</li>\n    <li><b>Polynomial: </b>When a polynomial has more than three terms, it is often simply referred to as a polynomial, without a specific prefix indicating the number of terms.</li>\n</ul>\n<br>\nBased on their <b>degree</b>, polynomials are classified as follows:\n<br>\n<ul>\n    <li><b>Constant Polynomial (Degree 0): </b>A polynomial where the highest exponent of the variable is 0. These are simply non-zero constant numbers, such as 7 or -12 (since 7 = 7x⁰).</li>\n    <li><b>Linear Polynomial (Degree 1): </b>A polynomial where the highest exponent of the variable is 1. Examples include 2x + 1, -y + 5, and a - 8.</li>\n    <li><b>Quadratic Polynomial (Degree 2): </b>A polynomial where the highest exponent of the variable is 2. Examples include 3x² - x + 2, y² + 7y - 4, and -2a² + 9.</li>\n    <li><b>Cubic Polynomial (Degree 3): </b>A polynomial where the highest exponent of the variable is 3. Examples include x³ + 5x² - 3x + 1, -4y³ + 2y - 6, and 7a³ + 8.</li>\n    <li>Polynomials with degrees higher than 3 are often referred to by their degree number, such as a quartic polynomial (degree 4), a quintic polynomial (degree 5), and so on.</li>\n</ul>\n<br>\n\n\n\n ",
+            "Geometry": "T:",
+            "Algebra II": "T:<br>\nWhen \\(a \\ne 0\\), there are two solutions to \\(ax^2 + bx + c = 0\\) and they are\n$$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$",
+            "Trigonometry": "T:",
+            "Precalculus": "T:",
+            "Calculus I": "T:",
+            "Calculus II": "T:",
+            "Calculus III": "T:",
+            "Linear Algebra": "T:",
+            "Differential Equations": "T:",
+            "Real Analysis": "T:",
+            "Abstract Algebra": "T:",
+            "Complex Analysis": "T:",
+            "Probability and Statistics": "T:",
+            "Topology": "T:",
+            "Number Theory": "T:",
+            "Discrete Mathematics": "T:",
+            "Numerical Analysis": "T:",
+            "Speak": "J:speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));",
+            "Return": "J:path.pop(); showOption();"
+        },
+        "Physics": {
+            "Motion and Forces": "T:",
+            "Energy and Heat": "T:",
+            "Light and Sound": "T:",
+            "Electricity and Magnetism": "T:",
+            "Classical Mechanics": "T:",
+            "Thermodynamics": "T:",
+            "Waves and Optics": "T:",
+            "Electromagnetism": "T:",
+            "Modern Physics": "T:",
+            "Advanced Classical Mechanics": "T:",
+            "Electrodynamics": "T:",
+            "Quantum Mechanics": "T:",
+            "Statistical Mechanics": "T:",
+            "Solid-State Physics": "T:",
+            "Nuclear and Particle Physics": "T:",
+            "Astrophysics and Cosmology": "T:",
+            "General Relativity": "T:",
+            "Quantum Field Theory": "T:",
+            "String Theory": "T:",
+            "Speak": "J:speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));",
+            "Return": "J:path.pop(); showOption();"
+        },
+        "Biology": {
+            "Cell Biology I": "T:",
+            "Classification of Living Things": "T:",
+            "Basic Human Biology": "T:",
+            "Ecology I": "T:",
+            "Cell Biology II": "T:",
+            "Ecology II": "T:",
+            "Genetics I": "T:",
+            "Evolution I": "T:",
+            "Plant Biology": "T:",
+            "Animal Biology": "T:",
+            "Molecular Biology": "T:",
+            "Microbiology": "T:",
+            "Physiology": "T:",
+            "Biochemistry": "T:",
+            "Genetics II": "T:",
+            "Ecology III": "T:",
+            "Evolution II": "T:",
+            "Neurobiology": "T:",
+            "Immunology": "T:",
+            "Development Biology": "T:",
+            "Bioinformatics": "T:",
+            "Biophysics": "T:",
+            "Speak": "J:speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));",
+            "Return": "J:path.pop(); showOption();"
+        },
+        "Car Mechanics": {
+            "Engine Fundamentals": "T:",
+            "Fuel Systems": "T:",
+            "Ignition Systems": "T:",
+            "Emission Control Systems": "T:",
+            "Transmissions": "T:",
+            "Drive Systems": "T:",
+            "Hydraulic Brake Systems": "T:",
+            "Anti-lock Braking Systems (ABS)": "T:",
+            "Parking Brakes": "T:",
+            "Suspension Systems": "T:",
+            "Steering Systems": "T:",
+            "Electrical Systems": "T:",
+            "Heating and Air  Conditioning (HVAC)": "T:",
+            "Safety Systems": "T:",
+            "General Systems": "T:",
+            "General Maintenance": "T:",
+            "Electric Vehicles": "T:",
+            "Hybrid Vehicles": "T:",
+            "Advanced Driver-Assistance Systems (ADAS)": "T:",
+            "Speak": "J:speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));",
+            "Return": "J:path.pop(); showOption();"
+        },
+        "First Aid": {
+            "CPR": "T:",
+            "AED": "T:",
+            "Chocking": "T:",
+            "Severe Bleeding": "T:",
+            "Anaphylaxis Shock": "T:",
+            "Wounds": "T:",
+            "Burns": "T:",
+            "Bone Injuries": "T:",
+            "Head Injuries": "T:",
+            "Heart Attack": "T:",
+            "Stroke": "T:",
+            "Seizures": "T:",
+            "Fainting": "T:",
+            "Diabetic Emergencies": "T:",
+            "Asthma Attacks": "T:",
+            "Poisoning": "T:",
+            "Bites": "T:",
+            "Speak": "J:speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));",
+            "Return": "J:path.pop(); showOption();"
+        },
+        "IT": {
+            "Computer Hardware": "T:<center style='font-size: 42px;'>Computer Hardware</center>\n<hr><br>\n<u>What is Computer Hardware?</u>\n<br><br>\nEssentially, computer hardware refers to the physical components that a computer system requires to function. These are the tangible parts you can see and touch, as opposed to software, which are the programs and data.\n<br><br>\n<u>Core Components</u>\n<br>\n<ul>\n    <li>These are the essential pieces that make a computer work. They include the Central Processing Unit (CPU), motherboard, Random Access Memory (RAM), and storage devices.</li>\n    <li>The CPU is the \"brain\" of the computer, executing instructions.</li>\n    <li>The motherboard acts as the central communication hub, connecting all other components.</li>\n    <li>RAM provides temporary storage for data that the CPU is actively using.</li>\n    <li>Storage devices (like hard drives or solid-state drives) store data permanently.</li>\n</ul>\n<br>\n<u>Peripheral Devices</u>\n<br><br>\n<ul>\n    <li>These are external devices that connect to the computer to enhance its functionality. Examples include keyboards, mice, monitors, printers, and external drives.</li>\n    <li>Understanding how these devices connect and communicate with the computer is vital for IT support.</li>\n</ul>\n<br>\n<u>Key Hardware Components and their Functions</u>\n<br><br>\n<table border=\"1\" style=\"width: 100%;\">\n    <tr>\n        <th style=\"width: 20%;\">Component</th>\n        <th style=\"width: 80%;\">Function</th>\n    </tr>\n    <tr>\n        <td>CPU (Central Processing Unit)</td>\n        <td>Executes instructions and performs calculations.</td>\n    </tr>\n    <tr>\n        <td>RAM (Random Access Memory)</td>\n        <td>Provides temporary data storage for active processes.</td>\n    </tr>\n    <tr>\n        <td>Motherboard</td>\n        <td>Connects and facilitates communication between all hardware components.</td>\n    </tr>\n    <tr>\n        <td>Storage Devices (HDD, SSD)</td>\n        <td>Stores data permanently.</td>\n    </tr>\n    <tr>\n        <td>Network Interface Card (NIC)</td>\n        <td>Enables a computer to connect to a network.</td>\n    </tr>\n    <tr>\n        <td>Router</td>\n        <td>Directs network traffic.</td>\n    </tr>\n    <tr>\n        <td>Switch</td>\n        <td>Connects devices within a local network.</td>\n    </tr>\n</table>\n\n\n\n\n\n\n\n",
+            "Operating Systemes": "T:<center style='font-size: 42px;'>Operating Systems</center>\n<hr><br>\n<u>What is an Operating System?</u>\n<br><br>\nAn operating system is essentially the software that manages computer hardware and software resources and provides common services for computer programs. Think of it as the intermediary between you, the user, and the computer's hardware. Without an OS, a computer would be a collection of inert electronic components. It's the OS that brings the machine to life, allowing you to run applications, store files, and interact with the hardware.\n<br><br>\n\n<u>The Roles of an OS</u>\n<br><br>\n<ul>\n    <li>Hardware Management: The OS controls and coordinates the use of the computer's hardware, including the CPU, memory, storage devices, and input/output devices. It allocates resources to different programs, ensuring that they don't interfere with each other.</li>\n    <li>Software Management: The OS provides a platform for applications to run. It handles tasks such as loading and executing programs, managing files, and providing a user interface.</li>\n    <li>User Interface: The OS provides a way for users to interact with the computer, whether through a graphical user interface (GUI) or a command-line interface (CLI). This interface allows the user to input commands, and see the outputs of those commands.</li>\n    <li>File Management: An OS organizes files and directories, allowing users to store, retrieve, and manipulate data.</li>\n    <li>Memory Management: The OS manages the computer's memory, allocating and deallocating memory as needed by different programs.</li>\n    <li>Security: Modern operating systems include security features to protect against unauthorized access and malicious software.</li>\n</ul>\n<br>\n\n<u>Key Components of an OS</u>\n<br>\n<ul>\n    <li>Kernel: The kernel is the core of the OS, responsible for managing the CPU, memory, and other essential functions. It's the part of the OS that interacts directly with the hardware.</li>\n    <li>Shell: The shell is the user interface that allows users to interact with the OS. It can be a GUI (Graphical User Interface) or a CLI (Command Line Interface).</li>\n    <li>File System: The file system is the structure that the OS uses to organize and store files.</li>\n    <li>Device Drivers: These are programs that allow the OS to communicate with specific hardware devices.</li>\n</ul>\n<br>\n\n<u>Desktop/Laptop Operating Systems</u>\n<br>\n<ul>\n    <li>Microsoft Windows</li>\n    <li>macOS</li>\n    <li>Linux</li>\n</ul>\n<br>\n\n<u>Mobile Operating Systems</u>\n<br>\n<ul>\n    <li>Android</li>\n    <li>iOS</li>\n</ul>\n<br>\n\n<u>Server Operating Systems</u>\n<br>\n<ul>\n    <li>Linux (e.g., Red Hat Enterprise Linux, CentOS)</li>\n    <li>Windows Server</li>\n</ul>",
+            "Networking": "T:<center style='font-size: 42px;'>Networking</center>\n<hr><br>\n<u>What is Computer Networking?</u>\n<br><br>\nComputer networking involves connecting two or more computing devices so they can share resources. These resources can include files, printers, internet access, and applications. Networking enables communication and collaboration across distances, forming the backbone of modern information technology.\n<br><br>\n<u>Key Concepts</u>\n<br>\n<ul>\n    <li>Nodes: These are the devices connected to the network, such as computers, servers, printers, and smartphones.</li>\n    <li>Links: These are the communication channels that connect nodes, which can be wired (e.g., Ethernet cables) or wireless (e.g., Wi-Fi).</li>\n    <li>Protocols: These are sets of rules that govern how data is transmitted and received over a network. Protocols ensure that devices can communicate effectively, even if they are from different manufacturers. TCP/IP (Transmission Control Protocol/Internet Protocol) is the fundamental protocol suite of the internet.</li>\n    <li>Network Topology: This refers to the physical or logical arrangement of nodes and links in a network. Common topologies include: <ul><li>Bus: All devices are connected to a single cable.</li><li>Star: All devices are connected to a central hub or switch.</li><li>Ring: Devices are connected in a closed loop.</li><li>Mesh: Devices are interconnected with multiple redundant connections.</li><li>Tree: A combination of star and bus topologies.</li></ul></li>\n    <li>Network Devices: These are hardware components that facilitate network communication:<ul>\n        <li>Routers: Forward data packets between networks.</li>\n        <li>Switches: Connect devices within a local network (LAN) and forward data packets to specific destinations.</li>\n        <li>Hubs: Connect devices within a LAN, but broadcast data packets to all connected devices.</li>\n        <li>Modems: Convert digital signals to analog signals (and vice versa) for transmission over telephone lines or cable TV lines.</li>\n        <li>Firewalls: Control network traffic and protect against unauthorized access.</li>\n        <li>Network Interface Cards (NICs): Allow devices to connect to a network.</li>\n        <li>Access Points: Allow wireless devices to connect to a wired network.</li>\n    </ul></li>\n</ul>\n<br>\n\n<u>The OSI Model</u>\n<br><br>\nThe Open Systems Interconnection (OSI) model is a conceptual framework that describes how network communication works. It divides the process into seven layers:\n<br>\n<ol>\n    <li>Physical Layer: Deals with the physical transmission of data bits over a medium.</li>\n    <li>Data Link Layer: Handles error detection and correction, and provides addressing within a local network.</li>\n    <li>Network Layer: Responsible for routing data packets between networks.</li>\n    <li>Transport Layer: Provides reliable or unreliable data delivery between applications.</li>\n    <li>Session Layer: Manages communication sessions between applications.</li>\n    <li>Presentation Layer: Handles data formatting and encryption.</li>\n    <li>Application Layer: Provides network services to applications.</li>\n</ol>\n<br>\n\n<u>TCP/IP Model</u>\n<br><br>\nThe TCP/IP model is another framework used for network communication, which is the model the internet is built on. It is a simplified version of the OSI model and consists of four layers:\n<br>\n<ol>\n    <li>Network Access Layer: Combines the physical and data link layers of the OSI model.</li>\n    <li>Internet Layer: Corresponds to the network layer of the OSI model.</li>\n    <li>Transport Layer: Similar to the transport layer of the OSI model.</li>\n    <li>Application Layer: Combines the session, presentation, and application layers of the OSI model.</li>\n</ol>\n<br>\n\n<u>IP Addressing</u>\n<br>\n<ul>\n    <li>Internet Protocol (IP) addresses are used to identify devices on a network.</li>\n    <li>IPv4 and IPv6 are the two main versions of IP addresses.</li>\n    <li>Subnetting is the process of dividing a network into smaller subnetworks.</li>\n    <li>Private IP addresses are used within local networks, while public IP addresses are used for communication over the internet.</li>\n    <li>NAT (Network Address Translation) allows multiple devices on a private network to share a single public IP address.</li>\n</ul>\n<br>\n\n<u>Network Security</u>\n<br>\n<ul>\n    <li>Network security is crucial for protecting data and preventing unauthorized access.</li>\n    <li>Firewalls, intrusion detection systems (IDS), and virtual private networks (VPNs) are used to enhance network security.</li>\n    <li>Encryption is used to protect data during transmission.</li>\n</ul>\n\n\n\n",
+            "Cybersecurity I": "T:",
+            "Software Development": "T:",
+            "Programming": {
+                "HTML": "T:HTML",
+                "CSS": "T:CSS",
+                "JavaScript": "T:JavaScript",
+                "CMD": "T:<center style='font-size: 42px;'>CMD</center>\n<hr><br>\n<u>File and Directory Management</u>\n<br><br>\nThese commands are fundamental for navigating and manipulating the file system within Windows.\n<br><br>\n<table border=\"1\" style=\"width: 100%;\">\n\n    <tr>\n        <th style=\"width: 20%;\">Command</th>\n        <th style=\"width: 80%;\">Description</th>\n    </tr>\n\n    <tr>\n        <td>dir</td>\n        <td>This command displays a list of files and subdirectories within a specified directory. If no directory is provided, it shows the contents of the current directory.</td>\n    </tr>\n\n    <tr>\n        <td>cd (or chdir)</td>\n        <td>These commands change the current directory to the specified path. The syntax is cd &ltdirectory_path&gt or chdir &ltdirectory_path&gt. Using cd .. moves to the parent directory, while cd \\ navigates to the root directory.</td>\n    </tr>\n\n    <tr>\n        <td>md (or mkdir)</td>\n        <td> These commands create a new directory. The syntax is md &ltdirectoryname&gt or mkdir &ltdirectoryname&gt. For instance, mkdir NewFolder will create a directory named \"NewFolder\" in the current location.</td>\n    </tr>\n\n    <tr>\n        <td>rd (or rmdir)</td>\n        <td>These commands remove a directory. The syntax is rd &ltdirectoryname&gt or rmdir &ltdirectoryname&gt. The directory must be empty to be removed. To remove a directory and all its contents, including subdirectories and files, the /s parameter can be used (e.g., rd /s OldFolder). The /q parameter can be used with /s to suppress prompts.</td>\n    </tr>\n\n    <tr>\n        <td>copy</td>\n        <td>This command copies one or more files from a source to a destination. The basic syntax is copy &ltsource&gt &ltdestination&gt. For example, copy file.txt backup.txt will create a copy of \"file.txt\" named \"backup.txt\" in the current directory. The command can also copy to different directories (e.g., copy file.txt C:\\Backup).</td>\n    </tr>\n\n    <tr>\n        <td>move</td>\n        <td>This command moves one or more files from a source to a destination. It can also be used to rename directories. The syntax is move &ltsource&gt &ltdestination&gt. For instance, move oldfile.txt newlocation\\ will move \"oldfile.txt\" to the \"newlocation\" directory.</td>\n    </tr>\n\n    <tr>\n        <td>del (or erase)</td>\n        <td>These commands delete one or more files. The syntax is del &ltfilename&gt or erase &ltfilename&gt. Wildcards (* and ?) can be used to delete multiple files (e.g., del *.txt will delete all files with the .txt extension in the current directory). The /f parameter forces deletion of read-only files, and /q suppresses prompts.</td>\n    </tr>\n\n    <tr>\n        <td>ren (or rename)</td>\n        <td>These commands rename a file or directory. The syntax is ren &ltoldname&gt &ltnewname&gt or rename &ltoldname&gt &ltnewname&gt. For example, ren document.doc report.doc will rename \"document.doc\" to \"report.doc\".</td>\n    </tr>\n\n    <tr>\n        <td>type</td>\n        <td>This command displays the contents of a text file on the screen. The syntax is type &ltfilename&gt. For example, type readme.txt will show the content of \"readme.txt\".</td>\n    </tr>\n\n    <tr>\n        <td>find</td>\n        <td>This command searches for a specific text string within one or more files. The syntax is find \"string\" &ltfilename&gt. For instance, find \"error\" logfile.txt will display lines in \"logfile.txt\" that contain the word \"error\". Parameters like /c count the occurrences, /n displays line numbers, and /i ignores case sensitivity.</td>\n    </tr>\n\n    <tr>\n        <td>more</td>\n        <td>This command displays the contents of a text file or the output of another command one screen at a time. The syntax is more &ltfilename&gt or &ltanother_command&gt | more. This is useful for viewing large files or outputs that exceed the screen capacity.</td>\n    </tr>\n\n    <tr>\n        <td>xcopy</td>\n        <td>This is a more powerful version of the copy command, allowing the copying of directories, subdirectories, and files with various options for controlling the copy process, including file attributes and permissions. The syntax is xcopy &ltsource&gt &ltdestination&gt /options. For example, xcopy C:\\Source D:\\Backup /s /e /h will copy all directories and subdirectories (including empty ones and hidden files) from C:\\Source to D:\\Backup.</td>\n    </tr>\n\n    <tr>\n        <td>robocopy</td>\n        <td>This is an even more robust file and directory copying tool designed for reliable and efficient copying, often used for backups and synchronization. It offers numerous advanced options. The basic syntax is robocopy &ltsource&gt &ltdestination&gt &ltfile(s)&gt &ltoptions&gt.</td>\n    </tr>\n\n    <tr>\n        <td>attrib</td>\n        <td>This command displays or changes the attributes of files and directories, such as read-only (+r or -r), hidden (+h or -h), system (+s or -s), and archive (+a or -a). The syntax is attrib [+attribute | -attribute] [pathname] [/s [/d]]. For example, attrib +h myfile.txt will make \"myfile.txt\" a hidden file.</td>\n    </tr>\n\n    <tr>\n        <td>compact</td>\n        <td>This command displays or alters the compression of files on NTFS partitions to save disk space.</td>\n    </tr>\n\n    <tr>\n        <td>cipher</td>\n        <td>This command displays or changes the encryption status of files or directories on NTFS file systems. The syntax is cipher [options] [file_or_directory]. Without any options, it shows the encryption state for all files and directories in the current location.</td>\n    </tr>\n\n    <tr>\n        <td>subst</td>\n        <td>This command associates a local folder with a drive letter, creating a virtual drive. The syntax is subst [drive1: [drive2:]path]. For example, subst Z: C:\\Long\\Path\\To\\Folder will make the folder accessible through the Z: drive letter.</td>\n    </tr>\n\n    <tr>\n        <td>tree</td>\n        <td>This command graphically displays the directory structure of a drive or path, showing subdirectories within each folder. The /f parameter also displays the files in each directory.</td>\n    </tr>\n\n    <tr>\n        <td>fc</td>\n        <td>This command compares two files or sets of files and displays the differences between them.</td>\n    </tr>\n\n</table>\n\n<br><br>\n<u>Network Commands</u>\n<br><br>\nThese commands are essential for diagnosing network connectivity, configuring network settings, and gathering network information.\n<br><br>\n\n<table border=\"1\" style=\"width: 100%;\">\n\n    <tr>\n        <th style=\"width: 20%;\">Command</th>\n        <th style=\"width: 80%;\">Description</th>\n    </tr>\n\n    <tr>\n        <td>ipconfig</td>\n        <td>This command displays all current TCP/IP network configuration values and can refresh Dynamic Host Configuration Protocol (DHCP) and Domain Name System (DNS) settings. The /all switch displays detailed configuration information for all network adapters, /flushdns clears the local DNS resolver cache, and /renew requests a new IP address from the DHCP server.</td>\n    </tr>\n\n    <tr>\n        <td>ping</td>\n        <td>This command tests network connectivity between two devices by sending Internet Control Message Protocol (ICMP) echo requests. The syntax is ping [hostname or IP]. It is commonly used to check if a remote host is reachable. One option is to include -t for continuous pinging.</td>\n    </tr>\n\n    <tr>\n        <td>tracert</td>\n        <td>This command traces the path that a packet takes to reach a network host, helping to identify where problems might be occurring in the network. The syntax is tracert [hostname or IP]. It displays each router hop along the path and the time taken to reach it.</td>\n    </tr>\n\n    <tr>\n        <td>netstat</td>\n        <td>This command displays active TCP connections, listening ports, Ethernet statistics, the IP routing table, and network protocol statistics. Options like -a show all active TCP connections and the TCP and UDP ports on which the computer is listening, -b displays the executables involved in creating each connection or listening port, and -n shows addresses and port numbers in numerical form.</td>\n    </tr>\n\n    <tr>\n        <td>nslookup</td>\n        <td>This command queries DNS servers to obtain domain name or IP address mapping, or other DNS records. Entering nslookup without arguments opens an interactive mode where you can enter hostnames or IP addresses to query the configured DNS server.</td>\n    </tr>\n\n    <tr>\n        <td>netsh</td>\n        <td>This is a powerful command-line scripting utility that allows you to display or modify the network configuration of a computer.</td>\n    </tr>\n\n    <tr>\n        <td>arp</td>\n        <td> This command displays and modifies entries in the Address Resolution Protocol (ARP) cache, which reveals IP and MAC addresses in the local network. The command arp -a displays the current ARP cache table.</td>\n    </tr>\n\n    <tr>\n        <td>hostname</td>\n        <td>This simple command displays the hostname of the current computer.</td>\n    </tr>\n\n    <tr>\n        <td>pathping</td>\n        <td>This command combines the functionality of ping and tracert and provides more detailed network route and latency information, including packet loss at each hop over a longer period.</td>\n    </tr>\n\n    <tr>\n        <td>getmac</td>\n        <td>This command displays the Media Access Control (MAC) address of the network card(s) in the system.</td>\n    </tr>\n\n    <tr>\n        <td>nbtstat</td>\n        <td>This command helps diagnose NetBIOS over TCP/IP connections and displays protocol statistics, NetBIOS name tables, and the NetBIOS name cache. The command nbtstat -a &lthostname&gt displays the NetBIOS name table of a remote computer.</td>\n    </tr>\n\n    <tr>\n        <td>net</td>\n        <td>This command is a versatile tool for managing various network aspects, including shares (net share), user accounts (net user), and network resources (net use).</td>\n    </tr>\n\n    <tr>\n        <td>route</td>\n        <td>This command displays and modifies the local IP routing table, which is crucial for controlling network routing settings. The command route print displays the current routing table.</td>\n    </tr>\n\n    <tr>\n        <td>telnet</td>\n        <td>This command establishes a Telnet connection to a specified hostname or IP address and port. It requires the Telnet Client feature to be enabled in Windows. The syntax is telnet [hostname or IP] [port].</td>\n    </tr>\n\n    <tr>\n        <td>ftp</td>\n        <td>This command starts an FTP session with a specified host, allowing for file transfer. The syntax is ftp [hostname or IP].</td>\n    </tr>\n\n</table>\n\n<br><br>\n<u>System Information and Management</u>\n<br><br>\nThese commands provide insights into the system's configuration and allow for various management tasks.\n<br><br>\n\n<table border=\"1\" style=\"width: 100%;\">\n\n    <tr>\n        <th style=\"width: 20%;\">Command</th>\n        <th style=\"width: 80%;\">Description</th>\n    </tr>\n\n    <tr>\n        <td>systeminfo</td>\n        <td>This command provides a detailed overview of the system's configuration, including OS version, hardware details, installed patches, and network information.</td>\n    </tr>\n\n    <tr>\n        <td>tasklist</td>\n        <td>This command lists all currently running processes along with their Process ID (PID), memory usage, and other details. Options like /fi allow filtering the list based on criteria, and /svc shows services associated with each process.</td>\n    </tr>\n\n    <tr>\n        <td>taskkill</td>\n        <td>This command terminates one or more running processes by their PID or image name. The /PID parameter specifies the process ID to be terminated, and /IM specifies the image name (executable file). The /F parameter forcefully terminates the process. For example, taskkill /PID 1234 /F will forcefully terminate the process with PID 1234.</td>\n    </tr>\n\n    <tr>\n        <td>shutdown</td>\n        <td>This command shuts down or restarts the computer. The /s option initiates a shutdown, /r restarts, /t &ltseconds&gt sets a timeout period, and /f forces running applications to close without warning. The /m \\\\&ltcomputername&gt option allows for remote shutdown.</td>\n    </tr>\n\n    <tr>\n        <td>sfc</td>\n        <td>The System File Checker (sfc /scannow) scans and verifies the integrity of all protected system files and replaces incorrect versions with correct Microsoft versions, aiding in system stability and repair.</td>\n    </tr>\n\n    <tr>\n        <td>chkdsk</td>\n        <td>This command checks the file system and file system metadata of a volume for logical and physical errors. The syntax is chkdsk [drive:] [/options]. The /f option fixes errors on the disk, and /r locates bad sectors and recovers readable information.</td>\n    </tr>\n\n    <tr>\n        <td>wmic</td>\n        <td>The Windows Management Instrumentation Command-line tool provides an interface for retrieving system information and managing system components through WMI.</td>\n    </tr>\n\n    <tr>\n        <td>regedit</td>\n        <td>This command opens the Windows Registry Editor, a graphical tool for viewing and editing the system registry, which contains low-level configuration settings for the operating system and installed applications.</td>\n    </tr>\n\n    <tr>\n        <td>msinfo32</td>\n        <td>This command opens the System Information window, a graphical tool that provides detailed information about the computer's hardware resources, components, and software environment, similar to but with a different presentation than systeminfo.</td>\n    </tr>\n\n    <tr>\n        <td>eventvwr</td>\n        <td>This command opens the Event Viewer, a graphical tool that allows users to view logs and events recorded by Windows and applications, crucial for diagnosing system and application issues.</td>\n    </tr>\n\n    <tr>\n        <td>sc</td>\n        <td>This command communicates with the Service Control Manager, allowing for the management of Windows services from the command line, including starting (sc start &ltservicename&gt), stopping (sc stop &ltservicename&gt), configuring, and querying service status.</td>\n    </tr>\n\n    <tr>\n        <td>dxdiag</td>\n        <td>This command opens the DirectX Diagnostic Tool, which provides information about DirectX components and system performance related to graphics and sound, useful for troubleshooting multimedia issues.</td>\n    </tr>\n\n    <tr>\n        <td>gpupdate</td>\n        <td>This command is used to apply group policies on a computer in a Windows domain. gpupdate /force reapplies all policy settings.</td>\n    </tr>\n\n    <tr>\n        <td>gpresult</td>\n        <td>This command displays Group Policy settings and Resultant Set of Policy (RSoP) for a user or a computer. gpresult /r shows a summary of applied policies.</td>\n    </tr>\n\n    <tr>\n        <td>whoami</td>\n        <td>This command displays the current username and can also show group membership using the /groups option.</td>\n    </tr>\n\n    <tr>\n        <td>powercfg</td>\n        <td>This command controls power plans to achieve optimal energy usage and battery conservation. It allows for listing, setting, and configuring power schemes.</td>\n    </tr>\n\n    <tr>\n        <td>diskpart</td>\n        <td>This is a powerful command-line utility used for managing disks, partitions, and volumes. It requires entering a separate interactive environment by typing diskpart. Within this environment, commands like list disk, select disk, list partition, select partition, create partition primary, format, and assign letter are available.</td>\n    </tr>\n\n    <tr>\n        <td>format</td>\n        <td>This command formats a disk with a specified file system. The syntax is format [drive:] [/fs:filesystem] [/v:label] [/q] [/f:size] [/t:tracks /n:sectors] [/c] [/x] [/1] [/4] [/8] [/autotest[:count]] [/u] [/d]. Using this command will erase all data on the specified drive, so caution is advised. The /q option performs a quick format.</td>\n    </tr>\n\n</table>\n\n<br><br>\n<u>Disk Management</u>\n<br><br>\nThese commands are specifically designed for managing hard disks and their volumes.\n<br><br>\n\n<table border=\"1\" style=\"width: 100%;\">\n\n    <tr>\n        <th style=\"width: 20%;\">Command</th>\n        <th style=\"width: 80%;\">Description</th>\n    </tr>\n\n    <tr>\n        <td>diskpart</td>\n        <td>As mentioned earlier, this utility provides a comprehensive set of commands for managing disks, partitions, and volumes, including creating, deleting, formatting, and assigning drive letters.</td>\n    </tr>\n\n    <tr>\n        <td>chkdsk</td>\n        <td>This command, already discussed under system management, is crucial for checking the integrity of the file system on a disk and repairing errors.</td>\n    </tr>\n\n    <tr>\n        <td>format</td>\n        <td>Also discussed earlier, this command prepares a disk volume for use by a specific file system, erasing any existing data.</td>\n    </tr>\n\n    <tr>\n        <td>vol</td>\n        <td>This command displays the disk volume label and serial number for a specified drive. The syntax is vol [drive:].</td>\n    </tr>\n\n    <tr>\n        <td>label</td>\n        <td>This command creates, changes, or deletes the volume label of a disk. The syntax is label [drive:][new_label].</td>\n    </tr>\n\n    <tr>\n        <td>mountvol</td>\n        <td>This command displays, creates, or removes volume mount points. Mount points allow accessing volumes without a drive letter. The syntax is mountvol [drive:]path /D | /L | /N.</td>\n    </tr>\n\n    <tr>\n        <td>compact</td>\n        <td>This command, also listed under file management, can be considered a disk management tool as it directly affects how data is stored on the disk at a file system level by compressing files and directories on NTFS volumes.</td>\n    </tr>\n\n</table>\n\n<br><br>\n<u>Application and Process Management</u>\n<br><br>\nThese commands allow interaction with running applications and processes, as well as managing file associations.\n<br><br>\n\n<table border=\"1\" style=\"width: 100%;\">\n\n    <tr>\n        <th style=\"width: 20%;\">Command</th>\n        <th style=\"width: 80%;\">Description</th>\n    </tr>\n\n    <tr>\n        <td>tasklist</td>\n        <td>Already discussed, this command provides a list of running processes, which is the first step in managing them.</td>\n    </tr>\n\n    <tr>\n        <td>taskkill</td>\n        <td>Also previously mentioned, this command terminates running processes based on their PID or image name.</td>\n    </tr>\n\n    <tr>\n        <td>start</td>\n        <td>This command starts a separate window to run a specified program or command, or starts an application without a new window. The syntax is start [\"title\"] [/d path] [/i] [/min | /max] [/separate | /shared] [/low | /normal | /high | /realtime | /abovenormal | /belownormal] [/wait] [/b] [/machine \\\\computername] [command/program] [parameters].</td>\n    </tr>\n\n    <tr>\n        <td>assoc</td>\n        <td>This command displays or modifies file extension associations. Without any parameters, it prints the current file extension associations. The syntax to view an association is assoc .&ltextension&gt, and to change it is assoc .&ltextension&gt=&ltfiletype&gt. For example, assoc .log will show the current program associated with .log files, and assoc .log=txtfile will associate .log files with the file type \"txtfile\" (typically Notepad).</td>\n    </tr>\n\n    <tr>\n        <td>ftype</td>\n        <td>This command displays or modifies file types used in file extension associations. The syntax to view a file type is ftype &ltfiletype&gt, and to change it is ftype &ltfiletype&gt=[opencommand].</td>\n    </tr>\n\n    <tr>\n        <td>regsvr32</td>\n        <td>This command registers and unregisters OLE controls such as .dll and .ocx files in the Windows Registry. This is often used to fix issues with COM components.</td>\n    </tr>\n\n</table>\n\n<br><br>\n<u>Application and Process Management</u>\n<br><br>\nThese commands allow interaction with running applications and processes, as well as managing file associations.\n<br><br>\n\n<table border=\"1\" style=\"width: 100%;\">\n\n    <tr>\n        <th style=\"width: 20%;\">Command</th>\n        <th style=\"width: 80%;\">Description</th>\n    </tr>\n\n    <tr>\n        <td>cls</td>\n        <td>This command clears the content of the screen, providing a clean slate in the command prompt window.</td>\n    </tr>\n\n    <tr>\n        <td>date</td>\n        <td>This command displays the current date and allows you to change it. Using date /t will only display the current date without prompting for a change.</td>\n    </tr>\n\n    <tr>\n        <td>time</td>\n        <td>This command displays the current time and allows it to be changed. Similar to date, time /t will only display the current time.</td>\n    </tr>\n\n    <tr>\n        <td>help</td>\n        <td>This command displays helpful information about other commands. Typing help &ltcommand&gt or &ltcommand&gt /? will usually show the syntax and available parameters for that specific command.</td>\n    </tr>\n\n    <tr>\n        <td>ver</td>\n        <td>This command displays the current Windows version number.</td>\n    </tr>\n\n    <tr>\n        <td>prompt</td>\n        <td>This command changes the display of the command prompt. You can customize the prompt to show various information, such as the current directory. For example, prompt $p$g will display the current drive and path followed by a greater-than sign.</td>\n    </tr>\n\n    <tr>\n        <td>echo</td>\n        <td>This command displays a message on the screen and is mainly used within scripts and batch files to provide output or to turn command echoing on or off. echo Hello World will print \"Hello World\" to the console.</td>\n    </tr>\n\n    <tr>\n        <td>pause</td>\n        <td>This command suspends the execution of a batch file and displays the message \"Press any key to continue . . .\".</td>\n    </tr>\n\n    <tr>\n        <td>choice</td>\n        <td>This command creates a selection list within a script or batch program, prompting the user to make a choice from a set of options. The syntax is choice /c:&ltkeys&gt /m:&lttext&gt. For example, choice /c:ync /m \"Yes, No, Continue\" will display the options [Y,N,C]? and return the index of the selected option.</td>\n    </tr>\n\n    <tr>\n        <td>clip</td>\n        <td>This command redirects the output of another command to the Windows clipboard, allowing you to paste the output into other applications. For example, dir | clip will copy the list of files and folders in the current directory to the clipboard</td>\n    </tr>\n\n    <tr>\n        <td>color</td>\n        <td>This command changes the background and text colors of the command prompt window. The syntax is color [background][font], where the color attributes are hexadecimal numbers from 0 to f. Typing color /? will display the available color codes.</td>\n    </tr>\n\n    <tr>\n        <td>title</td>\n        <td>This command sets the window title for the current CMD.EXE session. For example, title My Command Prompt will change the title bar of the command prompt window.</td>\n    </tr>\n\n    <tr>\n        <td>more</td>\n        <td>As discussed earlier, this command displays output one screen at a time.</td>\n    </tr>\n\n    <tr>\n        <td>sort</td>\n        <td>This command reads input, sorts the data, and writes the results to the screen, to a file, or to another device. It can sort alphabetically or numerically.</td>\n    </tr>\n\n    <tr>\n        <td>findstr</td>\n        <td>This command is a more advanced version of find, allowing for searching for strings in files using regular expressions and offering more options for pattern matching.</td>\n    </tr>\n\n</table>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+                "PowerShell": "T:<center style='font-size: 42px;'>PowerShell</center>\n<hr><br>\n<u>What is PowerShell?</u>\n<br><br>\nPowerShell is a powerful tool from Microsoft that combines a command-line shell with a scripting language. It is designed primarily for automating system administration tasks using cmdlets (lightweight commands) and runs on Windows, macOS and Linux.\n<br><br>\nPowerShell cmdlets are lightweight commands used in the PowerShell environment. They follow a \"verb-noun\" naming convention (e.g., Get-Process, Stop-Service), which makes them relatively easy to understand.\n<br><br>\n\n<table border=\"1\" style=\"width: 100%\">\n  <tr>\n    <th style=\"width: 20%\">PowerShell Concept</th>\n    <th style=\"width: 80%\">Explanation & Examples</th>\n  </tr>\n  <tr>\n    <td>Variables</td>\n    <td>\n      <p>Variables store data. In PowerShell, they start with a <code>$</code>.</p>\n      <p>Examples:</p>\n      <pre><code>$name = \"John Doe\"\n$age = 30\n$isTrue = $true\n$numbers = 1, 2, 3</code></pre>\n      <p>Data types are often inferred, but you can explicitly cast them.</p>\n      <pre><code>[int]$count = \"10\" </code></pre>\n    </td>\n  </tr>\n  <tr>\n    <td>Arrays</td>\n    <td>\n      <p>Arrays store collections of items. They can hold various data types.</p>\n      <p>Examples:</p>\n      <pre><code>$myArray = @(\"apple\", \"banana\", \"cherry\")\n$numbers = @(1, 2, 3, 4, 5)</code></pre>\n      <p>Accessing elements:</p>\n      <pre><code>$firstItem = $myArray[0]&nbsp; # \"apple\"\n$secondNumber = $numbers[1] # 2</code></pre>\n      <p>Adding elements:</p>\n      <pre><code>$myArray += \"date\"</code></pre>\n      <p>Array length:</p>\n      <pre><code>$arrayLength = $myArray.Length</code></pre>\n    </td>\n  </tr>\n  <tr>\n    <td>Hashtables (Dictionaries)</td>\n    <td>\n      <p>Hashtables store key-value pairs, similar to dictionaries in other languages.</p>\n      <p>Examples:</p>\n      <pre><code>$myHash = @{\n&nbsp; Name = \"John\"\n&nbsp; Age = 30\n&nbsp; City = \"New York\"\n}</code></pre>\n      <p>Accessing values:</p>\n      <pre><code>$name = $myHash.Name&nbsp; # \"John\"\n$age = $myHash[\"Age\"] # 30</code></pre>\n      <p>Adding/Modifying key-value pairs:</p>\n      <pre><code>$myHash.Job = \"Engineer\"\n$myHash.Age = 31</code></pre>\n    </td>\n  </tr>\n  <tr>\n    <td>Loops (ForEach, For, While, Do-While)</td>\n    <td>\n      <p>Loops iterate over collections or execute code repeatedly.</p>\n      <p><b>ForEach:</b> Iterates over each item in a collection.</p>\n      <pre><code>$numbers = 1, 2, 3\nforeach ($number in $numbers) {\n&nbsp; Write-Host \"Number: $number\"\n}</code></pre>\n      <p><b>For:</b> Executes a block of code a specified number of times.</p>\n      <pre><code>for ($i = 0; $i -lt 5; $i++) {\n&nbsp; Write-Host \"Iteration: $i\"\n}</code></pre>\n      <p><b>While:</b> Executes a block of code as long as a condition is true.</p>\n      <pre><code>$count = 0\nwhile ($count -lt 3) {\n&nbsp; Write-Host \"Count: $count\"\n&nbsp; $count++\n}</code></pre>\n      <p><b>Do-While:</b> Executes a block of code at least once, then continues as long as a condition is true.</p>\n      <pre><code>$count = 0\ndo {\n&nbsp; Write-Host \"Count: $count\"\n&nbsp; $count++\n} while ($count -lt 3)</code></pre>\n    </td>\n  </tr>\n  <tr>\n    <td>Conditional Statements (If, ElseIf, Else, Switch)</td>\n    <td>\n      <p>Conditional statements control the flow of execution based on conditions.</p>\n      <p><b>If, ElseIf, Else:</b></p>\n      <pre><code>$age = 25\nif ($age -lt 18) {\n&nbsp; Write-Host \"Minor\"\n} elseif ($age -lt 65) {\n&nbsp; Write-Host \"Adult\"\n} else {\n&nbsp; Write-Host \"Senior\"\n}</code></pre>\n      <p><b>Switch:</b> Compares a value against multiple cases.</p>\n      <pre><code>$day = \"Monday\"\nswitch ($day) {\n&nbsp; \"Monday\" { Write-Host \"Start of the week\" }\n&nbsp; \"Friday\" { Write-Host \"Almost weekend\" }\n&nbsp; default { Write-Host \"Another day\" }\n}</code></pre>\n    </td>\n  </tr>\n  <tr>\n    <td>Functions</td>\n    <td>\n      <p>Functions are reusable blocks of code.</p>\n      <p>Defining a function:</p>\n      <pre><code>function Greet {\n&nbsp; param (\n&nbsp; &nbsp; $name,\n&nbsp; &nbsp; $greeting = \"Hello\" # Default value\n&nbsp; )\n&nbsp; Write-Host \"$greeting, $name!\"\n}</code></pre>\n      <p>Calling a function:</p>\n      <pre><code>Greet -name \"Alice\"\nGreet -name \"Bob\" -greeting \"Hi\"</code></pre>\n      <p>Returning values:</p>\n      <pre><code>function Add {\n&nbsp; param ($a, $b)\n&nbsp; return $a + $b\n}\n$sum = Add -a 5 -b 3\nWrite-Host \"Sum: $sum\" # Sum: 8</code></pre>\n    </td>\n  </tr>\n  <tr>\n    <td>Piping and Pipeline</td>\n    <td>\n      <p>Piping allows the output of one command to be used as the input of another.</p>\n      <p>Example: Get all files, then filter for .txt files, then count them.</p>\n      <pre><code>Get-ChildItem | Where-Object {$_.Extension -eq \".txt\"} | Measure-Object</code></pre>\n      <p>Each '|' character passes the objects from the left command to the right command. This is a very powerful feature of PowerShell.</p>\n    </td>\n  </tr>\n  <tr>\n    <td>Modules</td>\n    <td>\n      <p>Modules are packages of PowerShell code that can contain functions, variables, and other resources.</p>\n      <p>Importing a module:</p>\n      <pre><code>Import-Module ActiveDirectory</code></pre>\n      <p>Finding available modules:</p>\n      <pre><code>Get-Module -ListAvailable</code></pre>\n      <p>Modules allow for code reuse and extend the functionality of PowerShell.</p>\n    </td>\n  </tr>\n</table>\n\n<br><br>\n<u>Core Cmdlets for System Information and Navigation</u>\n<table border=\"1\" style=\"width: 100%;\">\n\n    <tr>\n        <th style=\"width: 20%;\">Cmdlet</th>\n        <th style=\"width: 80%;\">Description</th>\n    </tr>\n\n    <tr>\n        <td>Get-Help</td>\n        <td>Provides detailed information about cmdlets, functions, scripts, and other PowerShell concepts. Essential for learning and understanding how to use commands.</td>\n    </tr>\n\n    <tr>\n        <td>Get-Command</td>\n        <td>Retrieves all commands available in the PowerShell session. Useful for discovering available cmdlets, functions, and aliases.</td>\n    </tr>\n\n    <tr>\n        <td>Get-Member</td>\n        <td>Inspects the properties and methods of objects. This allows you to understand the structure of data returned by cmdlets.</td>\n    </tr>\n\n    <tr>\n        <td>Get-ChildItem (alias: dir, ls)</td>\n        <td>Lists the items (files and directories) in a specified location. Similar to the dir command in Command Prompt.</td>\n    </tr>\n\n    <tr>\n        <td>Set-Location (alias: cd)</td>\n        <td>Changes the current working directory. Similar to the cd command.</td>\n    </tr>\n\n    <tr>\n        <td>Get-Process</td>\n        <td>Retrieves information about running processes on the system.</td>\n    </tr>\n\n    <tr>\n        <td>Get-Service</td>\n        <td>Retrieves information about services on the system.</td>\n    </tr>\n\n    <tr>\n        <td>Stop-Process</td>\n        <td>Stops one or more running processes.</td>\n    </tr>\n\n    <tr>\n        <td>Stop-Service</td>\n        <td>Stops a running service.</td>\n    </tr>\n\n</table>\n\n<br><br>\n<u>Cmdlets for Data Manipulation and Output</u>\n<br><br>\n\n<table border=\"1\" style=\"width: 100%;\">\n\n    <tr>\n        <th style=\"width: 20%;\">Cmdlet</th>\n        <th style=\"width: 80%;\">Description</th>\n    </tr>\n\n    <tr>\n        <td>Out-File</td>\n        <td>Sends output to a file.</td>\n    </tr>\n\n    <tr>\n        <td>Export-Csv</td>\n        <td>Exports data to a comma-separated value (CSV) file.</td>\n    </tr>\n\n    <tr>\n        <td>ConvertTo-Html</td>\n        <td>Converts output to HTML format.</td>\n    </tr>\n\n    <tr>\n        <td>Where-Object</td>\n        <td>Filters objects based on specified criteria.</td>\n    </tr>\n\n    <tr>\n        <td>ForEach-Object</td>\n        <td>Performs an operation on each item in a collection of input objects.</td>\n    </tr>\n\n    <tr>\n        <td>Select-Object</td>\n        <td>Selects specified properties of an object or set of objects.</td>\n    </tr>\n\n</table>\n\n<br><br>\n<u>Cmdlets for System Administration</u>\n<br><br>\n\n<table border=\"1\" style=\"width: 100%;\">\n\n    <tr>\n        <th style=\"width: 20%;\">Cmdlet</th>\n        <th style=\"width: 80%;\">Description</th>\n    </tr>\n\n    <tr>\n        <td>Get-EventLog</td>\n        <td>Retrieves events from the Windows event logs.</td>\n    </tr>\n\n    <tr>\n        <td>Test-Connection</td>\n        <td>Tests network connectivity.</td>\n    </tr>\n\n    <tr>\n        <td>Set-ExecutionPolicy</td>\n        <td>Manages PowerShell script execution policies.</td>\n    </tr>\n\n</table>\n\n<br>Cmdlets for History<br>\n<u></u>\n<br><br>\n\n<table border=\"1\" style=\"width: 100%;\">\n\n    <tr>\n        <th style=\"width: 20%;\">Cmdlet</th>\n        <th style=\"width: 80%;\">Description</th>\n    </tr>\n\n    <tr>\n        <td>Get-History</td>\n        <td>Displays the history of commands entered in the current session.</td>\n    </tr>\n\n    <tr>\n        <td>Clear-History</td>\n        <td>Clears the command history.</td>\n    </tr>\n\n</table>\n\n\n\n\n",
+                "Lua": "T:Lua",
+                "Python": "T:Python",
+                "Java": "T:Java",
+                "Shell": "T:Shell",
+                "Speak": "J:speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));",
+                "Return": "J:path.pop(); showOption();"
+            },
+            "Cloud Computing": "T:",
+            "Cybersecurity II": "T:",
+            "Data Science and Analytics": "T:",
+            "IT Support and Systems Administration": "T:",
+            "Database Administration": "T:",
+            "Speak": "J:speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));",
+            "Return": "J:path.pop(); showOption();"
+        },
+        "Languages": {
+            "French": "T:",
+            "Speak": "J:speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));",
+            "Return": "J:path.pop(); showOption();"
+        },
+        "Survival": {
+            "Shelter I": "T:",
+            "Shelter II": "T:",
+            "Fire": "T:",
+            "Water": "T:",
+            "Food": "T:",
+            "Navigation I": "T:",
+            "Navigation II": "T:",
+            "Signaling and Communication": "T:<table border='1' style='width: 100%;'><tr><th style='width: 50%;'>Alphabet</th><th style='width: 50%;'>Morse Code</th></tr><tr><td>A</td><td>.-</td></tr></table>",
+            "Foraging and Botany": "T:",
+            "Hunting and Tracking": "T:",
+            "Agriculture": "T:",
+            "Tool Making and Repair": "T:",
+            "Self-Defense and Security": "T:",
+            "Leadership": "T:",
+            "Speak": "J:speechSynthesis.speak(new SpeechSynthesisUtterance(outputArea.textContent));",
+            "Return": "J:path.pop(); showOption();"
+        },
+        "Return": "J:path.pop(); showOption();"
+    },
+    "Password Generator": "J:",
+    "Personal": {
+        "Diary": "E:My¬3pr]*ESzdS*z*@i?43pr]^p%]xllu]p]Gylpv]3pr]pv]84y+X]aylvvr]=n¬lv!]K4v]^p3]xylp+}p%v]4y]enuZ^]xnv]}lle¬uG]G443!]K4v]p]^nGl]}pu]4}]:y¬%^]B4}}ll]xnv]8¬ee¬uG]v4]G¬tl]¬v]p]G4]Y4yl!]B^e4l]^p%]xllu]aylvvr]v¬yl3]pu3]=n¬vl]xnv]e44+¬uG]}4y8py3]v4]v^l]8ll+lu3]v4Glv^ly!",
+        "Passwords": "E:",
+        "Finances": "E:",
+        "Pomodoro Timer": "J:/*\n\nI want a check box where you select from a long list of jobs, like housework, care trianing, studying, gamedev and then it does pomodoro. I want it incredibly easy to add adn change the jobs.\n\n*/",
+        "Workout Plan": "J:/*\n\nTiemr setup like pomodoro but modular thorugh array of exercies and times.\n\n*/",
+        "Return": "J:path.pop(); showOption();"
+    },
+    "Dev": {
+        "Toggle Edit Mode": "J:editMode = !editMode; showOption();",
+        "Edit Notes": "J:editPath([]);",
+        "Export": "J:  const styleTags = document.querySelectorAll('head > style');\n  const mathJaxStyleTags = Array.from(styleTags).filter(tag => {\n    return tag.textContent.includes('MathJax'); // Simple check, adjust if needed\n  });\n\n  if (mathJaxStyleTags.length >= 4) {\n    for (let i = 0; i < 4; i++) {\n      if (mathJaxStyleTags[i]) { //check if the element exists before removing\n        mathJaxStyleTags[i].remove();\n      }\n    }\n  }\n\noptionsArea.innerHTML = \"\";\noutputArea.innerHTML = \"\";\nlet htmlContent = document.documentElement.outerHTML.split(\"//MARK\");\nconst last = htmlContent.pop();\nconst init = htmlContent.shift();\nconst newHTMLContent = init + \"//MARK\\nlet notes = \" + JSON.stringify(notes, null, 4) + \";\\n//MARK\" + last;\nconst blob = new Blob([newHTMLContent], {type: 'text/html'});\nconst a = document.createElement('a');\na.href = URL.createObjectURL(blob);\na.download = 'ToolKit.html';\na.click();\nURL.revokeObjectURL(a.href);\nshowOption();",
+        "Toggle Save": "J:notes[\"!Save\"] = !notes[\"!Save\"];\nsaveData();\nif (notes[\"!Save\"]) {\n    alert(\"Saving has been Enabled.\");\n} else {\n    alert(\"Saving has been Disabled.\");\n}",
+        "Reset": "J:let check = prompt(\"Are you sure?\\n\\nEnter 'yes' to confirm\");\nif (check == \"yes\") resetData();\nsaveData();",
+        "Return": "J:path.pop(); showOption();"
+    },
+    "!Decks": {
+        "Deck 1": {
+            "Ace of Clubs": {
+                "title": "Bjaldor",
+                "durability": "18",
+                "suitValue": "AC",
+                "footer": "Character",
+                "abilities": [
+                    {
+                        "title": "Play",
+                        "textType": "normal",
+                        "text": "Play 1 Card from your Hand into your Field.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Draw",
+                        "textType": "normal",
+                        "text": "Draw the top Card from your Deck into your Hand.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Untap",
+                        "textType": "normal",
+                        "text": "Untap all Cards in your Field.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Attribute",
+                        "textType": "normal",
+                        "text": "Generate 2 Power Points and 1 Agility Point.",
+                        "cost": [
+                            "Tap"
+                        ]
+                    },
+                    {
+                        "title": "",
+                        "textType": "italic",
+                        "text": "Half-Orc Barbarian",
+                        "cost": []
+                    }
+                ]
+            },
+            "2 of Clubs": {
+                "title": "Warhammer",
+                "durability": "0",
+                "suitValue": "2C",
+                "footer": "Item",
+                "abilities": []
+            },
+            "3 of Clubs": {
+                "title": "Battle Axe",
+                "durability": "0",
+                "suitValue": "3C",
+                "footer": "Item",
+                "abilities": []
+            },
+            "4 of Clubs": {
+                "title": "Iron Shield",
+                "durability": "0",
+                "suitValue": "4C",
+                "footer": "Item",
+                "abilities": []
+            },
+            "5 of Clubs": {
+                "title": "Chainmail Armour",
+                "durability": "0",
+                "suitValue": "5C",
+                "footer": "Item",
+                "abilities": []
+            },
+            "6 of Clubs": {
+                "title": "Spiked Gauntlets",
+                "durability": "0",
+                "suitValue": "6C",
+                "footer": "Item",
+                "abilities": []
+            },
+            "7 of Clubs": {
+                "title": "Greatsword",
+                "durability": "0",
+                "suitValue": "7C",
+                "footer": "Item",
+                "abilities": []
+            },
+            "8 of Clubs": {
+                "title": "Reinforced Boots",
+                "durability": "0",
+                "suitValue": "8C",
+                "footer": "Item",
+                "abilities": []
+            },
+            "9 of Clubs": {
+                "title": "Might Gauntlets",
+                "durability": "0",
+                "suitValue": "9C",
+                "footer": "Item",
+                "abilities": []
+            },
+            "10 of Clubs": {
+                "title": "Heavy Crossbow",
+                "durability": "0",
+                "suitValue": "10C",
+                "footer": "Item",
+                "abilities": []
+            },
+            "Jack of Clubs": {
+                "title": "Dragonone Mace",
+                "durability": "0",
+                "suitValue": "JC",
+                "footer": "Item",
+                "abilities": []
+            },
+            "Queen of Clubs": {
+                "title": "Titan's Gauntlets",
+                "durability": "0",
+                "suitValue": "QC",
+                "footer": "Item",
+                "abilities": []
+            },
+            "King of Clubs": {
+                "title": "Ironclad Bruiser",
+                "durability": "0",
+                "suitValue": "KC",
+                "footer": "Ally",
+                "abilities": []
+            },
+            "Ace of Hearts": {
+                "title": "Tessa Vale",
+                "durability": "14",
+                "suitValue": "AH",
+                "footer": "Character",
+                "abilities": [
+                    {
+                        "title": "Play",
+                        "textType": "normal",
+                        "text": "Play 1 Card from your Hand into your Field.",
+                        "cost": [
+                            "Tap"
+                        ]
+                    },
+                    {
+                        "title": "Draw",
+                        "textType": "normal",
+                        "text": "Draw the top Card from your Deck into your Hand.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Untap",
+                        "textType": "normal",
+                        "text": "Untap all Cards in your Field.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Attribute",
+                        "textType": "normal",
+                        "text": "Generate 2 Agility Points and 1 Wisdom Point.",
+                        "cost": [
+                            "Tap"
+                        ]
+                    },
+                    {
+                        "title": "",
+                        "textType": "italic",
+                        "text": "Tiefling Rogue",
+                        "cost": []
+                    }
+                ]
+            },
+            "2 of Hearts": {
+                "title": "Twin Daggers",
+                "durability": "0",
+                "suitValue": "2H",
+                "footer": "Item",
+                "abilities": []
+            },
+            "3 of Hearts": {
+                "title": "Throwing Stars",
+                "durability": "0",
+                "suitValue": "3H",
+                "footer": "Item",
+                "abilities": []
+            },
+            "4 of Hearts": {
+                "title": "Leather Armour",
+                "durability": "0",
+                "suitValue": "4H",
+                "footer": "Item",
+                "abilities": []
+            },
+            "5 of Hearts": {
+                "title": "Grappling Hook",
+                "durability": "0",
+                "suitValue": "5H",
+                "footer": "Item",
+                "abilities": []
+            },
+            "6 of Hearts": {
+                "title": "Climbing Rope",
+                "durability": "0",
+                "suitValue": "6H",
+                "footer": "Item",
+                "abilities": []
+            },
+            "7 of Hearts": {
+                "title": "Silent Boots",
+                "durability": "0",
+                "suitValue": "7H",
+                "footer": "Item",
+                "abilities": []
+            },
+            "8 of Hearts": {
+                "title": "Lockpicks",
+                "durability": "0",
+                "suitValue": "8H",
+                "footer": "Item",
+                "abilities": []
+            },
+            "9 of Hearts": {
+                "title": "Shortbow",
+                "durability": "0",
+                "suitValue": "9H",
+                "footer": "Item",
+                "abilities": []
+            },
+            "10 of Hearts": {
+                "title": "Smoke Bombs",
+                "durability": "0",
+                "suitValue": "10H",
+                "footer": "Item",
+                "abilities": []
+            },
+            "Jack of Hearts": {
+                "title": "Phantom Cloak",
+                "durability": "0",
+                "suitValue": "JH",
+                "footer": "Item",
+                "abilities": []
+            },
+            "Queen of Hearts": {
+                "title": "Shadow Blade",
+                "durability": "0",
+                "suitValue": "QH",
+                "footer": "Item",
+                "abilities": []
+            },
+            "King of Hearts": {
+                "title": "The Elven Scout",
+                "durability": "0",
+                "suitValue": "KH",
+                "footer": "Ally",
+                "abilities": []
+            },
+            "Ace of Spades": {
+                "title": "Victor Wren",
+                "durability": "14",
+                "suitValue": "AS",
+                "footer": "Character",
+                "abilities": [
+                    {
+                        "title": "Play",
+                        "textType": "normal",
+                        "text": "Play 1 Card from your Hand into your Field.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Draw",
+                        "textType": "normal",
+                        "text": "Draw the top 2 Cards from your Deck into your Hand.",
+                        "cost": [
+                            "Slow",
+                            "Tap"
+                        ]
+                    },
+                    {
+                        "title": "Untap",
+                        "textType": "normal",
+                        "text": "Untap all Cards in your Field.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Attribute",
+                        "textType": "normal",
+                        "text": "Generate 2 Wisdom Points and 1 Power Point.",
+                        "cost": [
+                            "Tap"
+                        ]
+                    },
+                    {
+                        "title": "",
+                        "textType": "italic",
+                        "text": "Human Wizard",
+                        "cost": []
+                    }
+                ]
+            },
+            "2 of Spades": {
+                "title": "Simple Wand",
+                "durability": "0",
+                "suitValue": "2S",
+                "footer": "Item",
+                "abilities": []
+            },
+            "3 of Spades": {
+                "title": "Crystal Orb",
+                "durability": "0",
+                "suitValue": "3S",
+                "footer": "Item",
+                "abilities": []
+            },
+            "4 of Spades": {
+                "title": "Ancient Map",
+                "durability": "0",
+                "suitValue": "4S",
+                "footer": "Item",
+                "abilities": []
+            },
+            "5 of Spades": {
+                "title": "Mystic Hourglass",
+                "durability": "0",
+                "suitValue": "5S",
+                "footer": "Item",
+                "abilities": []
+            },
+            "6 of Spades": {
+                "title": "Grimoire of Spells",
+                "durability": "0",
+                "suitValue": "6S",
+                "footer": "Item",
+                "abilities": []
+            },
+            "7 of Spades": {
+                "title": "Potion of Clarity",
+                "durability": "0",
+                "suitValue": "7S",
+                "footer": "Item",
+                "abilities": []
+            },
+            "8 of Spades": {
+                "title": "Mystic Amulet",
+                "durability": "0",
+                "suitValue": "8S",
+                "footer": "Item",
+                "abilities": []
+            },
+            "9 of Spades": {
+                "title": "Runestone",
+                "durability": "0",
+                "suitValue": "9S",
+                "footer": "Item",
+                "abilities": []
+            },
+            "10 of Spades": {
+                "title": "Sage's Robes",
+                "durability": "0",
+                "suitValue": "10S",
+                "footer": "Item",
+                "abilities": []
+            },
+            "Jack of Spades": {
+                "title": "Arcane Tome",
+                "durability": "0",
+                "suitValue": "JS",
+                "footer": "Item",
+                "abilities": []
+            },
+            "Queen of Spades": {
+                "title": "Archmage's Robes",
+                "durability": "0",
+                "suitValue": "QS",
+                "footer": "Item",
+                "abilities": []
+            },
+            "King of Spades": {
+                "title": "The Wise Sage",
+                "durability": "0",
+                "suitValue": "KS",
+                "footer": "Ally",
+                "abilities": []
+            },
+            "Ace of Diamonds": {
+                "title": "Rosie Goodwin",
+                "durability": "16",
+                "suitValue": "AD",
+                "footer": "Character",
+                "abilities": [
+                    {
+                        "title": "Play",
+                        "textType": "normal",
+                        "text": "Play 1 Card from your Hand into your Field.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Draw",
+                        "textType": "normal",
+                        "text": "Draw the top Card from your Deck into your Hand.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Untap",
+                        "textType": "normal",
+                        "text": "Untap all Cards in your Field.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Attribute",
+                        "textType": "normal",
+                        "text": "Generate 1 Power Point, 1 Agility Point and 1 Wisdom Point.",
+                        "cost": [
+                            "Tap"
+                        ]
+                    },
+                    {
+                        "title": "",
+                        "textType": "italic",
+                        "text": "Gnome Bard",
+                        "cost": []
+                    }
+                ]
+            },
+            "2 of Diamonds": {
+                "title": "Lucky Coin",
+                "durability": "0",
+                "suitValue": "2D",
+                "footer": "Item",
+                "abilities": []
+            },
+            "3 of Diamonds": {
+                "title": "Multi-Tool",
+                "durability": "0",
+                "suitValue": "3D",
+                "footer": "Item",
+                "abilities": []
+            },
+            "4 of Diamonds": {
+                "title": "Traveller's Cloak",
+                "durability": "0",
+                "suitValue": "4D",
+                "footer": "Item",
+                "abilities": []
+            },
+            "5 of Diamonds": {
+                "title": "Versatile Sword",
+                "durability": "0",
+                "suitValue": "5D",
+                "footer": "Item",
+                "abilities": []
+            },
+            "6 of Diamonds": {
+                "title": "Healing Salve",
+                "durability": "0",
+                "suitValue": "6D",
+                "footer": "Item",
+                "abilities": []
+            },
+            "7 of Diamonds": {
+                "title": "Enchanted Lyre",
+                "durability": "0",
+                "suitValue": "7D",
+                "footer": "Item",
+                "abilities": []
+            },
+            "8 of Diamonds": {
+                "title": "Rations",
+                "durability": "0",
+                "suitValue": "8D",
+                "footer": "Item",
+                "abilities": []
+            },
+            "9 of Diamonds": {
+                "title": "Bag of Tricks",
+                "durability": "0",
+                "suitValue": "9D",
+                "footer": "Item",
+                "abilities": []
+            },
+            "10 of Diamonds": {
+                "title": "Portable Tent",
+                "durability": "0",
+                "suitValue": "10D",
+                "footer": "Item",
+                "abilities": []
+            },
+            "Jack of Diamonds": {
+                "title": "Ring of Adaptation",
+                "durability": "0",
+                "suitValue": "JD",
+                "footer": "Item",
+                "abilities": []
+            },
+            "Queen of Diamonds": {
+                "title": "Chameleon Cloak",
+                "durability": "0",
+                "suitValue": "QD",
+                "footer": "Item",
+                "abilities": []
+            },
+            "King of Diamonds": {
+                "title": "The Mercenary",
+                "durability": "0",
+                "suitValue": "KD",
+                "footer": "Ally",
+                "abilities": []
+            },
+            "Joker 1": {
+                "title": "Bjaldor",
+                "durability": "18",
+                "suitValue": "Jo",
+                "footer": "Character Placeholder",
+                "abilities": []
+            },
+            "Joker 2": {
+                "title": "Tessa Value",
+                "durability": "14",
+                "suitValue": "Jo",
+                "footer": "Character Placeholder",
+                "abilities": []
+            },
+            "Joker 3": {
+                "title": "Victor Wren",
+                "durability": "14",
+                "suitValue": "Jo",
+                "footer": "Character Placeholder",
+                "abilities": []
+            },
+            "Joker 4": {
+                "title": "Rosie Goodwin",
+                "durability": "16",
+                "suitValue": "Jo",
+                "footer": "Character Placeholder",
+                "abilities": []
+            },
+            "Joker 5": {
+                "title": "Help Card",
+                "durability": "0",
+                "suitValue": "Jo",
+                "footer": "Help Card",
+                "abilities": [
+                    {
+                        "title": "",
+                        "textType": "whole",
+                        "text": "Setup for each player:\\n- Remove the 4 'Character' cards from your deck; place 1 in front of you (your Field) and set the rest aside. Your deck now has 48 'Item' and 'Ally' cards.\\n- Shuffle your deck and draw 5 cards from it. Players decide who goes first and turns proceed clockwise.\\n\\nDuring your Turn:\\n- Use abilities from cards in your field, most have costs. For what abilities look like and what their costs mean, see Help Card 2.\\n- If an abilities cost cannot be paid, the ability does not happen.\\n- Some cards have a durability value in the top-right of the card between its Name and Value-Suit (For use as standard playing cards).\\n\\nEnd of Turn:\\n- Any cards with no durability or Damage Counters (DC) at least equal to it, is destroyed.\\n- When a card is destroyed or discarded, it leaves your hand or field and moves next to it's owners Deck face-up (this is their Discard pile).\\n- Any player's with more than 5 cards in their hand has to discard cards from their hand until they have 5.\\n- Any player without a Character card in their field is out of the game and removes all cards they own from play.\\n- If you are the last remaining player, you win.",
+                        "cost": []
+                    }
+                ]
+            },
+            "Joker 6": {
+                "title": "Help Card 2",
+                "durability": "0",
+                "suitValue": "Jo",
+                "footer": "Help Card",
+                "abilities": [
+                    {
+                        "title": "Slow",
+                        "textType": "normal",
+                        "text": "After this ability fully resolves, your turn ends.",
+                        "cost": [
+                            "Slow"
+                        ]
+                    },
+                    {
+                        "title": "Tap",
+                        "textType": "normal",
+                        "text": "Tap a Card by turning it sideways. You can't use the ability if it's already tapped. Untapping resets this.",
+                        "cost": [
+                            "Tap"
+                        ]
+                    },
+                    {
+                        "title": "Power Point",
+                        "textType": "normal",
+                        "text": "Consume 1 Power Point generated from other abilities. The Power Points must have been generated this turn.",
+                        "cost": [
+                            "Power"
+                        ]
+                    },
+                    {
+                        "title": "Agility Point",
+                        "textType": "normal",
+                        "text": "Consume 1 Agility Point generated from other abilities. The Agility Points must have been generated this turn.",
+                        "cost": [
+                            "Agility"
+                        ]
+                    },
+                    {
+                        "title": "Wisdom Point",
+                        "textType": "normal",
+                        "text": "Consume 1 Wisdom Point generated from other abilities. The Wisdom Points must have been generated this turn.",
+                        "cost": [
+                            "Wisdom"
+                        ]
+                    }
+                ]
+            },
+            "Joker 7": {
+                "title": "Joker 7",
+                "durability": 0,
+                "suitValue": "Jo",
+                "footer": "Joker",
+                "abilities": []
+            },
+            "Joker 8": {
+                "title": "Joker 8",
+                "durability": 0,
+                "suitValue": "Jo",
+                "footer": "Joker",
+                "abilities": []
+            }
+        }
+    },
+    "!Save": false
+};
+//MARK
+
+        function showOption(highlightButton = -1) {
+            outputArea.style.height = "auto";
+            let option = notes;
+            for (let i=0; i<path.length; i++) {
+                option = option[path[i]];   
+            }
+            if (typeof option === 'object' && option !== null && !Array.isArray(option)) {
+                optionsArea.innerHTML = "";
+                outputArea.innerHTML = "";
+                for (let i=0; i<Object.keys(option).length; i++) {
+                    const optionName = Object.keys(option)[i];
+                    if (optionName[0] != "!") {
+                        let buttonColour = (i%2 == 0) ? "#393939" : "#262626";
+                        if (editMode) buttonColour = (i%2 == 0) ? "#991c00" : "#811800";
+                        if (optionName == highlightButton) buttonColour = "black";
+                        newOptionButton(optionName, buttonColour, function() {
+                            path.push(optionName);
+                            showOption();
+                        });
+                    }
+                }
+            } else {
+                if (editMode) {
+                    editPath([...path]);
+                    path.pop();
+                } else {
+                    if (option.startsWith('E:')) {
+                        encrypt();
+                    } else if (option.startsWith('J:')) {
+                        path.pop();
+                        let customJS = new Function(option.substring(2));
+                        customJS();   
+                    } else if (option.startsWith('T:')) {
+                        const chosenOption = path.pop();
+                        showOption(chosenOption);
+                        
+                        outputArea.innerHTML = `<div style="margin: 10px; border: 5px solid black; width: calc(100% - 40px); min-height: calc(100% - 40px); padding: 5px; border-radius: 8px; background-color: white; font-size: 20px;">${option.substring(2)}</div>`;
+                    } else {
+                        path.pop();
+                        showOption();
+                    }
+                }
+                outputArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+        }
+
+        function newOptionButton(name, colour, click) {
+            let newOption = document.createElement("button");
+            newOption.innerHTML = name;
+            newOption.style.color = "white";
+            newOption.style.backgroundColor = colour;
+            newOption.style.minHeight = "60px";
+            newOption.style.fontSize = "22px";
+            newOption.onclick = click;
+            optionsArea.appendChild(newOption);
+            return newOption;
+        }
+
+        function editPath(p) {
+            let o = notes, pr = null, lk = null;
+            p.forEach(part => { pr = o; lk = part; o = o[part]; });
+            const isObj = typeof o === 'object' && o && !Array.isArray(o);
+            optionsArea.innerHTML = "";
+            outputArea.style.height = "100%";
+            outputArea.innerHTML = `<textarea id="ta" wrap="off" style="margin:10;border:5px solid black;width:calc(100% - 20px);min-height:calc(100% - 20px);padding:5;border-radius:8px;background-color:white;font-size:16px;"></textarea>`;
+            const ta = document.getElementById("ta");
+            ta.addEventListener('keydown', e => { if (e.key === 'Tab') { e.preventDefault(); const s = ta.selectionStart, en = ta.selectionEnd; ta.value = ta.value.substring(0, s) + '    ' + ta.value.substring(en); ta.selectionStart = ta.selectionEnd = s + 4; } });
+            ta.value = isObj ? JSON.stringify(o, null, 4) : o.substring(2);
+            const save = () => { try { if (isObj) pr ? pr[lk] = JSON.parse(ta.value) : notes = JSON.parse(ta.value); else if (pr) pr[lk] = `${o[0]}:${ta.value}`; saveData(); showOption(); } catch (e) { alert("Invalid format."); } };
+            newOptionButton("Save", "#393939", save);
+            if (!isObj && o.startsWith('J:')) newOptionButton("Run", "#393939", () => { save(); try { new Function(ta.value)(); } catch (e) { alert("Error."); } showOption(); });
+        }
+
+        class PRNG {
+            constructor(seed) {
+                this.seed = seed || Math.floor(Math.random() * 2**32);
+                this.a = 1664525;
+                this.c = 1013904223;
+                this.m = 2**32;
+                this.z = this.seed;
+            }
+            random() {
+                this.z = (this.a * this.z + this.c) % this.m;
+                return this.z / this.m;
+            }
+            range(min, max) {
+                return min + (max - min) * this.random();
+            }
+            intRange(min, max) {
+                return Math.floor(this.range(min, max));
+            }
+            reset() {
+                this.z = this.seed;
+            }
+            newSeed(newSeed) {
+                this.seed = newSeed;
+                this.z = newSeed;
+            }
+        }     
+
+        function readNovel(novelTxt) {
+            optionsArea.style.display = "none";
+            window.sections = {};
+            window.textList = [];
+            window.vars = {};
+            window.currentSection = "";
+
+            const textOffset = countLeadingSpaces(novelTxt.split("\n")[1]);
+
+            function countLeadingSpaces(str) {
+                let count = 0;
+                for (let i = 0; i < str.length; i++) {
+                    if (str[i] === ' ') {
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+                return count;
+            }
+
+            let currentSectionSearch = "";
+            let currentPassageSearch = "";
+            novelTxt.split("\n").forEach((elem) => {
+                elem = elem.substring(textOffset);
+                if (elem.includes("[[") && elem.includes("]]:")) {
+                    currentSectionSearch = elem.split("[[")[1].split("]]:")[0];
+                    sections[currentSectionSearch] = { "text": [], "shown": false, passages: {} };
+                    currentPassageSearch = "";
+                } else {
+                    if (currentSectionSearch == "") return;
+
+                    if (elem.includes("[") && elem.includes("]:")) {
+                        currentPassageSearch = elem.split("[")[1].split("]:")[0];
+                        sections[currentSectionSearch].passages[currentPassageSearch] = { shown: false, text: [] };
+                    } else if (currentPassageSearch != "") {
+                        sections[currentSectionSearch].passages[currentPassageSearch].text.push(elem);
+                    }
+                    if (currentPassageSearch == "") sections[currentSectionSearch].text.push(elem);
+
+                }
+            });
+
+            outputArea.innerHTML = `<div id="novel" style="margin: 10px; border: 5px solid black; width: calc(100% - 40px); min-height: calc(100% - 40px); padding: 5px; border-radius: 8px; background-color: white; font-size: 22px; white-space: pre-wrap;"></div>`;
+            const novel = document.getElementById("novel");
+
+
+            function addObject(sectionName, obj) {
+                obj.shown = true;
+                let sectionText = [];
+                obj.text.forEach((elem, index) => {
+                    if (elem.startsWith("@JS")) {
+                        let customJS = new Function(elem.substring(4));
+                        customJS();
+                    } else if (elem.startsWith("@clear")) {
+                        textList = [];
+                    } else if (elem.startsWith("@set")) {
+                        const setBroken = elem.split(" ");
+                        let output = (!isNaN(parseInt(setBroken[2]))) ? parseInt(setBroken[2]) : setBroken[2];
+                        vars[setBroken[1]] = output;
+                    } else if (elem.startsWith("@inc")) {
+                        const setBroken = elem.split(" ");
+                        let output = (!isNaN(parseInt(setBroken[2]))) ? parseInt(setBroken[2]) : setBroken[2];
+                        vars[setBroken[1]] += output;
+                    } else if (elem.startsWith("@dec")) {
+                        const setBroken = elem.split(" ");
+                        let output = (!isNaN(parseInt(setBroken[2]))) ? parseInt(setBroken[2]) : setBroken[2];
+                        vars[setBroken[1]] -= output;
+                    } else if (elem.startsWith("@prompt")) {
+                        const setBroken = elem.split(" ");
+                        setBroken.shift();
+                        const varKey = setBroken.shift();
+                        let promptValue = prompt(setBroken.join(" "));
+                        let output = (!isNaN(parseInt(promptValue))) ? parseInt(promptValue) : promptValue;
+                        vars[varKey] = output;
+                    } else if (elem.startsWith("@show")) {
+                        const setBroken = elem.split(" ");
+                        setBroken.shift();
+                        const sectionNameToShow = setBroken.join(" ");
+                        if (sectionNameToShow in sections) {
+                            sections[sectionNameToShow].shown = false;
+                            for (const passageName in sections[sectionNameToShow].passages) {
+                                sections[sectionNameToShow].passages[passageName].shown = false;
+                            }
+                        }
+                    } else {
+                        sectionText.push(elem);
+                    }
+                })
+                sectionText.push("<hr>");
+                textList.push({section:sectionName, text:sectionText.join("<br>")});
+                showTexts();
+            }
+
+            function checkConditions (checkAry) {
+                for (let i=1; i<checkAry.length; i++) {
+                    if (checkAry[i].includes("<")) {
+                        if (vars[checkAry[i].split("<")[0]] >= parseInt(checkAry[i].split("<")[1])) return false;
+                    } else if (checkAry[i].includes(">")) {
+                        if (vars[checkAry[i].split(">")[0]] <= parseInt(checkAry[i].split(">")[1])) return false;
+                    } else if (checkAry[i].includes("==")) {
+                        let output = (!isNaN(parseInt(checkAry[i].split("==")[1]))) ? parseInt(checkAry[i].split("==")[1]) : checkAry[i].split("==")[1];
+                        if (vars[checkAry[i].split("==")[0]] != output) return false;
+                    } else if (checkAry[i].includes("=")) {
+                        let output = (!isNaN(parseInt(checkAry[i].split("=")[1]))) ? parseInt(checkAry[i].split("=")[1]) : checkAry[i].split("=")[1];
+                        vars[checkAry[i].split("=")[0]] = output;
+                    }
+                }
+                return true;
+            }
+
+            window.showSection = function(sectionArray) {
+                let conditionsMet = checkConditions(sectionArray);
+                if (conditionsMet) {
+                    currentSection = sectionArray[0];
+                } else {
+                    sections[sectionArray[0]].shown = true;
+                    currentSection = sectionArray.pop();
+                }
+                addObject(currentSection, sections[currentSection]);
+            }
+
+            window.showPassage = function(passageArray) {
+                let conditionsMet = checkConditions(passageArray);
+                if (conditionsMet) {
+                    addObject(currentSection, sections[currentSection].passages[passageArray[0]]);
+                } else {
+                    sections[currentSection].passages[passageArray[0]].shown = true;
+                    addObject(currentSection, sections[currentSection].passages[passageArray.pop()]);
+                }
+                let count = 0;
+                for (const passageName in sections[currentSection].passages) {
+                    if (sections[currentSection].passages[passageName].shown) count += 1;
+                }
+                for (const passageName in sections[currentSection].passages) {
+                    if (passageName.startsWith(`@${count}`)) {
+                        let newPassage = passageName.split(" ");
+                        newPassage.shift();
+                        goTo(newPassage.join(" "));
+                    }
+                }
+            }
+
+            window.goTo = function(destination) {
+                if (destination in sections[currentSection].passages) {
+                    showPassage([destination]);
+                } else if (destination in sections) {
+                    showSection([destination]);
+                }
+            }
+
+            function showTexts() {
+                let totalText = "";
+                for (let i=0; i<textList.length; i++) {
+
+                    let brokenTxt = breakText(textList[i].text);
+
+                    for (let j=0; j<brokenTxt.length; j++) {
+                        if (brokenTxt[j].startsWith("[[") && brokenTxt[j+1].startsWith("(")) { // IF SECTION & ()
+                            let newSec = brokenTxt[j].slice(2, -2).split(", ");
+                            brokenTxt[j] = (textList[i].section == currentSection && !sections[newSec[0]].shown) ? `<a style="cursor: pointer; color: blue; text-decoration: underline;" onclick='showSection(${JSON.stringify(newSec)})'>${brokenTxt[j+1].slice(1, -1)}</a>` : brokenTxt[j+1].slice(1, -1);
+                            brokenTxt[j+1] = "";
+
+                        } else if (brokenTxt[j].startsWith("[[")) { // IF SECTION no ()
+                            let newSec = brokenTxt[j].slice(2, -2).split(", ");
+                            brokenTxt[j] = (textList[i].section == currentSection && !sections[newSec[0]].shown) ? `<a style="cursor: pointer; color: blue; text-decoration: underline;" onclick='showSection(${JSON.stringify(newSec)})'>${newSec[0]}</a>` : newSec[0];
+
+                        } else if (brokenTxt[j].startsWith("[") && brokenTxt[j+1].startsWith("(")) { // IF PASSAGE & ()
+                            let newPass = brokenTxt[j].slice(1, -1).split(", ");
+                            brokenTxt[j] = (textList[i].section == currentSection && !sections[currentSection].passages[newPass[0]].shown) ? `<a style="cursor: pointer; color: blue; text-decoration: underline;" onclick='showPassage(${JSON.stringify(newPass)})'>${brokenTxt[j+1].slice(1, -1)}</a>` : brokenTxt[j+1].slice(1, -1);
+                            brokenTxt[j+1] = "";
+
+                        } else if (brokenTxt[j].startsWith("[")) { // IF PASSAGE no ()
+                            let newPass = brokenTxt[j].slice(1, -1).split(", ");
+                            brokenTxt[j] = (textList[i].section == currentSection && !sections[currentSection].passages[newPass[0]].shown) ? `<a style="cursor: pointer; color: blue; text-decoration: underline;" onclick='showPassage(${JSON.stringify(newPass)})'>${newPass[0]}</a>` : newPass[0];
+
+                        } else if (brokenTxt[j].startsWith("{")) {
+                            brokenTxt[j] = vars[brokenTxt[j].slice(1, -1)];
+                        }
+                    }
+                    totalText += "<br>" + brokenTxt.join("").replaceAll("&lsb", "[").replaceAll("&rsb", "]").replaceAll("&lcb", "{").replaceAll("&rcb", "}")
+                }
+                novel.innerHTML = "<hr>" + totalText;
+                outputArea.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+
+            function breakText(txt) {
+                let brokenTxt = [];
+                let brokenPlaceholder = "";
+                const pattern = /\n@.*?\n/gs;
+                txt = txt.replace(pattern, '')
+                
+                for (let i=0; i<txt.length; i++) {
+                    let char = txt[i];
+                    if (char == "[" && brokenPlaceholder != "[") {
+                        brokenTxt.push(brokenPlaceholder);
+                        brokenPlaceholder = "["; 
+                    } else if (char == "]" && txt[i+1] != "]") {
+                        brokenPlaceholder += char;
+                        brokenTxt.push(brokenPlaceholder);
+                        brokenPlaceholder = "";
+                    } else if (char == ")" && brokenPlaceholder.startsWith("(")) {
+                        brokenPlaceholder += char;
+                        brokenTxt.push(brokenPlaceholder);
+                        brokenPlaceholder = "";
+                    } else if (i == txt.length-1) {
+                        brokenPlaceholder += char;
+                        brokenTxt.push(brokenPlaceholder);
+                        brokenPlaceholder = ""; 
+                    } else if (char == "{") {
+                        brokenTxt.push(brokenPlaceholder);
+                        brokenPlaceholder = "{";
+                    } else if (char == "}") {
+                        brokenPlaceholder += char;
+                        brokenTxt.push(brokenPlaceholder);
+                        brokenPlaceholder = "";
+                    } else {
+                        brokenPlaceholder += char;
+                    }
+                }
+                return brokenTxt
+            }
+
+            showSection([Object.keys(sections)[0]])
+        }
+
+        function encrypt() {
+            window.myPRNG = new PRNG(0);
+
+            optionsArea.style.display = "none";
+            outputArea.style.height = "100vh";
+
+            outputArea.innerHTML = `<div style="position: relative; width: 150px; height: 250px; left: calc(50% - 85px); top: calc(50% - 135px); display: flex; flex-direction: column; gap: 10px; background-color: white; border-radius: 8px; border: 5px solid black; padding: 10px;">
+                <input id="codeArea" type="text" placeholder="Code" readonly style="height: 50px; font-size: 28px;">
+                <div style="height: 40px; display: flex; gap: 10px;">
+                    <button onclick="changeCode('1');" style="width: 100%; height: 40px; font-size: 28px;">1</button>
+                    <button onclick="changeCode('2');" style="width: 100%; height: 40px; font-size: 28px;">2</button>
+                    <button onclick="changeCode('3');" style="width: 100%; height: 40px; font-size: 28px;">3</button>
+                </div>
+                <div style="height: 40px; display: flex; gap: 10px;">
+                    <button onclick="changeCode('4');" style="width: 100%; height: 40px; font-size: 28px;">4</button>
+                    <button onclick="changeCode('5');" style="width: 100%; height: 40px; font-size: 28px;">5</button>
+                    <button onclick="changeCode('6');" style="width: 100%; height: 40px; font-size: 28px;">6</button>
+                </div>
+                <div style="height: 40px; display: flex; gap: 10px;">
+                    <button onclick="changeCode('7');" style="width: 100%; height: 40px; font-size: 28px;">7</button>
+                    <button onclick="changeCode('8');" style="width: 100%; height: 40px; font-size: 28px;">8</button>
+                    <button onclick="changeCode('9');" style="width: 100%; height: 40px; font-size: 28px;">9</button>
+                </div>
+                <div style="height: 40px; display: flex; gap: 10px;">
+                    <button onclick="changeCode('<');" style="width: 100%; height: 40px; font-size: 28px;">&lt</button>
+                    <button onclick="changeCode('0');" style="width: 100%; height: 40px; font-size: 28px;">0</button>
+                    <button onclick="changeCode('>');" style="width: 100%; height: 40px; font-size: 28px;">&gt</button>
+                </div>
+            </div>
+            `;
+
+            const codeArea = document.getElementById("codeArea");
+            let code = "";
+            window.changeCode = function(char) {
+                if (char == "<") {
+                    if (code.length > 0)code = code.slice(0, -1);
+                } else if (char == ">") {
+                    if (code.length > 0) {
+                        code = parseInt(code);
+                        decrypt();
+                    }
+                } else {
+                    code += char;
+                }
+                codeArea.value = code;
+            }
+
+            function decrypt() {
+                let charAry = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", " ", "!", "£", "%", "&", "^", "*", "(", ")", "{", "}", "[", "]", ":", ";", "#", "@", "?", ",", ".", "/", "_", "-", "+", "=", "¬" ];
+                let cypher = {};
+                myPRNG.newSeed(code);
+                if (code != 0) {
+                    for (let i=0; i<44; i++) {
+                        let firstChr = charAry.splice(myPRNG.intRange(0, charAry.length), 1)[0];
+                        let secondChr = charAry.splice(myPRNG.intRange(0, charAry.length), 1)[0];
+                        cypher[firstChr] = secondChr;
+                        cypher[secondChr] = firstChr;
+                    }
+                } else {
+                    for (let i=0; i<charAry.length; i++) {
+                        cypher[charAry[i]] = charAry[i];
+                    }
+                }
+                function processText(inputText) {
+                    let outputText = ""
+                    for (let i=0; i<inputText.length; i++) {
+                        if (inputText[i] in cypher) {
+                            outputText += cypher[inputText[i]];
+                        } else {
+                            console.log(`Unsupported Character : ${inputText[i]}`);
+                        }
+                    }
+                    return outputText;
+                }
+                let option = notes;
+                for (let i=0; i<path.length; i++) {
+                    option = option[path[i]];   
+                }
+                outputArea.innerHTML = `<textarea id="personalArea" style="margin: 10; border: 5px solid black; width: calc(100% - 20px); min-height: calc(100vh - 80px); padding: 5; border-radius: 8px; background-color: white; font-size: 24px; "></textarea><button onclick="savePersonal();" style="margin: 0 10px 10px 10px; width: calc(100% - 20px); height: 50px; font-size: 32px; border: solid black 5px; border-radius: 8px;">SAVE</button>`;
+                const personalArea = document.getElementById("personalArea");
+                personalArea.value = processText(option.substring(2)).replaceAll("¬", "\n");
+
+                window.savePersonal = function() {
+                    let option = notes;
+                    const lastKey = path.pop();
+                    for (let i=0; i<path.length; i++) {
+                        option = option[path[i]];   
+                    }
+                    option[lastKey] = "E:" + processText(personalArea.value.replaceAll("\n", "¬"));
+                    optionsArea.style.display = "flex";
+                    outputArea.style.height = "auto";
+                    
+                    saveData();
+                    showOption();
+                }
+            }
+        }
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open("ToolKitDB", 1);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    window.db = request.result;
+                    resolve();
+                };
+                request.onupgradeneeded = (event) => {
+                    window.db = event.target.result;
+                    window.db.createObjectStore("data", { keyPath: "id" });
+                };
+            });
+        }
+
+        function saveData() {
+            return window.openDB().then(() => {
+                const transaction = window.db.transaction(["data"], "readwrite");
+                const objectStore = transaction.objectStore("data");
+                const request = objectStore.put({
+                    id: "allData",
+                    notes: JSON.stringify(notes)
+                });
+                console.log("Saved Data")
+                return new Promise((resolve, reject) => {
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            });
+        }
+
+        function loadData() {
+            return window.openDB().then(() => {
+                const transaction = window.db.transaction(["data"], "readonly");
+                const objectStore = transaction.objectStore("data");
+                const request = objectStore.get("allData");
+                return new Promise((resolve, reject) => {
+                    request.onsuccess = () => {
+                        if (request.result) {
+                            const oldNotes = JSON.parse(JSON.stringify(notes))
+                            notes = JSON.parse(request.result.notes);
+                            if (!notes["!Save"]) notes = oldNotes;
+                            resolve({
+                                notes: true
+                            });
+                        } else {
+                            resolve({ notes : null });
+                        }
+                    };
+                    request.onerror = () => reject(request.error);
+                });
+            });
+        }
+
+        function resetData() {
+            return new Promise((resolve, reject) => {
+                console.log("Data Reset")
+                const request = indexedDB.deleteDatabase("ScriptingDexDB");
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve();
+            });
+        }
+
+        loadData().then(data => {
+            if (data.notes === null) {
+                window.saveData();
+            }
+            if (!notes["!Save"]) {
+                console.log("Saving Disabled so running default Code.");
+            } else {
+                console.log("Saving Enabled so running most recent Auto-Save.");
+            }
+            showOption();
+        });
+
+        
+    </script>
+</body></html>
