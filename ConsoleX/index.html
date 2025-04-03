@@ -26,71 +26,6 @@
 
         const customHTML = document.getElementById("customHTML");
 
-        window.db;
-        
-        window.openDB = function() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open("consoleDB", 1);
-                request.onerror = () => reject(request.error);
-                request.onsuccess = () => {
-                    window.db = request.result;
-                    resolve();
-                };
-                request.onupgradeneeded = (event) => {
-                    window.db = event.target.result;
-                    window.db.createObjectStore("data", { keyPath: "id" });
-                };
-            });
-        }
-
-        window.saveData = function() {
-            return window.openDB().then(() => {
-                const transaction = window.db.transaction(["data"], "readwrite");
-                const objectStore = transaction.objectStore("data");
-                const request = objectStore.put({
-                    id: "allData",
-                    functions: JSON.stringify(functions),
-                    data: JSON.stringify(data)
-                });
-                return new Promise((resolve, reject) => {
-                    request.onsuccess = () => resolve();
-                    request.onerror = () => reject(request.error);
-                });
-            });
-        }
-
-        window.loadData = function() {
-            return window.openDB().then(() => {
-                const transaction = window.db.transaction(["data"], "readonly");
-                const objectStore = transaction.objectStore("data");
-                const request = objectStore.get("allData");
-                return new Promise((resolve, reject) => {
-                    request.onsuccess = () => {
-                        if (request.result) {
-                            functions = JSON.parse(request.result.functions);
-                            data = JSON.parse(request.result.data);
-                            resolve({
-                                functions: true,
-                                data: true
-                            });
-                        } else {
-                            resolve({ functions: null, data: null });
-                        }
-                    };
-                    request.onerror = () => reject(request.error);
-                });
-            });
-        }
-
-        window.resetData = function() {
-            return new Promise((resolve, reject) => {
-                console.log("Data Reset")
-                const request = indexedDB.deleteDatabase("consoleDB");
-                request.onerror = () => reject(request.error);
-                request.onsuccess = () => resolve();
-            });
-        }
-
         class PRNG {
             constructor(seed) {
                 this.seed = seed || Math.floor(Math.random() * 2**32);
@@ -118,14 +53,8 @@
             }
         }
 
-        window.loadData().then(data => {
-            if (data.functions === null || data.data === null) {
-                console.log("No data found or data not yet saved so using default.");
-                window.saveData();
-            }
-            generateScripts();
-            terminal();
-        });
+        generateScripts();
+        terminal();
 
         function generateScripts() {
             for (const funcName in functions) {
