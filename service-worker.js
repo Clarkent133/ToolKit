@@ -3,6 +3,7 @@ const staticAssets = [
   './',
   './index.html',
   './manifest.json',
+  './Editor',
   './Editor/index.html',
   './Editor/tic80.js',
   './Editor/tic80.wasm',
