@@ -1,7 +1,7 @@
 {
-    "name": "Console",
-    "short_name": "Console",
-    "start_url": "https://clarkent133.github.io/ToolKit/",
+    "name": "ToolKit",
+    "short_name": "ToolKit",
+    "start_url": "https://www.clarkeharrison.co.uk",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",
