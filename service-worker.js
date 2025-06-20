@@ -1,9 +1,17 @@
 const cacheName = 'my-pwa-cache-v1';
 const staticAssets = [
-  './', // Caches the root (your index.html)
-  './index.html', // Explicitly cache index.html (redundant but clear)
-  './manifest.json' // Ensure the manifest is cached
-  // Add other static assets like './style.css' if you have them
+  './',
+  './index.html',
+  './manifest.json',
+  './Editor/index.html',
+  './Editor/tic80.js',
+  './Editor/tic80.wasm',
+  './export/1.1/html.zip',
+  './export/1.1/linux',
+  './export/1.1/win',
+  './export/1.1/tic80.apk',
+  './export/1.1/tic80.exe',
+  './export/1.1/tic80.deb'
 ];
 
 // Install event: Cache static assets
