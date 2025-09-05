@@ -361,8 +361,8 @@
             },
         
             // Client joins using the offer from host
-            join: function (hostOfferStr) {
-                const hostOffer = JSON.parse(hostOfferStr);
+            join: function (hostOfferObj) {
+                const hostOffer = hostOfferObj;
                 const peer = new RTCPeerConnection({ iceServers: [p2p.stunServer] });
         
                 p2p.id = 1; // This will be replaced by host-assigned ID after connection
@@ -390,8 +390,8 @@
             },
         
             // Host receives answer from client and completes connection
-            completeConnection: function (clientId, answerStr) {
-                const answer = JSON.parse(answerStr);
+            completeConnection: function (clientId, answerObj) {
+                const answer = answerObj;
                 const peer = p2p.peerConnections[clientId];
                 if (!peer) {
                     console.error("No peer found for client ID", clientId);
