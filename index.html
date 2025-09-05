@@ -390,7 +390,8 @@
             },
         
             // Host receives answer from client and completes connection
-            completeConnection: function (clientId, answerObj) {
+            completeConnection: function (answerObj) {
+                const clientId = p2p.connections[p2p.connections.length - 1];
                 const answer = answerObj;
                 const peer = p2p.peerConnections[clientId];
                 if (!peer) {
