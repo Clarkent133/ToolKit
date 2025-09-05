@@ -11,12 +11,12 @@ const urlsToPrecache = [
   '/Editor/index.html',
   '/Editor/tic80.js',
   '/Editor/tic80.wasm',
-  '/Editor/export/1.1/html',
-  '/Editor/export/1.1/html.zip',
-  '/Editor/export/1.1/linux',
-  '/Editor/export/1.1/tic80.deb',
-  '/Editor/export/1.1/tic80.exe',
-  '/Editor/export/1.1/win'
+  'export/1.1/html',
+  'export/1.1/html.zip',
+  'export/1.1/linux',
+  'export/1.1/tic80.deb',
+  'export/1.1/tic80.exe',
+  'export/1.1/win'
 ];
 
 self.addEventListener('install', (event) => {
