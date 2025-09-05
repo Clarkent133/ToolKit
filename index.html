@@ -1,365 +1,321 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolKit</title>
-    <link rel="icon" href="/icon-128x128.png">
-    <link rel="manifest" href="/manifest.json">
+    <title>Test</title>
     <style>
-        html, body {
-            margin:0px;
-        }
-        @media (max-width: 800px) {
-            #customHTML {
-                flex-direction:column;
-            }
-        }
-        @media (min-width: 800px) {
-            #optionsHTML {
-                max-width: 392px;
-                overflow-y:scroll;
-            }
-            #outputHTML {
-                overflow-y:auto;
-            }
+        .customStyling {
+            border-radius:4px;
+            border:solid black 2px;
         }
     </style>
 </head>
-<body>
+<body style="margin:0;">
+    <canvas id="cnv" style="width:100%; height:100dvh; position:fixed; z-index:1;"></canvas>
+    <div id="editButton" class="customStyling" style="width:34px; height:34px; position:fixed; top:10px; right:10px; cursor:pointer; z-index:30; display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px;">E</div>
 
-    <div id="customHTML" style="width:100%; height:100dvh; display:flex; overflow-y:scroll; scrollbar-width:none;">
-        <div id="optionsHTML" style="width:calc(100% - 8px); display:flex; flex-direction:column; scrollbar-width:none; padding:4px; gap:2px; background-color:black;"></div>
-        <div id="outputHTML" style="width:100%; height:100%; min-height:300px; background-color:grey; display:flex; flex-direction:column; justify-content:center; align-items:center;"></div>
+    <div id="mainArea" style="width:calc(100% - 10px); height:calc(25% - 10px); position:fixed; bottom:0px; display:flex; flex-direction:column-reverse; z-index:10; transition:height 0.6s ease-in-out; padding:5px; gap:5px;">
+        <div id="fullSelectionArea" style="width:100%; min-height:40px; display:flex; gap:5px;">
+            <div id="prevSelectionArea" class="customStyling" style="min-width:36px; height:calc(100% - 4px); display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px; cursor:pointer;">&lt;</div>
+            <div id="selectionArea" class="customStyling" style="width:calc(100% - 4px); height:calc(100% - 4px); display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px; cursor:pointer;"></div>
+            <div id="nextSelectionArea" class="customStyling" style="min-width:36px; height:calc(100% - 4px); display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px; cursor:pointer;">&gt;</div>
+        </div>
+        <div id="textArea" class="customStyling" style="width:calc(100% - 14px); height:calc(100% - 14px); padding:5px; font-size:16px; overflow-y:auto;"></div>
     </div>
 
-
-
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/qrCode.js"></script>
-    <script src="/phaser.js"></script>
-    <script src="/three.js"></script>
-
+    
     <script>
-        const customHTML = document.getElementById("customHTML");
-        const optionsHTML = document.getElementById("optionsHTML");
-        const outputHTML = document.getElementById("outputHTML");
-        const clr1 = "#3B3B3B";
-        const clr2 = "#242424";
-        // SAVEMARKER
-let toolKit = {
-    "Games": {
-        "TIC80 Game Engine": "J:showOption();\nwindow.location.href = \"/Editor/\";",
-        "Text Adventure Games": {
-            "Tutorial": "J:window.adventureGameText = `\n\n[[Welcome]]:\n@clear\nThis is a simple Framework that I have created which allows you to make Text Adventure games as simply as possible.\n\nThis is played via going through sections of text such as this one and providing several options and paths for the reader to take for unique story-telling, such as the button below.\n\n[[Welcome1]](Continue)\n\n[[Welcome1]]:\n@show Welcome1\n@clear\nIt's as easy as that. Below are some more links that each showcase a different aspect of this Framework that allows you to create your own stories from scratch.\n\n[[Getting Started]]\n[[Sections and Passages]]\n[[Re-enabling Sections and Passages]]\n[[Clearing the Screen]]\n[[Using JavaScript]]\n[[Using Variables]]\n[[Variable Integration]]\n[[Asking for Input]]\n[[Turn Counting]]\n\n[[Exit]](Return)\n\n[[Getting Started]]:\n@show Getting Started\n@clear\nGetting Started\n\nFor creating your own stories you will first need to create an empty space to start writing some [JavaScript] code, don't worry, it's a lot less complicated than it sounds.\n\nTo learn how to create this space click [CreatingJavaScriptSpace](here).\n\n[[Welcome1]](Return)\n\n[JavaScript]:\nJavaScript is a fantastic coding language that pretty much runs the majority of the webs functionality.\n\nI have a pretty simple but quick guide in the Study section of this site.\n\n[CreatingJavaScriptSpace]:\nTo create the area for your JavaScript code. You can click the New Story Button alongside this Tutorial. This will create a blank template to work in, and to create future changes on the homepage of this site you can go to \"Extras\" -> \"Dev\" -> \"Toggle Edit Mode\". Then go back to the Story and select the \"Edit\" Button besides it.\n\nNote that in the \"Dev\" section you want the \"Toggle Save\" to be set to enabled, you can toggle it by clicking it. This means that any changes you make are saved to the device and arn't lost on closing the site or refreshing the page. \n\n[[Sections and Passages]]:\n@show Sections and Passages\n@clear\nSections and Passages\n\nMaking interactive stories involves 2 different types of text blocks, these are called Sections and Passages.\n\n[Sections] are the main blocks of text and [Passages] are smaller blocks of text contained within [Sections] and are opened via clickable links. When clicking a link to a [Passages](Passage) links to other [Passages] remain active. When you jump to another [Sections](Section) then [Passages] from the previous de-activate.\n\n[[Welcome1]](Return)\n\n[Sections]:\nSection names must be unique within the story and are setup by using double square brackets followed by a colon. To link to a Section, use the name of the Section in double square brackets, If you want a link to a Section but different text displayed to the reader, have the different text in brackets immediately after the link.\n\n[SectionExample](Example)\n\n[SectionExample]:\n\n &lsb&lsbStart&rsb&rsb:\n Would you like to turn &lsb&lsbTurn Left&rsb&rsb(Left) or &lsb&lsbTurn Right&rsb&rsb(Right)?\n\n &lsb&lsbTurn Left&rsb&rsb:\n You turn left.\n\n &lsb&lsbTurn Right&rsb&rsb:\n You turn right.\n\n[Passages]:\nSetup a Passages by using single brackets followed by a colon. Passages can link to further Passages. After the reader clicks a link to a Passages, that link is deactivated so the reader can only click it once. To link to a Passages, use the name of the Passage in single square brackets. If you want different text displayed to the reader put that text in brackets immediately after the link.\n\nPassage links can be explored in any order or not at all. Only after clicking a link to another Section will any remaining Passage links be deactivated. Passage names must also be unique within their Section.\n\n[PassageExample](Example)\n\n[PassageExample]:\n\n &lsb&lsbStart&rsb&rsb:\n Looking around the room, you can see a &lsbTV&rsb, a &lsbbook&rsb and a piece of &lsbpaper&rsb with some handwriting scribbled on it.\n\n &lsbTV&rsb:\n Covered in dust and the plug is missing.\n\n &lsbbook&rsb:\n It's a book of magic tricks. Maybe you should &lsbopen book&rsb(open) it?\n\n &lsbopen book&rsb:\n The cover opens up to reveal the pages all glued together, with an empty key-shaped hole cut out.\n\n &lsbpaper&rsb:\n \"Gone out for a walk. May be a while.\"\n\n[[Re-enabling Sections and Passages]]:\n@show Re-enabling Sections and Passages\n@clear\nRe-enabling Sections and Passages\n\nIf you want to reactivate a Section so that you can visit it again, you can use '@show SectionName', when this is on it's own line it will reactivate the Section and all of it's Passages to view again.\n\nThis is how the links to these Sections and Passages in this Tutorial can be revisited multiple times.\n\n[Example]\n\n[[Welcome1]](Return)\n\n[Example]:\n \n &lsb&lsbStart&rsb&rsb:\n This is a &lsblink&rsb\n \n &lsblink&rsb:\n @show Start\n\n[[Clearing the Screen]]:\n@show Clearing the Screen\n@clear\nClearing the Screen\n\nIf you want to clear the screen of all Sections and Passages in a similar way to this Tutorial is doing you can use '@clear' on a new line in a Section or Passage.\n\n[Example]\n\n[[Welcome1]](Return)\n\n[Example]:\n\n &lsb&lsbNew Section&rsb&rsb:\n @clear\n This is the start of a new section.\n\n[[Using JavaScript]]:\n@show Using JavaScript\n@clear\nUsing JavaScript\n\nAny Section or Passage can call some custom JavaScript when it is displayed. Simply begin the line with '@JS ' and all the JavaScript following.\n\n[Example]\n\n[[Welcome1]](Return)\n\n[Example]:\n\n &lsb&lsbStart&rsb&rsb:\n Clicking this &lsblink&rsb will use the built in function to send the reader to the Section with name 'Test'.\n\n &lsblink&rsb:\n @JS goTo('Test');\n Text for the Passage.\n\n[[Using Variables]]:\n@show Using Variables\n@clear\nUsing Variables\n\nYou can set Variables within Passages and Sections by using '@set VariableName VariableValue'.\n\nIf the Variable is a number you can quickly increase or decrease its value by using '@inc VariableName IncreaseValue' and '@dec VariableName DecreaseValue'.\n\nYou can also set a Variable via a Passage or Section link.\n\n[Example]\n\n[[Welcome1]](Return)\n\n[Example]:\n\n &lsbPassageName, Var1=Val1&rsb(Custom Text)\n\n This will show 'Custom Text' and when clicking it, it will take you to the Passage 'PassageName' and create the Variable Var1 with the value Val1.\n\n[[Variable Integration]]:\n@show Variable Integration\n@clear\nVariable Integration\n\nIf you want to include the value of a Variable within your text you can include the name of the Variable enclosed in curly brackets.\n\n[Example1](Example)\n\nAlso for some really interesting functionality you can have links to Passages and Sections link to alternative Passages and Sections depending on the value of a Variable..\n\n[Example2](Example)\n\n[[Welcome1]](Return)\n\n[Example1]:\n &lsb&lsbStart&rsb&rsb:\n You have &lcbCount&rcb Coins.\n\n[Example2]:\n &lsb&lsbStart&rsb&rsb:\n Click this &lsbTrueLink, Var1==Val1, FalseLink&rsb(Link) to Continue.\n\n In this example you have the text 'Link' be selectable and when clicked it checks if the value of Variable called 'Var1' is equal to the value 'val1'. If it is you are taken to the Passage with name 'TrueLink', otherwise you are taken to the Passage with name 'FalseLink'.\n\n Whilst == is used to determine 'is equal to', you can also use < for 'less than' and > for 'greater than'.\n\n[[Asking for Input]]:\n@show Asking for Input\n@clear\nAsking for Input\n\nYou can use '@prompt Var1 CustomText' on it's own line in a Section or Passage and will open a prompt window to the user with text 'CustomText' and the readers input becomes the value for Variable with name 'Var1'.\n\n[[Welcome1]](Return)\n\n[[Turn Counting]]:\n@show Turn Counting\n@clear\nTurn Counting\n\nYou can trigger a Passages after the reader has made a certain number of clicks within a Section. This is useful for giving a sense of time, for example you can easily have it load a Passage after you have viewed any 3 other Passages, or the Passage might run some custom JavaScript that could send the reader to another Section.\n\nThis is done via having a Passage with the name '@i SectionName' where i is the number of Passages you want to pass before this automatically sends the reader to a Section with name 'SectionName'.\n\n[Example]\n\n[[Welcome1]](Return)\n\n[Example]:\n &lsb@3 NextSection&rsb:\n\n &lsb&lsbNextSection&rsb&rsb:\n\n In this example after 3 Passage links have been clicked it will automatically take you to the Section called 'SectionName'.\n\n[[Exit]]:\n@JS optionsHTML.style.display='flex'; showOption();\n`;\n\ntextAdventure(adventureGameText);\n\n\n\n\n\n\n\n\n\n\n/*\n@clear\n@show Passage1\n@JS CustomJS\n@set Var1 Val1\n@inc Var1 Val2\n@dec Var1 Val2\n@prompt Var1 CustomTextToDisplay\n@Number PassageToShowAfterNumberPassagesShown \n[[Section1]]:\n[Passage1]:\n[[Section1]](Custom Text)\n[Passage1](Custom Text)\n[Passage1, Var1=Val1](Custom Text)\n[Passage1, Var1==Val1, IfFalsePassage](Custom Text)\n\n*/",
-            "Demo Story": "J:const story = `\n\n[[Start]]:\nThis is the text of the first Section.\n\n[Passage1](Click here to enter name)\n\n[[Exit]](Return)\n\n[Passage1]:\n@prompt name Please enter your name.\nYou have entered the name - {name}.\n\n[[Exit]]:\n@JS optionsHTML.style.display='flex'; showOption();\n`;\n\n\n\ntextAdventure(story);",
-            "Create New Story": "J:const askName = prompt(\"What would you like the name of the Story to be?\");\nlet storyName = (askName) ? askName : \"New Story\";\nconst newStoryFunction = toolKit[\"Games\"][\"Text Adventure Games\"][\"Create New Story\"];\ndelete toolKit[\"Games\"][\"Text Adventure Games\"][\"Create New Story\"];\ntoolKit[\"Games\"][\"Text Adventure Games\"][storyName] = \"J:const story = `\\n\\n[[Section]]:\\nThis is the text of the first Section.\\n\\n[Passage]:\\nThis is the text of the first Passage.\\n\\n`;\\n\\n\\n\\ntextAdventure(story);\";\ntoolKit[\"Games\"][\"Text Adventure Games\"][\"Create New Story\"] = newStoryFunction;\nshowOption();"
-        },
-        "Card Game": "J:// IMG is based on card name .png\n\nconst cards = [\n    {suitValue:\"AC\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"2C\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"3C\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"4C\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"5C\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"6C\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"7C\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"8C\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"9C\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"10C\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"JC\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"QC\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]},\n    {suitValue:\"KC\" , name:\"CARD NAME\" , hp:\"HP\" , type:\"TYPE\" , abilities:[ [\"Ability 1 Text\"] , [\"Ability 2 Text\"] ]}\n];\n\n\n\n\n\n\n\noutputHTML.innerHTML = `<canvas id=\"cardCreatorCanvas\" width=\"750\" height=\"1050\" style=\"min-width:500px; min-height:700px; max-width:500px; max-height:700px;\"></canvas>`;\n\n\nconst cnv = document.getElementById(\"cardCreatorCanvas\");\nconst ctx = cnv.getContext(\"2d\");\n\n\nfunction drawCard(id) {\n    ctx.fillStyle = \"black\";\n    ctx.fillRect(0, 0, cnv.width, cnv.height);\n    ctx.fillStyle = \"white\";\n    ctx.fillRect(15, 15, cnv.width-30, cnv.height-30);\n\n    const card = cards[id];\n    \n    // DRAW CARD\n    drawLines([ [0,40] , [600,40] , [540,100] , [0,100] ]); // TITLE\n    drawLines([ [750,40] , [640,40] , [580,100] , [750,100] ]); // HP\n    for (let i=0; i<card.abilities.length; i++) {\n        drawLines([ [0,940-(130*i)] , [700,940-(130*i)] , [700,840-(130*i)] , [0,840-(130*i)], [110,840-(130*i)] , [110,940-(130*i)] ]);\n        const quant = card.abilities[i].length-1;\n        for (let j=0; j<quant; j++) {\n            let xPos = 48;\n            let yPos = 48;\n            if (j==0 || j==2) xPos = (quant == 1 || (quant == 3 && j==2)) ? 27 : 6;\n            if (j==0 || j==1) yPos = (quant == 1 || quant == 2) ? 27 : 6;\n            xPos += 15;\n            yPos += 845-(130*i);\n            drawLines([ [xPos,yPos] , [xPos+36,yPos] , [xPos+36,yPos+36] , [xPos,yPos+36] , [xPos,yPos] ] , 2);\n        }\n    }\n    drawLines([ [0,970] , [600,970] , [560,1010] , [0,1010] ]); // TYPE\n    drawLines([ [750,970] , [640,970] , [600,1010] , [750,1010] ]); // SV\n\n    // WRITE CARD\n    drawText(card.name, 15, 45, 545, 50, 42) // TITLE\n    drawText(card.hp, 620, 45, 115, 50, 42) // HP\n    for (let i=0; i<card.abilities.length; i++) {\n        const quant = card.abilities[i].length-1;\n        for (let j=0; j<quant; j++) {\n            let xPos = 48;\n            let yPos = 48;\n            if (j==0 || j==2) xPos = (quant == 1 || (quant == 3 && j==2)) ? 27 : 6;\n            if (j==0 || j==1) yPos = (quant == 1 || quant == 2) ? 27 : 6;\n            xPos += 16;\n            yPos += 846-(130*i);\n            drawText(card.abilities[i][j], xPos, yPos, 34, 34, 32) // COST\n        }\n        drawText(card.abilities[i][quant], 115, 845-(130*i), 580, 90, 24) // ABILITY\n    }\n    drawText(card.type, 15, 975, 555, 30, 24) // TYPE\n    drawText(card.suitValue, 630, 975, 105, 30, 24) // SV\n}\n\ndrawCard(0);\n\n\n\nfunction drawLines(coords, width=10) {\n    if (coords.length < 2) return;\n    ctx.beginPath();\n    ctx.strokeStyle = \"black\";\n    ctx.lineWidth = width;\n    ctx.lineCap = \"round\";\n    ctx.lineJoin = \"round\";\n    ctx.moveTo(coords[0][0], coords[0][1]);\n    for (let i = 1; i < coords.length; i++) {\n        ctx.lineTo(coords[i][0], coords[i][1]);\n    }\n    ctx.stroke();\n}\n\nfunction drawText(txt, x, y, w, h, fontSize) {\n    ctx.font = `${fontSize}px sans-serif`;\n    ctx.textBaseline = \"middle\";\n    ctx.fillStyle = \"black\";\n    const words = txt.split(' ');\n    const lines = [];\n    let line = \"\";\n    for (let n = 0; n < words.length; n++) {\n        let testLine = line + words[n] + \" \";\n        let testWidth = ctx.measureText(testLine).width;\n        if (testWidth > w && n > 0) {\n            lines.push(line.trim());\n            line = words[n] + \" \";\n        } else {\n            line = testLine;\n        }\n    }\n    lines.push(line.trim());\n    const lineHeight = fontSize * 1.2;\n    const textHeight = lines.length * lineHeight;\n    let startY = y + h / 2 - textHeight / 2 + lineHeight / 2;\n\n    for (let i = 0; i < lines.length; i++) {\n        const lineWidth = ctx.measureText(lines[i]).width;\n        const lineX = x + (w - lineWidth) / 2;\n        const lineY = startY + i * lineHeight;\n        ctx.fillText(lines[i], lineX, lineY);\n    }\n}\n\n\n\n\n\n\n\n\n\n\n/*\n\n\nA - Character\n2 - Item\n3 - Item\n4 - Item\n5 - Item\n6 - Item\n7 - Item\n8 - Item\n9 - Item\n10 - Strong Item\nJ - Ally\nQ - Ally\nK - Strong Ally\n\n\n\nTarget Item gains X DC.\nTarget Item gains DC equal to your PAW.\nRemove X DC from target Item.\nMove X DC from target Item to another.\nDraw 1 Card\nLook at the top X Cards from your deck, put them back in any order.\nTarget player discards 1 Card from their hand.\nDraw 1 Card from target players Deck.\nSearch your deck and draw target Card, then shuffle your deck.\nMove target Item from their field into yours.\nReturn target card from yoru Discard pile to your hand.\nReturn target card from your Discard pike into your field.\nGain 1 PAW.\nTap Target Item/Ally\nReturn target Item/Ally to owners hand.\n\n\n\n( ? If untapped ? ) Wh\n\n\n\n\n*/\n",
-        "Phaser.js Test": "J:",
-        "Three.js Test": "J:customHTML.remove();\n// Setup scene, camera, and renderer\nconst scene = new THREE.Scene();\nconst camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );\nconst renderer = new THREE.WebGLRenderer();\nrenderer.setSize( window.innerWidth, window.innerHeight );\ndocument.body.appendChild( renderer.domElement );\n\n// Create a simple cube\nconst geometry = new THREE.BoxGeometry( 1, 1, 1 );\nconst material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );\nconst cube = new THREE.Mesh( geometry, material );\nscene.add( cube );\n\n// Position the camera\ncamera.position.z = 5;\n\n// Animation loop\nfunction animate() {\n    requestAnimationFrame( animate );\n\n    cube.rotation.x += 0.01;\n    cube.rotation.y += 0.01;\n\n    renderer.render( scene, camera );\n}\n\nanimate();\n\n// Handle window resizing\nwindow.addEventListener( 'resize', () => {\n    camera.aspect = window.innerWidth / window.innerHeight;\n    camera.updateProjectionMatrix();\n    renderer.setSize( window.innerWidth, window.innerHeight );\n}, false );"
-    },
-    "Study": {
-        "Mathematics": {
-            "Algebra I": "T:",
-            "Geometry": "T:",
-            "Algebra II": "T:",
-            "Trigonometry": "T:",
-            "Precalculus": "T:",
-            "Calculus I": "T:",
-            "Calculus II": "T:",
-            "Calculus III": "T:",
-            "Linear Algebra": "T:",
-            "Differential Equations": "T:",
-            "Real Analysis": "T:",
-            "Abstract Algebra": "T:",
-            "Complex Analysis": "T:",
-            "Probability and Statistics": "T:",
-            "Topology": "T:",
-            "Number Theory": "T:",
-            "Discrete Mathematics": "T:",
-            "Numerical Analysis": "T:"
-        },
-        "Physics": {
-            "Motion and Forces": "T:",
-            "Energy and Heat": "T:",
-            "Light and Sound": "T:",
-            "Electricity and Magnetism": "T:",
-            "Classical Mechanics": "T:",
-            "Thermodynamics": "T:",
-            "Waves and Optics": "T:",
-            "Electromagnetism": "T:",
-            "Modern Physics": "T:",
-            "Advanced Classical Mechanics": "T:",
-            "Electrodynamics": "T:",
-            "Quantum Mechanics": "T:",
-            "Statistical Mechanics": "T:",
-            "Solid-State Physics": "T:",
-            "Nuclear and Particle Physics": "T:",
-            "Astrophysics and Cosmology": "T:",
-            "General Relativity": "T:",
-            "Quantum Field Theory": "T:",
-            "String Theory": "T:"
-        },
-        "Biology": {
-            "Cell Biology I": "T:",
-            "Classification of Living Things": "T:",
-            "Basic Human Biology": "T:",
-            "Ecology I": "T:",
-            "Cell Biology II": "T:",
-            "Ecology II": "T:",
-            "Genetics I": "T:",
-            "Evolution I": "T:",
-            "Plant Biology": "T:",
-            "Animal Biology": "T:",
-            "Molecular Biology": "T:",
-            "Microbiology": "T:",
-            "Physiology": "T:",
-            "Biochemistry": "T:",
-            "Genetics II": "T:",
-            "Ecology III": "T:",
-            "Evolution II": "T:",
-            "Neurobiology": "T:",
-            "Immunology": "T:",
-            "Development Biology": "T:",
-            "Bioinformatics": "T:",
-            "Biophysics": "T:"
-        },
-        "Car Mechanics": {
-            "Engine Fundamentals": "T:",
-            "Fuel Systems": "T:",
-            "Ignition Systems": "T:",
-            "Emission Control Systems": "T:",
-            "Transmissions": "T:",
-            "Drive Systems": "T:",
-            "Hydraulic Brake Systems": "T:",
-            "Anti-lock Braking Systems (ABS)": "T:",
-            "Parking Brakes": "T:",
-            "Suspension Systems": "T:",
-            "Steering Systems": "T:",
-            "Electrical Systems": "T:",
-            "Heating and Air  Conditioning (HVAC)": "T:",
-            "Safety Systems": "T:",
-            "General Systems": "T:",
-            "General Maintenance": "T:",
-            "Electric Vehicles": "T:",
-            "Hybrid Vehicles": "T:",
-            "Advanced Driver-Assistance Systems (ADAS)": "T:"
-        },
-        "First Aid": {
-            "CPR": "T:",
-            "AED": "T:",
-            "Chocking": "T:",
-            "Severe Bleeding": "T:",
-            "Anaphylaxis Shock": "T:",
-            "Wounds": "T:",
-            "Burns": "T:",
-            "Bone Injuries": "T:",
-            "Head Injuries": "T:",
-            "Heart Attack": "T:",
-            "Stroke": "T:",
-            "Seizures": "T:",
-            "Fainting": "T:",
-            "Diabetic Emergencies": "T:",
-            "Asthma Attacks": "T:",
-            "Poisoning": "T:",
-            "Bites": "T:"
-        },
-        "IT": {
-            "Azure": "T:<div id=\"IT_Azure\">\n    <h2><u>Azure</u></h2>\n    <p>Cloud Computing is the delivery of computer services over the Internet. These can be servers, storage, databases, networking, software or AI. These are usually provided in a flexible manner so that you can just pay for what you use and use what you need.</p>\n    <h3><u>Deployment Models</u></h3>\n    <table border=\"1\">\n        <tr>\n            <th>Deployment Model</th>\n            <th>Definition</th>\n        </tr>\n        <tr>\n            <td>Public Cloud</td>\n            <td>Cloud services offered by third-party providers over the internet such as Azure, sharing resources to multiple users keeping their data seperate.</td>\n        </tr>\n        <tr>\n            <td>Private Cloud</td>\n            <td>Cloud resources but only for a single organisation. It can be hosted on-site or by a third-party provider with access only from the organisations staff.</td>\n        </tr>\n        <tr>\n            <td>Hybrid Cloud</td>\n            <td>A combination of Private and Public Clouds using technology to connect the two to share data and applications.</td>\n        </tr>\n        <tr>\n            <td>Multi-Cloud</td>\n            <td>Using services from multiple cloud providers simultaneously such as Azure and AWS for example.</td>\n        </tr>\n    </table>\n    <h3><u>Service Models</u></h3>\n    <table border=\"1\">\n        <tr>\n            <th>Service Models</th>\n            <th>Definition</th>\n        </tr>\n        <tr>\n            <td>IaaS</td>\n            <td>Infrastructure as a Service is when the Cloud provider handles the hardware and virtualisation and leaves everything else such as the OS to the User.</td>\n        </tr>\n        <tr>\n            <td>PaaS</td>\n            <td>Platform as a Service is when the Cloud provider handles the hardware and OS, and simply leaves the user to create their own Applications and Data.</td>\n        </tr>\n        <tr>\n            <td>SaaS</td>\n            <td>Software as a Service is when the Cloud provider handles the hardware, OS and Application and simply provides the user with the application to use.</td>\n        </tr>\n        <tr>\n            <td>Servless Computing</td>\n            <td>A model where the Cloud provider dynamically manages and provides servers. You simply write and deploy the code (often called \"functions\"), and the provider automatically scales and runs it in response to events. This method bills you only for the compute time consumed.</td>\n        </tr>\n    </table>\n    <h3><u>Cloud Service Terms</u></h3>\n    <table border=\"1\">\n        <tr>\n            <th>Key Terms</th>\n            <th>Definition</th>\n        </tr>\n        <tr>\n            <td>High Availability</td>\n            <td>Having a High Availability means that the cloud service is rarely unreachable. Most companies offer 99%, 99.9% or 99.95% Availability. This is usually stated and agreed upon in their SLA (Service Level Agreement).</td>\n        </tr>\n        <tr>\n            <td>Scalability</td>\n            <td>Scalability refers to adjusting their resources to meet demand to ensure that you are only paying for what you are using and only using what you need.</td>\n        </tr>\n        <tr>\n            <td>Vertical Scaling</td>\n            <td>Vertical Scaling is when you need to increase or decrease the resources at your disposal, for example if you need more or less RAM or CPU power, you can adjust the amount to hand.</td>\n        </tr>\n        <tr>\n            <td>Horizontal Scaling</td>\n            <td>Horizontal Scalling is when you change the number of VM's or containers at your disposal either automatically or manually.</td>\n        </tr>\n        <tr>\n            <td>Elasticity</td>\n            <td>Similar to scalability but refers to the ability of a system </td>\n        </tr>\n        <tr>\n            <td>Reliability</td>\n            <td>The ability to recover a system from failures and continue to function. For example if 1 Region was to get shutdown due to a fire, other Regions still running can pickup an keep the service running.</td>\n        </tr>\n        <tr>\n            <td>Predictability</td>\n            <td>How predictable a services cost and performance are. For example using Autoscaling, load balancing and high availability to predict performance and forecast the cost of what you may need.</td>\n        </tr>\n        <tr>\n            <td>Regions</td>\n            <td>Specific geographical locations where cloud providers have data centers. Choosing a region close to your users can reduce latency.</td>\n        </tr>\n        <tr>\n            <td>Availability Zones (AZs)</td>\n            <td>Physically separate data centers within a region, designed to be isolated from failures in other AZs. They provide high availability and fault tolerance within a single region.</td>\n        </tr>\n        <tr>\n            <td>Virtualisation</td>\n            <td>The technology that enables the creation of virtual versions of computing resources (e.g., servers, storage, networks) from a single physical machine.</td>\n        </tr>\n        <tr>\n            <td>CapEx</td>\n            <td>Upfront costs for an organisation</td>\n        </tr>\n        <tr>\n            <td>OpEx</td>\n            <td>Ongoing costs for an organisation.</td>\n        </tr>\n    </table>\n    <h3><u>Azure-specific Terms</u></h3>\n    <table border=\"1\">\n        <tr>\n            <th>Azure Terms</th>\n            <th>Definition</th>\n        </tr>\n        <tr>\n            <td>Azure Resource Manager (ARM)</td>\n            <td>The deployment and management service allowing you to create, update and delete resources in your Azure subscription.</td>\n        </tr>\n        <tr>\n            <td>Resource Group</td>\n            <td>A Container for Azure resources relating to a single project to help with organisation, management and billing.</td>\n        </tr>\n        <tr>\n            <td>Azure Active Directory (Azure AD) / Microsoft Entra ID</td>\n            <td>Microsoft's Identity and Access Management service handling authentication, single sign-on (SSO) and device management.</td>\n        </tr>\n        <tr>\n            <td>Virtual Network (VNet)</td>\n            <td>Your own personal isolated network in the Azure cloud allowing your Azure resources to communicate with each other.</td>\n        </tr>\n        <tr>\n            <td>Azure Virtual Machine (VM)</td>\n            <td>A virtualized instance of a computer running on Azure's Infrastructure.</td>\n        </tr>\n        <tr>\n            <td>Azure Storage</td>\n            <td>An online storage solution for various data types such as Blob storage (unstructured data), File storage, Queue storage and Table storage.</td>\n        </tr>\n        <tr>\n            <td>Azure SQL Database</td>\n            <td>A managed cloud relational database service, offering high security, scalability, and availability for structured data.</td>\n        </tr>\n        <tr>\n            <td>Azure Functions</td>\n            <td> Microsoft's serverless computing service that allows you to run small pieces of code (functions) in response to events without explicitly provisioning or managing servers.</td>\n        </tr>\n        <tr>\n            <td>Azure Load Balancer</td>\n            <td> Services that distribute incoming network traffic across multiple servers or resources to ensure no single resource is overwhelmed.</td>\n        </tr>\n        <tr>\n            <td>Azure DevOps</td>\n            <td> A suite of services that provides tools for collaboration, and continuous integration.</td>\n        </tr>\n        <tr>\n            <td>Azure Portal</td>\n            <td>The web-based console that provides a graphical user interface for managing your Azure resources.</td>\n        </tr>\n        <tr>\n            <td>Azure CLI / Azure PowerShell</td>\n            <td>Command-line tools for managing Azure resources through scripts or interactive commands.</td>\n        </tr>\n        <tr>\n            <td>Service Level Agreement (SLA)</td>\n            <td>A contractual agreement between Microsoft and the user, defining the performance, uptime, and availability guarantees for Azure services.</td>\n        </tr>\n        <tr>\n            <td>Consumption-based model</td>\n            <td>The pricing model where you only pay for the cloud resources you actually use, rather than a fixed upfront cost.</td>\n        </tr>\n    </table>\n    <p>For getting started with Azure and using its services you first need an Azure account, and a subscription will be created for you an dyou are free to create your own additional subscriptions. For example your company might use a single Azure account for your business and separate subscriptions for development, marketing and sales departments. Each subscription can have its own resource groups that then contain the resources.</p>\n</div>"
-        },
-        "Programming": {
-            "HTML": "T:",
-            "CSS": "T:",
-            "JavaScript": "T:",
-            "CMD": "T:",
-            "Powershell": "T:<div id=\"IT_PowerShell\">\n    <h2><u>PowerShell</u></h2>\n    <h3><u>What is PowerShell?</u></h3>\n    <p>PowerShell is both a command-line shell and a scripting language that you can use to automate administrative PC tasks.<br>It is cross platform and can be run on most Desktop Operating Systems and is built into Windows from the get go.</p>\n    <p>What makes PowerShell unique from other traditional command-line shells is that instead of dealing with text, it uses objects and names it's commands, cmdlets (pronounced command-lets).</p>\n    <h3><u>Getting Started</u></h3>\n    <p>To begin entering PowerShell commands, you can open the Terminal of choice and enter 'pwsh' to begin the PowerShell Shell.</p>\n    <h3>Commands</h3>\n    <table border=1 style=\"width: 100%;\">\n        <tr>\n            <th>Command</th>\n            <th>Explanation</th>\n        </tr>\n        <tr>\n            <td>$PSVersionTable</td>\n            <td>This command verifies the PowerShell Installation and provides information about the version, platform and edition. As this output/data is stored as an Object, it's very easy to extract data like from the following command.</td>\n        </tr>\n        <tr>\n            <td>$PSVersionTable.PSVersion</td>\n            <td>Running $PSVersionTable results in output that looks like a table, but is actually an object. For this reason, you can use a period (.) to access a specific property, such as PSVersion and it even provides some extra info.</td>\n        </tr>\n    </table>\n    <h3><u>What are cmdlet's?</u></h3>\n    <p>A cmdlet are compiled commands, for convenience and consistency they are named with a verb-noun convention, such as 'Get-Help' for isntance. Here are some useful 'Get' commands :</p>\n    <table border=1 style=\"width: 100%;\">\n        <tr>\n            <th>Command</th>\n            <th>Explanation</th>\n        </tr>\n        <tr>\n            <td>Get-Verb</td>\n            <td>This cmdlet provides a list of all approved Verbs for cmdlet's.</td>\n        </tr>\n        <tr>\n            <td>Get-Command</td>\n            <td>This cmdlet lists all of the available cmdlet's on your system.</td>\n        </tr>\n        <tr>\n            <td>Get-Alias</td>\n            <td>This cmdlet lists all of the current Aliases in the session, so ones built in and ones you set. Aliases are just shorthand alternatives to common cmdlet's..</td>\n        </tr>\n        <tr>\n            <td>Get-Member</td>\n            <td>This cmdlet we'll come back to later on but is very useful for filtering the output of cmdlet's.</td>\n        </tr>\n        <tr>\n            <td>Get-Help</td>\n            <td>This cmdlet invokes the built-in help system, you can also use it's alias 'help' which does the exact same but breaks the output into pages for easier readability.</td>\n        </tr>\n    </table>\n    <p>As Get-Command returns every command in PowerShell (thousands) you can use the flags -Verb and -Noun to search based on specific critera but adding them after the cmdlet, for example :</p>\n    <p>Get-Command -Verb Get -Noun alias*</p>\n    <p>Will return every command In PowerShell where the verb part matches 'Get' and the noun part relates to 'alias' in any way.</p>\n    <h3><u>The Power of Get-Help</u></h3>\n    <p>Every cmdlet in PowerShell has a wealth of knowledge and in-depth explanation stored along-side it. To access this you invoke the 'Get-Help' cmdlet and adding the '-Name' flag containing the name of the cmdlet you want to learn about, for example :</p>\n    <p>Get-Help -Name Get-Help</p>\n    <p>This will return all the information and examples for what the Get-Help cmdlet does and how to use it. If the help is out of date you can use the cmdlet 'Update-Help' to update to the latest information.</p>\n    <p>You'll notice that there are quite a few sections to the help it returns, there are 5 flags that you can use to alter what it returns, these are :</p>\n    <ul>\n        <li>Full : Returns a full detailed help page, more than you get in the standard response.</li>\n        <li>Detailed : Returns a standard response but includes a section for parameters.</li>\n        <li>Examples : Returns only examples, if any exist.</li>\n        <li>Online : Opens a web page for your command.</li>\n        <li>Parameter : This flag requires a parameter name as an argument and lists it's specific properties.</li>\n    </ul>\n    <h3><u>Utilising Cmdlet Outputs</u></h3>\n    <p>When you run a cmdlet, it returns an object where the data is strucutured and easier to work with. You can directly send the output of a cmdlet straight into another using a Pipe Symbol (|). This allows you to daisy chain cmdlet's together in a single line. The 'Get-Member' cmdlet shows you exactly this object, for example :</p>\n    <p>Get-Process -Name 'name-of-process' | Get-Member</p>\n    <p>First the 'Get-Process' cmdlet producess an object of processes with name 'name-of-process' and then forwards (pipes) that data as in input into 'Get-Member' which then displays it.</p>\n    <p>The output of Get-Member can be quite a lot to take in, if you wanted to filter the columns to only what you need, the following command is very useful :</p>\n    <table border=1 style=\"width: 100%;\">\n        <tr>\n            <th>Command</th>\n            <th>Explanation</th>\n        </tr>\n        <tr>\n            <td>Select-Object</td>\n            <td>When an object is piped into 'Select-Object' you can specifiy the names of specific columns that you want to see and disregard all the rest. For example : 'Select-Object Name, MemberType' will only show you the 2 columns called 'Name' and 'MemberType'</td>\n        </tr>\n    </table>\n    <p>A good cmdlet to test 'Get-Member' and 'Select-Object' is using the following cmdlet :</p>\n    <table border=1 style=\"width: 100%;\">\n        <tr>\n            <th>Command</th>\n            <th>Explanation</th>\n        </tr>\n        <tr>\n            <td>Get-Process</td>\n            <td>When you run this cmdlet without any flags or parameters, it shows you a list of all running processes on your computer.</td>\n        </tr>\n    </table>\n    <p>We can run 'Get_Process' again but this time apply a parameter and pipe the output into 'Get-Member' like so :</p>\n    <p>Get-Process -Name 'a-process-name' | Get-Member</p>\n    <p>You'll notice that when you run this command the first line of the output is the following :</p>\n    <p>TypeName: System.Diagnostics.Process</p>\n    <p>This tells us the type of cmdlet that we are using, in this case the type is a 'Process' cmdlet. If you want to learn more similar 'Process' cmdlets, we can use that as a parameter for 'Get-Command' like so :</p>\n    <p>Get-Command -ParameterType Process</p>\n    <p>You can use the 'Get-Help' system and 'Get-Member' to do some of your own research and digging into interesting cmdlet's and what they do.</p>\n    <h3><u>Scripting PowerShell</u></h3>\n    <p>Scripting is the process of taking multiple cmdlet's in a single text file and they are all run automatically one after the other, you can also use the following features for some extra funcitonality.</p>\n    <table border=1 style=\"width: 100%;\">\n        <tr>\n            <th>Feature</th>\n            <th>Explanation</th>\n        </tr>\n        <tr>\n            <td>Variables</td>\n            <td>You can use variables to store values. You can also use variables as arguments to commands.</td>\n        </tr>\n        <tr>\n            <td>Functions</td>\n            <td>Think of functions like turning a part of your script into a callable custom cmdlet. It can help when you want to use the same code multiple times, instead of having that code types multiple times, place it into a custom function and call the function multiple times as a cmdlet.</td>\n        </tr>\n        <tr>\n            <td>Flow Control</td>\n            <td>Flow control is how you control various execution paths by using things like 'If', 'ElseIf' and 'Else' statements.</td>\n        </tr>\n        <tr>\n            <td>Loops</td>\n            <td>Loops allow you to itterate over code multiple times, this makes it easy if you want to apply the same code to say multiple things one after the other, for example if you wanted to rename files in a folder, instead of having the rename code for each file, write it once and loop over each file.</td>\n        </tr>\n        <tr>\n            <td>Error Handling</td>\n            <td>It's important to write scripts that are robust and can handle various types of errors. You can use things like 'Try' and 'Catch' so that if code where to break, instead of stopping the whole flow, it uses the 'Catch' block of code instead and continues.</td>\n        </tr>\n    </table>\n</div>",
-            "Lua": "T:",
-            "Python": "T:",
-            "Java": "T:",
-            "Shell": "T:"
-        },
-        "Games": {
-            "Chess": {}
-        },
-        "Languages": {
-            "French": {}
-        },
-        "Survival": {
-            "Shelter I": "T:",
-            "Shelter II": "T:",
-            "Fire": "T:",
-            "Water": "T:",
-            "Food": "T:",
-            "Navigation I": "T:",
-            "Navigation II": "T:",
-            "Signaling and Communication": "T:",
-            "Foraging and Botany": "T:",
-            "Hunting and Tracking": "T:",
-            "Agriculture": "T:",
-            "Tool Making and Repair": "T:",
-            "Self-Defense and Security": "T:",
-            "Leadership": "T:"
-        }
-    },
-    "Tools": {
-        "Diary": "J:",
-        "Encrypted Notes": "E:1g@g-]5-6-dg5d{%%¬%%=Yt-6Y[d8g@{-",
-        "Finance Tracker": "J:",
-        "AI Chat": "J:if (!online) {\n    alert(\"Not connected to a server.\")\n    return showOption();\n}\n\naiChat = [];\n\noutputHTML.innerHTML = `\n    <div style=\"width:calc(100% - 36px); height:calc(100% - 36px); padding:8px; border: solid black 4px; border-radius:8px; background-color:white; display:flex; flex-direction:column; gap:6px;\">\n        <textarea id=\"aiOutput\" readonly style=\"width:100%; height:100%; border:solid black 2px; padding:5px; resize:none;\"></textarea>\n        <input id=\"aiInput\" type=\"text\" placeholder=\"Enter Prompt\" style=\"width:100%; min-height:40px; border:solid black 2px; padding:5px; font-size:32px;\"></input>\n    </div>\n`;\n\nconst aiInput = document.getElementById(\"aiInput\");\nconst aiOutput = document.getElementById(\"aiOutput\");\n\naiOutput.value = \"Custom AI Chat\\n\\nJust enter the prompt below and hit Enter.\\n\\n--------------------------------\\n\\n\";\n\naiInput.addEventListener('keydown', function(event) {\n    if (event.key === 'Enter' && !aiMessaging) {\n        aiOutput.value += `Prompt : ${aiInput.value}\\n\\nAI : `;\n        sendToAi(aiInput.value , function(reply) {\n            aiOutput.value += reply;\n        } , function() {\n            aiOutput.value += \"\\n\\n--------------------------------\\n\\n\";\n        });\n        aiInput.value = \"\";\n    }\n});\n\n\n",
-        "Task Tracker": "J:",
-        "Map Maker": "J:",
-        "QR Code Generator": "J:outputHTML.innerHTML = `\n    <div style=\"display:flex; flex-direction:column; gap:10px;\">\n        <div id=\"qrCodeArea\" style=\"padding:4px; border:solid black 4px; background-color:white;\"></div>\n        <input id=\"QRText\" type=\"text\" placeholder=\"Text Here ...\" style=\"width: 300px; height:40px; font-size:32px; border: solid black 4px; background-color:white;\"></input>\n        <div onclick=\"loadQRCode();\" style=\"width:296px; height: 32px; border:solid black 4px; border-radius:8px; display:flex; justify-content:center; align-items:center; background-color:white; cursor:pointer; font-size:24px;\">Generate</div>\n        <div onclick=\"downloadQRCode();\" style=\"width:296px; height: 32px; border:solid black 4px; border-radius:8px; display:flex; justify-content:center; align-items:center; background-color:white; cursor:pointer; font-size:24px;\">Download</div> \n    </div>\n`;\n\n\nwindow.downloadQRCode = function() {\n    const tempCnv = document.createElement(\"canvas\");\n    const tempCtx = tempCnv.getContext(\"2d\");\n    tempCnv.width = 304;\n    tempCnv.height = 304;\n    tempCtx.fillStyle = \"black\";\n    tempCtx.fillRect(0, 0, tempCnv.width, tempCnv.height);\n    tempCtx.fillStyle = \"white\";\n    tempCtx.fillRect(5, 5, tempCnv.width-10, tempCnv.height-10);\n    let newImg = new Image();\n    newImg.src = document.querySelector('#qrCodeArea img').src\n    newImg.onload = () => {\n        tempCtx.drawImage(newImg, 10, 10, tempCnv.width-20, tempCnv.height-20);\n        const link = document.createElement(\"a\");\n        link.download = \"QR-Code.png\";\n        link.href = tempCnv.toDataURL(\"image/png\");\n        link.click();\n    }\n}\n\nwindow.loadQRCode = function(txt = document.getElementById(\"QRText\").value) {\n    document.getElementById(\"qrCodeArea\").innerHTML = \"\";\n    var qrcode = new QRCode(\"qrCodeArea\", {\n        text: txt,\n        width: 284,\n        height: 284,\n        colorDark : \"black\",\n        colorLight : \"white\",\n        correctLevel : QRCode.CorrectLevel.H\n    });\n}\n\nloadQRCode(\"http://localhost:3000/\")\n\n\n",
-        "Tapper": "J:",
-        "Text to Speech": "J:",
-        "Run Custom JavaScript": "J:let newJS = new Function(prompt(\"Please enter the custom JavaScript to run.\"));\nnewJS();",
-        "Fullscreen": "J:document.documentElement.requestFullscreen();"
-    },
-    "Dev": {
-        "Toggle Edit Mode": "J:editMode = !editMode;\nshowOption();",
-        "Edit ToolKit": "J:path = [];\neditOption();",
-        "Toggle Auto Save": "J:toolKit['!ToolKit Functions']['AutoSave'] = !toolKit['!ToolKit Functions']['AutoSave'];\nalert(`Auto-Save is now ${(toolKit['!ToolKit Functions']['AutoSave']) ? 'enabled' : 'disabled'}`);\nsaveToolKit();\n",
-        "Export HTML": "J:const blob = new Blob([extractHTML()], {\n    type: 'text/html'\n});\nconst url = URL.createObjectURL(blob);\nconst a = document.createElement('a');\na.download = 'downloadedIndex.html';\na.href = url;\ndocument.body.appendChild(a);\na.click();\ndocument.body.removeChild(a);\nURL.revokeObjectURL(url);\nshowOption();",
-        "Server": {
-            "How to setup a Server": "T:",
-            "Update HTML": "J:window.uploadFiles = async function(directory, filesToUpload=[], callback = function() {}) {\n    if (!online) return console.log(\"You are not connected to the server.\");\n    if (!directory) return console.log(\"No Directory given\");\n\n    async function upload(files) {\n        const formData = new FormData();\n        formData.append('directory', directory);\n        for (const file of files) {\n            formData.append('files', file);\n        }\n        await fetch('/upload', { method: 'POST', body: formData });\n        callback();\n    }\n    \n    if (filesToUpload.length === 0) {\n        const input = document.createElement('input');\n        input.type = 'file';\n        input.multiple = true;\n        input.onchange = async (e) => {\n            upload(e.target.files)\n            input.remove();\n        };\n        input.click();\n    } else {\n        upload(filesToUpload);\n    }\n}\n\n\n\n    \n\ntry {\n    const blob = new Blob([extractHTML()], { type: 'text/html' });\n    const file = new File([blob], \"index.html\", { type: 'text/html' });\n    uploadFiles(\"/\", [file], () => {\n        alert(\"index.html uploaded successfully.\");\n    });\n} catch (error) {\n    alert('Error preparing index.html for upload:', error);\n}\n    \n\n\nshowOption();",
-            "Server Files": "J:if (!online) return console.log(\"Cannot connect to the server to view files.\");\n\n\nlet directory = \"/\";\n\n\nif (!window[\"filesSocket\"]) {\n    window[\"filesSocket\"] = true;\n    \n    socket.on(\"getDirectory\", (data) => {\n        optionsHTML.innerHTML = \"\";\n        let { dir , files } = data;\n        files.push({name:\"CREATE FOLDER\" , directory:false});\n        files.push({name:\"UPLOAD\" , directory:false});\n        if (directory === \"/\") {\n            files.push({name:\"EXIT\" , directory:false});\n        } else {\n            files.unshift({name:\"\" , directory:true});\n        }\n        for (let i=0; i<files.length; i++) {\n            let isDir = files[i].directory;\n            let fileName = (isDir) ? files[i].name + \"/\" : files[i].name;\n            addOptionButton(fileName, function() {goToFileOrDirectory(fileName)})\n        }\n    });\n}\n\nsocket.emit(\"getDirectory\", directory);\n\n\n\n\nwindow.goToFileOrDirectory = function(selection) {\n    if (directory == \"/\" && selection == \"EXIT\") return showOption();\n    if (selection == \"CREATE FOLDER\") return socket.emit('makeDirectory', directory + prompt('Please enter the name of the folder.')); setTimeout(() => {socket.emit('getDirectory', directory);},1000)\n    if (selection == \"UPLOAD\") return uploadFiles(directory, [], ()=>{setTimeout(() => {socket.emit('getDirectory', directory);},1000)});\n\n    if (selection == \"/\") {\n        let brokenDirectory = directory.split(\"/\");\n        brokenDirectory.pop();\n        brokenDirectory[brokenDirectory.length-1] = \"\";\n        directory = brokenDirectory.join(\"/\");\n    } else {\n        directory += selection;\n    }\n    if (selection.endsWith(\"/\")) {\n        socket.emit('getDirectory', directory);\n    } else {\n        outputHTML.innerHTML = `\n            <div style=\"width:calc(100% - 12px); height:calc(100% - 12px); display:flex; flex-direction:column; gap:6px;\">\n                <div style=\"min-height:42px; width:100%; display:flex; gap:6px;\">\n                    <div onclick=\"downloadFile('${selection}');\" style=\"height:calc(100% - 8px); min-width:140px; border:solid black 4px; border-radius:8px; background-color:white; font-size:24px; display:flex; justify-content:center; align-items:center; cursor:pointer;\">Download</div>\n                    <div style=\"height:calc(100% - 8px); width:100%; border:solid black 4px; border-radius:8px; background-color:white; font-size:24px; display:flex; justify-content:center; align-items:center;\">${selection}</div>\n                    <div onclick=\"deleteFile('${selection}');\" style=\"height:calc(100% - 8px); min-width:140px; border:solid black 4px; border-radius:8px; background-color:white; font-size:24px; display:flex; justify-content:center; align-items:center; cursor:pointer;\">Delete</div>\n                </div>\n                <iframe src=\"${directory}\" style=\"width:calc(100% - 24px); height:calc(100% - 24px); padding:8px; border:solid black 4px; border-radius:8px; background-color:white;\"></iframe>\n            </div>\n        `;\n        directory = directory.slice(0, -(selection.length));\n    }\n}\n\n\nwindow.deleteFile = function(fileName) {\n    if (prompt(`Are you sure that you want to delete ${fileName}? If so then enter yes.`) != 'yes') return;\n    socket.emit('deleteDirectory', directory + fileName);\n    socket.emit('getDirectory', directory);\n    outputHTML.innerHTML = \"\";\n}\n\n\n\nwindow.downloadFile = function(fileName) {\n    fetch(`${directory + fileName}?download=true`)\n        .then(response => {\n            if (response.ok) {\n                return response.blob();\n            }\n            throw new Error('Network response was not ok.');\n        })\n        .then(blob => {\n            const url = window.URL.createObjectURL(blob);\n            const a = document.createElement('a');\n            a.style.display = 'none';\n            a.href = url;\n            a.download = fileName;\n            document.body.appendChild(a);\n            a.click();\n            window.URL.revokeObjectURL(url);\n            a.remove();\n        })\n        .catch(error => console.error('Download error:', error));\n}\n\nwindow.uploadFiles = async function(directory, filesToUpload=[], callback = function() {}) {\n    if (!online) return console.log(\"You are not connected to the server.\");\n    if (!directory) return console.log(\"No Directory given\");\n\n    async function upload(files) {\n        const formData = new FormData();\n        formData.append('directory', directory);\n        for (const file of files) {\n            formData.append('files', file);\n        }\n        await fetch('/upload', { method: 'POST', body: formData });\n        callback();\n    }\n    \n    if (filesToUpload.length === 0) {\n        const input = document.createElement('input');\n        input.type = 'file';\n        input.multiple = true;\n        input.onchange = async (e) => {\n            upload(e.target.files)\n            input.remove();\n        };\n        input.click();\n    } else {\n        upload(filesToUpload);\n    }\n}"
-        }
-    },
-    "Help": {
-        "What is this page?": "T:"
-    },
-    "!ToolKit Functions": {
-        "Home": "J:window.addOptionButton = function(txt=\"\", js=function() {}, editButton=false) {\n    let outerbtn = document.createElement(\"div\");\n    let innerbtn = document.createElement(\"div\");\n    let editbtn = document.createElement(\"div\");\n    outerbtn.style.cssText = `width:calc(100% - 2px); min-height:60px; display:flex; gap:2px;`;\n    innerbtn.style.cssText = `width:100%; font-size:26px; display:flex; justify-content:center; align-items:center;  cursor:pointer; color:white; background-color:${(optionsHTML.children.length%2 == 0) ? clr1 : clr2};`;\n    editbtn.style.cssText = `min-width:64px; font-size:22px; display:flex; justify-content:center; align-items:center;  cursor:pointer; color:white; background-color:${(optionsHTML.children.length%2 == 0) ? clr1 : clr2};`;\n    innerbtn.onclick = js;\n    editbtn.onclick = function() {path.push(txt); editOption();};\n    innerbtn.innerHTML = txt;\n    editbtn.innerHTML = \"Edit\";\n    outerbtn.appendChild(innerbtn);\n    if (editButton && txt != \"Return\") outerbtn.appendChild(editbtn);\n    optionsHTML.appendChild(outerbtn);\n}\n\nwindow.showOption = function() {\n    outputHTML.innerHTML = \"\";\n    const option = path.reduce((acc, key) => acc[key], toolKit);\n    if (typeof option == \"object\") {\n        optionsHTML.innerHTML = \"\";\n        for (const tool in option) {\n            if (!tool.startsWith(\"!\") || editMode) addOptionButton(tool, function() {path.push(tool); showOption();}, editMode)\n        }\n        if (path.length != 0) addOptionButton(\"Return\", function() {path.pop(); showOption();})\n    } else if (typeof option == \"string\") {\n        if (option.startsWith(\"T:\")) {\n            let txt = document.createElement(\"div\");\n            txt.innerHTML = option.substring(2);\n            txt.style.cssText = `width:calc(100% - 36px); height:calc(100% - 36px); padding:8px; border:solid black 4px; border-radius:8px; background-color:white; overflow-y:auto; scrollbar-width:none;`;\n            outputHTML.appendChild(txt);\n            path.pop();\n        } else if (option.startsWith(\"E:\")) {\n            optionsHTML.innerHTML = \"\";\n            outputHTML.innerHTML = `\n                <div style=\"padding:8px; border:solid black 4px; border-radius:8px; background-color:white; display:flex; flex-direction:column;gap:5px;\">\n                    <input id=\"encryptedOptionCode\" type=\"number\" value=\"0\" placeholder=\"Enter Unique Code\" style=\"min-height:38px; min-width:240px; width:0px; font-size:32px;\">\n                    <div style=\"width:100%; display:flex; justify-content:center; align-items:center;\"><button id=\"viewEncryptedOption\" style=\"min-height:32px; padding:3px; font-size:32px;\">View</button></div>\n                </div>\n            `;\n            document.getElementById(\"viewEncryptedOption\").onclick = function() {\n                const code = parseInt(document.getElementById(\"encryptedOptionCode\").value);\n                outputHTML.innerHTML = \"\";\n                let txt = document.createElement(\"textarea\");\n                txt.textContent = encryptString(option.substring(2), code).replaceAll(\"¬\", \"\\n\");\n                txt.style.cssText = `width:calc(100% - 36px); height:calc(100% - 36px); padding:8px; border: solid black 4px; border-radius:8px; background-color:white; resize:none; white-space:pre-wrap`;\n                outputHTML.appendChild(txt);\n                addOptionButton(`Save Encrypted Text`, function() {\n                    console.log(txt.value)\n                    let currentObject = toolKit;\n                    for (let i = 0; i < path.length - 1; i++) {\n                        currentObject = currentObject[path[i]];\n                    }\n                    currentObject[path[path.length - 1]] = \"E:\" + encryptString(txt.value, code);\n                    path.pop();\n                    saveToolKit();\n                    showOption();\n                });\n            }\n        } else if (option.startsWith(\"J:\")) {\n            path.pop();\n            let newJS = new Function(option.substring(2));\n            newJS();\n        }\n    } else {\n        path.pop();\n    }\n}\n\nwindow.editOption = function() {\n    optionsHTML.innerHTML = \"\";\n    outputHTML.innerHTML = \"\";\n    let txt = document.createElement(\"textarea\");\n    let value = path.reduce((acc, key) => acc[key], toolKit);\n    if (!value) {\n        path.pop();\n        return showOption();\n    }\n    let isObject = (typeof value == \"object\")\n    let type = (isObject) ? \"\" : value.slice(0, 2);\n    txt.value = (isObject) ? JSON.stringify(value, null, 4) : value.substring(2);\n    txt.wrap = \"off\";\n    txt.style.cssText = `width:calc(100% - 36px); height:calc(100% - 36px); padding:8px; border: solid black 4px; border-radius:8px; background-color:white; resize:none;`;\n    outputHTML.appendChild(txt);\n    txt.addEventListener('keydown', e => {\n        if (e.key === 'Tab') {\n            e.preventDefault();\n            const s = txt.selectionStart, en = txt.selectionEnd;\n            txt.value = txt.value.substring(0, s) + '    ' + txt.value.substring(en);\n            txt.selectionStart = txt.selectionEnd = s + 4;\n        }\n    });\n    addOptionButton(`Save ${(isObject) ? 'Object' : (type == \"T:\") ? 'Text' : 'JavaScript'}`, function() {\n        if (path.length == 0) {\n            toolKit = JSON.parse(txt.value);\n        } else {\n            let currentObject = toolKit;\n            for (let i = 0; i < path.length - 1; i++) {\n                currentObject = currentObject[path[i]];\n            }\n            currentObject[path[path.length - 1]] = (isObject) ? JSON.parse(txt.value) : type + txt.value;\n            path.pop();\n        }\n        saveToolKit();\n        showOption();\n    });\n}\n\n\nwindow.encryptString = function(str, code) {\n    const fixedStr = str.replaceAll(\"\\n\", \"¬\");\n    const charAry = [\"a\", \"b\", \"c\", \"d\", \"e\", \"f\", \"g\", \"h\", \"i\", \"j\", \"k\", \"l\", \"m\", \"n\", \"o\", \"p\", \"q\", \"r\", \"s\", \"t\", \"u\", \"v\", \"w\", \"x\", \"y\", \"z\", \"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\", \"I\", \"J\", \"K\", \"L\", \"M\", \"N\", \"O\", \"P\", \"Q\", \"R\", \"S\", \"T\", \"U\", \"V\", \"W\", \"X\", \"Y\", \"Z\", \"0\", \"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", \"8\", \"9\", \" \", \"!\", \"£\", \"%\", \"&\", \"^\", \"*\", \"(\", \")\", \"{\", \"}\", \"[\", \"]\", \":\", \";\", \"#\", \"@\", \"?\", \",\", \".\", \"/\", \"_\", \"-\", \"+\", \"=\", \"¬\"];\n    const cypher = {};\n    const myPRNG = new PRNG(0)\n    myPRNG.newSeed(code);\n    if (code !== 0) {\n        for (let i = 0; i < 44; i++) {\n            const firstChr = charAry.splice(myPRNG.intRange(0, charAry.length), 1)[0];\n            const secondChr = charAry.splice(myPRNG.intRange(0, charAry.length), 1)[0];\n            cypher[firstChr] = secondChr;\n            cypher[secondChr] = firstChr;\n        }\n    } else {\n        charAry.forEach(char => cypher[char] = char);\n    }\n    return fixedStr.split(\"\").map(char => cypher[char] || (console.log(`Unsupported Character : ${char}`), \"\")).join(\"\");\n}\n\nwindow.extractHTML = function() {\n    optionsHTML.innerHTML = \"\";\n    outputHTML.innerHTML = \"\";\n    const autoSaveRecord = toolKit['!ToolKit Functions']['AutoSave'];\n    toolKit['!ToolKit Functions']['AutoSave'] = false;\n    let htmlContent = document.documentElement.outerHTML.split(\"//\"+ \" SAVEMARKER\");\n    const last = htmlContent.pop();\n    const init = htmlContent.shift();\n    let newHTMLContent = init + \"//\"+ \" SAVEMARKER\\nlet toolKit = \" + JSON.stringify(toolKit, null, 4) + \";\\n        //\"+ \" SAVEMARKER\" + last;\n    toolKit['!ToolKit Functions']['AutoSave'] = autoSaveRecord;\n    return newHTMLContent;\n}\n\n\n\n\n\n// T E X T   A D V E N T U R E\n\nwindow.textAdventure = function(novelTxt) {\n    optionsHTML.style.display = \"none\";\n    window.sections = {};\n    window.textList = [];\n    window.vars = {};\n    window.currentSection = \"\";\n\n    const textOffset = countLeadingSpaces(novelTxt.split(\"\\n\")[1]);\n\n    function countLeadingSpaces(str) {\n        let count = 0;\n        for (let i = 0; i < str.length; i++) {\n            if (str[i] === ' ') {\n                count++;\n            } else {\n                break;\n            }\n        }\n        return count;\n    }\n\n    let currentSectionSearch = \"\";\n    let currentPassageSearch = \"\";\n    novelTxt.split(\"\\n\").forEach((elem) => {\n        elem = elem.substring(textOffset);\n        if (elem.includes(\"[[\") && elem.includes(\"]]:\")) {\n            currentSectionSearch = elem.split(\"[[\")[1].split(\"]]:\")[0];\n            sections[currentSectionSearch] = { \"text\": [], \"shown\": false, passages: {} };\n            currentPassageSearch = \"\";\n        } else {\n            if (currentSectionSearch == \"\") return;\n\n            if (elem.includes(\"[\") && elem.includes(\"]:\")) {\n                currentPassageSearch = elem.split(\"[\")[1].split(\"]:\")[0];\n                sections[currentSectionSearch].passages[currentPassageSearch] = { shown: false, text: [] };\n            } else if (currentPassageSearch != \"\") {\n                sections[currentSectionSearch].passages[currentPassageSearch].text.push(elem);\n            }\n            if (currentPassageSearch == \"\") sections[currentSectionSearch].text.push(elem);\n\n        }\n    });\n\n    outputHTML.innerHTML = `<div id=\"novel\" style=\"margin: 10px; border: 5px solid black; width: calc(100% - 40px); min-height: calc(100% - 40px); padding: 5px; border-radius: 8px; background-color: white; font-size: 22px; white-space: pre-wrap;\"></div>`;\n    const novel = document.getElementById(\"novel\");\n\n\n    function addObject(sectionName, obj) {\n        obj.shown = true;\n        let sectionText = [];\n        obj.text.forEach((elem, index) => {\n            if (elem.startsWith(\"@JS\")) {\n                let customJS = new Function(elem.substring(4));\n                customJS();\n            } else if (elem.startsWith(\"@clear\")) {\n                textList = [];\n            } else if (elem.startsWith(\"@set\")) {\n                const setBroken = elem.split(\" \");\n                let output = (!isNaN(parseInt(setBroken[2]))) ? parseInt(setBroken[2]) : setBroken[2];\n                vars[setBroken[1]] = output;\n            } else if (elem.startsWith(\"@inc\")) {\n                const setBroken = elem.split(\" \");\n                let output = (!isNaN(parseInt(setBroken[2]))) ? parseInt(setBroken[2]) : setBroken[2];\n                vars[setBroken[1]] += output;\n            } else if (elem.startsWith(\"@dec\")) {\n                const setBroken = elem.split(\" \");\n                let output = (!isNaN(parseInt(setBroken[2]))) ? parseInt(setBroken[2]) : setBroken[2];\n                vars[setBroken[1]] -= output;\n            } else if (elem.startsWith(\"@prompt\")) {\n                const setBroken = elem.split(\" \");\n                setBroken.shift();\n                const varKey = setBroken.shift();\n                let promptValue = prompt(setBroken.join(\" \"));\n                let output = (!isNaN(parseInt(promptValue))) ? parseInt(promptValue) : promptValue;\n                vars[varKey] = output;\n            } else if (elem.startsWith(\"@show\")) {\n                const setBroken = elem.split(\" \");\n                setBroken.shift();\n                const sectionNameToShow = setBroken.join(\" \");\n                if (sectionNameToShow in sections) {\n                    sections[sectionNameToShow].shown = false;\n                    for (const passageName in sections[sectionNameToShow].passages) {\n                        sections[sectionNameToShow].passages[passageName].shown = false;\n                    }\n                }\n            } else {\n                sectionText.push(elem);\n            }\n        })\n        sectionText.push(\"<hr>\");\n        textList.push({section:sectionName, text:sectionText.join(\"<br>\")});\n        showTexts();\n    }\n\n    function checkConditions (checkAry) {\n        for (let i=1; i<checkAry.length; i++) {\n            if (checkAry[i].includes(\"<\")) {\n                if (vars[checkAry[i].split(\"<\")[0]] >= parseInt(checkAry[i].split(\"<\")[1])) return false;\n            } else if (checkAry[i].includes(\">\")) {\n                if (vars[checkAry[i].split(\">\")[0]] <= parseInt(checkAry[i].split(\">\")[1])) return false;\n            } else if (checkAry[i].includes(\"==\")) {\n                let output = (!isNaN(parseInt(checkAry[i].split(\"==\")[1]))) ? parseInt(checkAry[i].split(\"==\")[1]) : checkAry[i].split(\"==\")[1];\n                if (vars[checkAry[i].split(\"==\")[0]] != output) return false;\n            } else if (checkAry[i].includes(\"=\")) {\n                let output = (!isNaN(parseInt(checkAry[i].split(\"=\")[1]))) ? parseInt(checkAry[i].split(\"=\")[1]) : checkAry[i].split(\"=\")[1];\n                vars[checkAry[i].split(\"=\")[0]] = output;\n            }\n        }\n        return true;\n    }\n\n    window.showSection = function(sectionArray) {\n        let conditionsMet = checkConditions(sectionArray);\n        if (conditionsMet) {\n            currentSection = sectionArray[0];\n        } else {\n            sections[sectionArray[0]].shown = true;\n            currentSection = sectionArray.pop();\n        }\n        addObject(currentSection, sections[currentSection]);\n    }\n\n    window.showPassage = function(passageArray) {\n        let conditionsMet = checkConditions(passageArray);\n        if (conditionsMet) {\n            addObject(currentSection, sections[currentSection].passages[passageArray[0]]);\n        } else {\n            sections[currentSection].passages[passageArray[0]].shown = true;\n            addObject(currentSection, sections[currentSection].passages[passageArray.pop()]);\n        }\n        let count = 0;\n        for (const passageName in sections[currentSection].passages) {\n            if (sections[currentSection].passages[passageName].shown) count += 1;\n        }\n        for (const passageName in sections[currentSection].passages) {\n            if (passageName.startsWith(`@${count}`)) {\n                let newPassage = passageName.split(\" \");\n                newPassage.shift();\n                goTo(newPassage.join(\" \"));\n            }\n        }\n    }\n\n    window.goTo = function(destination) {\n        if (destination in sections[currentSection].passages) {\n            showPassage([destination]);\n        } else if (destination in sections) {\n            showSection([destination]);\n        }\n    }\n\n    function showTexts() {\n        let totalText = \"\";\n        for (let i=0; i<textList.length; i++) {\n\n            let brokenTxt = breakText(textList[i].text);\n\n            for (let j=0; j<brokenTxt.length; j++) {\n                if (brokenTxt[j].startsWith(\"[[\") && brokenTxt[j+1].startsWith(\"(\")) { // IF SECTION & ()\n                    let newSec = brokenTxt[j].slice(2, -2).split(\", \");\n                    brokenTxt[j] = (textList[i].section == currentSection && !sections[newSec[0]].shown) ? `<a style=\"cursor: pointer; color: blue; text-decoration: underline;\" onclick='showSection(${JSON.stringify(newSec)})'>${brokenTxt[j+1].slice(1, -1)}</a>` : brokenTxt[j+1].slice(1, -1);\n                    brokenTxt[j+1] = \"\";\n\n                } else if (brokenTxt[j].startsWith(\"[[\")) { // IF SECTION no ()\n                    let newSec = brokenTxt[j].slice(2, -2).split(\", \");\n                    brokenTxt[j] = (textList[i].section == currentSection && !sections[newSec[0]].shown) ? `<a style=\"cursor: pointer; color: blue; text-decoration: underline;\" onclick='showSection(${JSON.stringify(newSec)})'>${newSec[0]}</a>` : newSec[0];\n\n                } else if (brokenTxt[j].startsWith(\"[\") && brokenTxt[j+1].startsWith(\"(\")) { // IF PASSAGE & ()\n                    let newPass = brokenTxt[j].slice(1, -1).split(\", \");\n                    brokenTxt[j] = (textList[i].section == currentSection && !sections[currentSection].passages[newPass[0]].shown) ? `<a style=\"cursor: pointer; color: blue; text-decoration: underline;\" onclick='showPassage(${JSON.stringify(newPass)})'>${brokenTxt[j+1].slice(1, -1)}</a>` : brokenTxt[j+1].slice(1, -1);\n                    brokenTxt[j+1] = \"\";\n\n                } else if (brokenTxt[j].startsWith(\"[\")) { // IF PASSAGE no ()\n                    let newPass = brokenTxt[j].slice(1, -1).split(\", \");\n                    brokenTxt[j] = (textList[i].section == currentSection && !sections[currentSection].passages[newPass[0]].shown) ? `<a style=\"cursor: pointer; color: blue; text-decoration: underline;\" onclick='showPassage(${JSON.stringify(newPass)})'>${newPass[0]}</a>` : newPass[0];\n\n                } else if (brokenTxt[j].startsWith(\"{\")) {\n                    brokenTxt[j] = vars[brokenTxt[j].slice(1, -1)];\n                }\n            }\n            totalText += \"<br>\" + brokenTxt.join(\"\").replaceAll(\"&lsb\", \"[\").replaceAll(\"&rsb\", \"]\").replaceAll(\"&lcb\", \"{\").replaceAll(\"&rcb\", \"}\")\n        }\n        novel.innerHTML = \"<hr>\" + totalText;\n        outputHTML.scrollIntoView({ behavior: 'smooth', block: 'end' });\n    }\n\n    function breakText(txt) {\n        let brokenTxt = [];\n        let brokenPlaceholder = \"\";\n        const pattern = /\\n@.*?\\n/gs;\n        txt = txt.replace(pattern, '')\n        \n        for (let i=0; i<txt.length; i++) {\n            let char = txt[i];\n            if (char == \"[\" && brokenPlaceholder != \"[\") {\n                brokenTxt.push(brokenPlaceholder);\n                brokenPlaceholder = \"[\"; \n            } else if (char == \"]\" && txt[i+1] != \"]\") {\n                brokenPlaceholder += char;\n                brokenTxt.push(brokenPlaceholder);\n                brokenPlaceholder = \"\";\n            } else if (char == \")\" && brokenPlaceholder.startsWith(\"(\")) {\n                brokenPlaceholder += char;\n                brokenTxt.push(brokenPlaceholder);\n                brokenPlaceholder = \"\";\n            } else if (i == txt.length-1) {\n                brokenPlaceholder += char;\n                brokenTxt.push(brokenPlaceholder);\n                brokenPlaceholder = \"\"; \n            } else if (char == \"{\") {\n                brokenTxt.push(brokenPlaceholder);\n                brokenPlaceholder = \"{\";\n            } else if (char == \"}\") {\n                brokenPlaceholder += char;\n                brokenTxt.push(brokenPlaceholder);\n                brokenPlaceholder = \"\";\n            } else {\n                brokenPlaceholder += char;\n            }\n        }\n        return brokenTxt\n    }\n\n    showSection([Object.keys(sections)[0]])\n}\n\n\n\n\n// S E R V E R   A I\n\nif (!(\"sendToAi\" in window) && online) {\n    window.aiChat = [];\n    window.aiMessaging = false;\n    window.aiRecieve = function(reply) {}\n    window.onCompletion = function() {}\n    window.sendToAi = function(message, functionOnReceive = function(reply) {}, functionOnCompletion = function() {}, aiBehaviour = \"\") {\n        if (!aiMessaging) {\n            if (aiChat.length == 0 && aiBehaviour != \"\") aiChat.push({role:\"assistant\" , content:aiBehaviour})\n            aiMessaging = true;\n            aiRecieve = functionOnReceive;\n            onCompletion = functionOnCompletion;\n            aiChat.push({role:\"user\" , content:message});\n            socket.emit('promptAI', aiChat);\n            aiChat.push({role:\"assistant\" , content:\"\"});\n        }\n    }\n    socket.on('promptAI', (response) => {\n        if (response == \"<finish>\") {\n            aiMessaging = false;\n            onCompletion();\n        } else {\n            aiChat[aiChat.length - 1].content += response;\n            aiRecieve(response);\n        }\n    })\n}\n\n",
-        "AutoSave": false
-    }
-};
-        // SAVEMARKER
-        let editMode = false;
-        let path = [];
-        let db;
-        let online = false;
-        try {
-            window.socket = io();
-            online = true;
-            console.log("Connected to the Server")
-        } catch {
-            console.log("Not connected to the Server");
-        }
+        const textArea = document.getElementById("textArea");
+        const mainArea = document.getElementById("mainArea");
+        const menuButton = document.getElementById("editButton");
+        const fullSelectionArea = document.getElementById("fullSelectionArea");
+        const prevSelectionArea = document.getElementById("prevSelectionArea");
+        const selectionArea = document.getElementById("selectionArea");
+        const nextSelectionArea = document.getElementById("nextSelectionArea");
+        const cnv = document.getElementById("cnv");
+        const ctx = cnv.getContext("2d");
+        const DB_NAME = "VN_DB"
+        const STORE = "vnStore";
+
+        let flags = {};
+        let vars = {};
+        let code = "";
+        let multiLine = "";
+        let addingCode = false;
+        let addingText = false;
+        let textToDisplay = "";
+        let textDisplayed = "";
+        let persistent = {};
+        let vn = `
+
+        <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; text-align:center; font-size:32px;">Loading ...</div>
+
+        `;
+        
+        prepareVN();
 
 
-        class PRNG {
-            constructor(seed) {
-                this.seed = seed || Math.floor(Math.random() * 2 ** 32);
-                this.a = 1664525;
-                this.c = 1013904223;
-                this.m = 2 ** 32;
-                this.z = this.seed;
-            }
-            random() {
-                this.z = (this.a * this.z + this.c) % this.m;
-                return this.z / this.m;
-            }
-            range(min, max) {
-                return min + (max - min) * this.random();
-            }
-            intRange(min, max) {
-                return Math.floor(this.range(min, max));
-            }
-            reset() {
-                this.z = this.seed;
-            }
-            newSeed(newSeed) {
-                this.seed = newSeed;
-                this.z = newSeed;
+
+
+        function typeLoop() {
+            if (textDisplayed !== textToDisplay) {
+                if (textToDisplay.startsWith(textDisplayed)) {
+                    textDisplayed += textToDisplay[textDisplayed.length];
+                } else {
+                    textDisplayed = "";
+                }
+                textArea.innerHTML = textDisplayed;
             }
         }
 
+        const typing = setInterval(typeLoop, 5);
 
-        // D A T A B A S E   F O R   A U T O S A V E
-        const dbName = 'toolkitDB';
-        const storeName = 'toolkitStore';
 
-        function initDatabase() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName, 1);
-
-                request.onupgradeneeded = function(event) {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains(storeName)) {
-                        db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
-                    }
-                };
-
-                request.onsuccess = function(event) {
-                    resolve(event.target.result);
-                };
-
-                request.onerror = function(event) {
-                    reject(event.target.error);
-                };
-            });
+        function prepareVN() {
+            vn = vn.split("\n").map(line => line.trim()).filter(line => line !== ""); // CONVERTS STRING TO ARRAY WITHOUT LEADING SPACES OR BLANK LINES
+            vn.forEach((elem, i) => {if (elem.startsWith("#")) flags[elem.substring(1).trim()] = i}); // POPULATES FLAGS 
         }
 
-        async function saveToolKit() {
-            try {
-                const db = await initDatabase();
-                const transaction = db.transaction([storeName], 'readwrite');
-                const store = transaction.objectStore(storeName);
-                store.clear();
-                store.put({ id: 1, data: toolKit });
-                transaction.oncomplete = () => {
-                    console.log("ToolKit saved to local storage.");
-                };
-                transaction.onerror = (event) => {
-                    console.error('Transaction error:', event.target.error);
-                };
-            } catch (error) {
-                console.error('Error saving ToolKit:', error);
+        function checkVar(str) {
+            if (str.includes("==")) {
+                let name = (!isNaN(parseInt(str.split("==")[0].trim()))) ? parseInt(str.split("==")[0].trim()) : str.split("==")[0].trim();
+                let val = (!isNaN(parseInt(str.split("==")[1].trim()))) ? parseInt(str.split("==")[1].trim()) : str.split("==")[1].trim();
+                if (name in vars) return (vars[name] == val)
+            } else if (str.includes("=")) {
+                let name = (!isNaN(parseInt(str.split("=")[0].trim()))) ? parseInt(str.split("=")[0].trim()) : str.split("=")[0].trim();
+                let val = (!isNaN(parseInt(str.split("=")[1].trim()))) ? parseInt(str.split("=")[1].trim()) : str.split("=")[1].trim();
+                vars[name] = val;
+                return true;
+            } else if (str.includes("<")) {
+                let name = (!isNaN(parseInt(str.split("<")[0].trim()))) ? parseInt(str.split("<")[0].trim()) : str.split("<")[0].trim();
+                let val = (!isNaN(parseInt(str.split("<")[1].trim()))) ? parseInt(str.split("<")[1].trim()) : str.split("<")[1].trim();
+                if (name in vars) return (vars[name] < val)
+            } else if (str.includes(">")) {
+                let name = (!isNaN(parseInt(str.split(">")[0].trim()))) ? parseInt(str.split(">")[0].trim()) : str.split(">")[0].trim();
+                let val = (!isNaN(parseInt(str.split(">")[1].trim()))) ? parseInt(str.split(">")[1].trim()) : str.split(">")[1].trim();
+                if (name in vars) return (vars[name] > val)
             }
+            return false;
         }
 
-        async function loadToolKit() {
-            try {
-                const db = await initDatabase();
-                const transaction = db.transaction([storeName], 'readwrite'); //readonly
-                const store = transaction.objectStore(storeName);
-                const request = store.getAll();
-                transaction.oncomplete = () => {
-                    if (request.result.length == 0) {
-                        saveToolKit();
+        function progressVN(track = 0) {
+
+            editButton.onclick = function() {
+                mainArea.style.height = "calc(100% - 10px)";
+                fullSelectionArea.style.display = "none";
+                textDisplayed = "";
+                textToDisplay = "";
+                textArea.innerHTML = "";
+                textArea.onclick = function() {};
+                let editor = document.createElement("textarea");
+                editor.wrap = "off";
+                editor.style.cssText = 'width:calc(100% - 10px); height:calc(100% - 14px); padding:5px; margin:0px; border:0px; resize:none; background-color:rgba(0,0,0,0);';
+                for (let i=0; i<vn.length; i++) {
+                    if (vn[i].startsWith("#")) vn[i] = "\n\n" + vn[i]
+                }
+                editor.value = vn.join("\n");
+                textArea.appendChild(editor);
+                editButton.innerHTML = "S";
+                editButton.onclick = function() {
+                    vn = editor.value;
+                    saveVN();
+                    flags = {};
+                    editButton.innerHTML = "E";
+                    prepareVN();
+                    textArea.innerHTML = "";
+                    progressVN();
+                }
+            }
+
+            textArea.onclick = function() {
+                if (textDisplayed != textToDisplay) {
+                    textDisplayed = textToDisplay;
+                    textArea.innerHTML = textDisplayed;
+                } else {
+                    mainArea.style.height = (mainArea.style.height == 'calc(100% - 10px)') ? "calc(25% - 10px)" : 'calc(100% - 10px)';
+                }
+            }
+
+            fullSelectionArea.style.display = "flex";
+
+            let line = vn[track];
+
+            if (addingCode) {
+                if (line.startsWith("]]")) {
+                    addingCode = false;
+                    let newJS = new Function(code);
+                    newJS();
+                } else {
+                    code += "\n" + line;
+                }
+                progressVN(track + 1);
+            } else if (line.startsWith('"""') && !addingText) {
+                addingText = true;
+                progressVN(track + 1);
+            } else if (line.startsWith("#")) { // FLAG
+                progressVN(track + 1);
+            } else if (line.startsWith("->")) { // JUMP
+                if (line.substring(2).trim() in flags) {
+                    progressVN(flags[line.substring(2).trim()]);
+                } else {
+                    progressVN(track + 1);
+                }
+            } else if (line.startsWith("?")) { // DECISION
+                console.log("Decisions need text prior.");
+                progressVN(track + 1);
+            } else if (line.startsWith("[[")) { // CODE
+                code = "\n";
+                addingCode = true;
+                progressVN(track + 1);
+            } else if (line.startsWith("[") && line.endsWith("]")) { // VAR DECLERATION
+                const broken = line.slice(1, line.length - 1).split("=")
+                const name = broken.shift().trim();
+                const value = broken.join("=").trim();
+                vars[name] = (!isNaN(parseInt(value))) ? parseInt(value) : value;
+                progressVN(track + 1);
+            } else if (line.startsWith(">>")) { // USER INPUT
+                const userInput = prompt(line.split("=")[1].trim());
+                vars[line.split("=")[0].substring(2).trim()] = (!isNaN(parseInt(userInput))) ? parseInt(userInput) : userInput;
+                progressVN(track + 1);
+            } else { // TEXT
+
+                if (addingText) {
+                    if (line.startsWith('"""')) {
+                        line = multiLine;
+                        addingText = false;
+                        multiLine = "";
                     } else {
-                        const baseToolKit = JSON.parse(JSON.stringify(toolKit));
-                        toolKit = request.result[0].data;
-                        if (!toolKit['!ToolKit Functions']['AutoSave']) {
-                            toolKit = baseToolKit;
-                            console.log("Autosave disabled.");
-                        } else {
-                            console.log("ToolKit loaded from local storage.");
+                        multiLine += line;
+                        return progressVN(track + 1);
+                    }
+                }
+                
+                let result = line.replace(/\[(.+?)\]/g, (_, key) => {
+                    return vars[key] !== undefined ? vars[key] : `[${key}]`;
+                });
+
+                textToDisplay = result;
+
+                if (track < vn.length - 1) {
+                    selectionArea.style.display = "flex";
+                    if (vn[track + 1].startsWith("?")) {
+                        prevSelectionArea.style.display = "flex";
+                        nextSelectionArea.style.display = "flex";
+                        prevSelectionArea.onclick = function() {cycleSelections(-1)};
+                        nextSelectionArea.onclick = function() {cycleSelections(1)};
+                        let selections = vn[track + 1].substring(1).split("|").filter(option => option.split("->")[1].trim() in flags);
+                        for (let i=selections.length-1; i>=0; i--) {
+                            if (selections[i].split("->")[0].trim().includes("[")) {
+                                const varCheck = checkVar(selections[i].split("->")[0].trim().split("[")[1].split("]")[0].trim()); // REMOVES OPTIONS WITH FALSE VAR CHECKS
+                                if (!varCheck) selections.splice(i, 1)
+                            }
+                        }
+                        if (selections.length == 1) {
+                            prevSelectionArea.style.display = "none";
+                            nextSelectionArea.style.display = "none";
+                        }
+                        let sel = 0;
+                        function cycleSelections(dir) {
+                            if (dir == 1) sel = (sel < (selections.length - 1)) ? sel + 1 : 0;
+                            if (dir == -1) sel = (sel > 0) ? sel - 1 : (selections.length - 1);
+                            if (selections[sel].split("->")[0].trim().includes("[")) {
+                                const title = selections[sel].split("->")[0].trim().split("]")[1].trim();
+                                selectionArea.innerHTML = title.toUpperCase();
+                            } else {
+                                selectionArea.innerHTML = selections[sel].split("->")[0].trim().toUpperCase();
+                            }
+                            selectionArea.onclick = function() {
+                                progressVN(flags[selections[sel].split("->")[1].trim()]);
+                            }
+                        }
+                        cycleSelections(0);
+                    } else {
+                        prevSelectionArea.style.display = "none";
+                        nextSelectionArea.style.display = "none";
+                        selectionArea.innerHTML = "CONTINUE";
+                        selectionArea.onclick = function() {
+                            progressVN(track + 1);
                         }
                     }
-                    let homeJS = new Function(toolKit["!ToolKit Functions"]["Home"].substring(2));
-                    homeJS();
-                    showOption();
-                };
-            } catch (error) {
-                console.error('Error loading ToolKit:', error);
-                return null;
+                } else {
+                    prevSelectionArea.style.display = "none";
+                    nextSelectionArea.style.display = "none";
+                    selectionArea.style.display = "none";
+                }
             }
         }
 
-        loadToolKit();
+        progressVN(0);
+        
+        loadVN()
 
-    </script>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('./service-worker.js')
-            .then(registration => {
-              console.log('Service Worker registered with scope:', registration.scope);
-            })
-            .catch(error => {
-              console.error('Service Worker registration failed:', error);
-            });
+        function saveVN() {
+            const r = indexedDB.open(DB_NAME, 1);
+            r.onupgradeneeded = () => r.result.createObjectStore(STORE);
+            r.onsuccess = () => {
+                const tx = r.result.transaction(STORE, "readwrite");
+                tx.objectStore(STORE).put(persistent, "persistent");
+                tx.objectStore(STORE).put(vn.join("\n\n"), "vn");
+                console.log("Saved to Local Storage.");
+            };
         }
+
+        function loadVN() {
+            const r = indexedDB.open(DB_NAME, 1);
+            r.onupgradeneeded = () => r.result.createObjectStore(STORE);
+            r.onsuccess = () => {
+                const tx = r.result.transaction(STORE, "readonly");
+                tx.objectStore(STORE).get("persistent").onsuccess = e => {
+                    if (e.target.result !== undefined) persistent = e.target.result;
+                };
+                tx.objectStore(STORE).get("vn").onsuccess = e => {
+                    if (e.target.result !== undefined) {
+                        vn = e.target.result;
+                        prepareVN();
+                        progressVN(0);
+                        console.log("Loaded from Local Storage.");
+                    } else {
+                        fetch("https://script.google.com/macros/s/AKfycbxdUbPaleGPyvEonEleFWJD2uo7NuePYrOUhhuNGzU6vRkB_sSzbWO_KrNe17uDpkArdw/exec", { method: "POST" })
+                        .then(res => {
+                            if (res.ok) {
+                                console.log("Grabbed most recent copy from Server.")
+                                return res.text();
+                            } else {
+                                return "⚠️ Failed to fetch data (status " + res.status + ")";
+                            }
+                        })
+                        .then(text => {
+                            vn = text;
+                            saveVN();
+                            prepareVN();
+                            progressVN(0);
+                        })
+                        .catch(err => {
+                            alert("No Internet Connection.\n\nOne is needed for the initial download.")
+                        });
+                    }
+                };
+            };
+        }
+
+        function resetVN() {
+            indexedDB.deleteDatabase(DB_NAME);
+        }
+
+
+
+        /*
+        Flags start with #
+        Text is normal on one line
+        Jumps start with ->
+        Decisions start with ? and are split with |
+        [] are used for Variables , [Var1 = 3] , [Var1 > 2](Text) , [Var1 > 2] Text -> Flag
+        [[Code]] is used for custom JS code.
+
+        */
     </script>
-    
-</body></html>
+
+</body>
+</html>
