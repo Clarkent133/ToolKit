@@ -339,12 +339,19 @@
         
                 dataChannel.onmessage = (event) => {
                     const { from, to, message } = JSON.parse(event.data);
-                    if (to === 0 || to === undefined) {
+        
+                    if (to === 0 || to === undefined || to === null) {
                         p2p.onReceive(message, from);
+                    } else if (to === "all") {
+                        p2p.dataChannels.forEach((channel, i) => {
+                            if (channel && i !== 0 && i !== from) {
+                                channel.send(JSON.stringify({ from, message }));
+                            }
+                        });
                     } else {
-                        // Relay through host to other clients
-                        if (p2p.dataChannels[to]) {
-                            p2p.dataChannels[to].send(JSON.stringify({ from, message }));
+                        const targetChannel = p2p.dataChannels[to];
+                        if (targetChannel && targetChannel.readyState === "open") {
+                            targetChannel.send(JSON.stringify({ from, message }));
                         }
                     }
                 };
@@ -360,16 +367,20 @@
                     .catch(err => console.error("Offer creation failed:", err));
             },
         
-            // Client joins using the offer from host
             join: function (hostOfferObj) {
                 const hostOffer = hostOfferObj;
                 const peer = new RTCPeerConnection({ iceServers: [p2p.stunServer] });
         
-                p2p.id = 1; // This will be replaced by host-assigned ID after connection
-                p2p.peerConnections[0] = peer; // Connection to host
+                p2p.id = 1;
+                p2p.peerConnections[0] = peer;
+        
                 peer.ondatachannel = (event) => {
                     const channel = event.channel;
                     p2p.dataChannels[0] = channel;
+        
+                    channel.onopen = () => {
+                        console.log("Connected to host!");
+                    };
         
                     channel.onmessage = (event) => {
                         const { from, message } = JSON.parse(event.data);
@@ -389,37 +400,53 @@
                     .catch(err => console.error("Client join failed:", err));
             },
         
-            // Host receives answer from client and completes connection
             completeConnection: function (answerObj) {
                 const clientId = p2p.connections[p2p.connections.length - 1];
                 const answer = answerObj;
                 const peer = p2p.peerConnections[clientId];
-                if (!peer) {
-                    console.error("No peer found for client ID", clientId);
-                    return;
-                }
         
-                peer.setRemoteDescription(new RTCSessionDescription(answer));
-                console.log(`Connection with client ${clientId} established.`);
+                if (!peer) return;
+        
+                peer.setRemoteDescription(new RTCSessionDescription(answer)).then(() => {
+                    console.log(`Connection with client ${clientId} established.`);
+        
+                    p2p.dataChannels.forEach((channel, i) => {
+                        if (channel && i !== 0 && i !== clientId) {
+                            channel.send(JSON.stringify({
+                                from: 0,
+                                message: `New player connected: ID ${clientId}`
+                            }));
+                        }
+                    });
+        
+                    const newClientChannel = p2p.dataChannels[clientId];
+                    if (newClientChannel) {
+                        p2p.connections.forEach(id => {
+                            if (id !== clientId) {
+                                newClientChannel.send(JSON.stringify({
+                                    from: 0,
+                                    message: `Existing player: ID ${id}`
+                                }));
+                            }
+                        });
+                    }
+                });
             },
         
             send: function (message, id = null) {
                 const payload = { from: p2p.id, message };
         
                 if (p2p.id === 0) {
-                    // Host sends
                     if (id !== null && p2p.dataChannels[id]) {
                         p2p.dataChannels[id].send(JSON.stringify(payload));
                     } else {
-                        // Broadcast to all clients
                         p2p.dataChannels.forEach((channel, i) => {
                             if (i !== 0 && channel) channel.send(JSON.stringify(payload));
                         });
                     }
                 } else {
-                    // Client sends to host
                     const hostChannel = p2p.dataChannels[0];
-                    if (hostChannel) {
+                    if (hostChannel && hostChannel.readyState === "open") {
                         hostChannel.send(JSON.stringify({ ...payload, to: id }));
                     }
                 }
@@ -429,7 +456,7 @@
                 console.log(`Message from ID ${from}:`, message);
             }
         };
-
+        
 
 
         progressVN(0);
