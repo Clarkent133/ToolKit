@@ -23,13 +23,24 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        return cache.addAll(urlsToPrecache);
+        return Promise.all(
+          urlsToPrecache.map((url) => {
+            return fetch(url)
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error(`Request for ${url} failed with status ${response.status}`);
+                }
+                return cache.put(url, response);
+              });
+          })
+        );
       })
       .catch((error) => {
         console.error('[Service Worker] Failed to pre-cache:', error);
       })
   );
 });
+
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
