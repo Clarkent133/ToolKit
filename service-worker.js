@@ -12,10 +12,10 @@ const urlsToPrecache = [
   '/Editor/tic80.js',
   '/Editor/tic80.wasm',
   'export/1.1/html',
-  'export/1.1/html.zip',
   'export/1.1/linux',
   'export/1.1/tic80.deb',
   'export/1.1/tic80.exe',
+  'export/1.1/tic80.apk',
   'export/1.1/win'
 ];
 
