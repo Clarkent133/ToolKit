@@ -340,17 +340,22 @@
                 dataChannel.onmessage = (event) => {
                     const { from, to, message } = JSON.parse(event.data);
         
-                    if (to === 0 || to === undefined || to === null) {
+                    if (to === 0 || to === null || to === undefined) {
                         p2p.onReceive(message, from);
+                        p2p.dataChannels.forEach((channel, i) => {
+                            if (i !== 0 && i !== from && channel?.readyState === "open") {
+                                channel.send(JSON.stringify({ from, message }));
+                            }
+                        });
                     } else if (to === "all") {
                         p2p.dataChannels.forEach((channel, i) => {
-                            if (channel && i !== 0 && i !== from) {
+                            if (i !== 0 && i !== from && channel?.readyState === "open") {
                                 channel.send(JSON.stringify({ from, message }));
                             }
                         });
                     } else {
                         const targetChannel = p2p.dataChannels[to];
-                        if (targetChannel && targetChannel.readyState === "open") {
+                        if (targetChannel?.readyState === "open") {
                             targetChannel.send(JSON.stringify({ from, message }));
                         }
                     }
@@ -411,7 +416,7 @@
                     console.log(`Connection with client ${clientId} established.`);
         
                     p2p.dataChannels.forEach((channel, i) => {
-                        if (channel && i !== 0 && i !== clientId) {
+                        if (channel?.readyState === "open" && i !== 0 && i !== clientId) {
                             channel.send(JSON.stringify({
                                 from: 0,
                                 message: `New player connected: ID ${clientId}`
@@ -420,7 +425,7 @@
                     });
         
                     const newClientChannel = p2p.dataChannels[clientId];
-                    if (newClientChannel) {
+                    if (newClientChannel?.readyState === "open") {
                         p2p.connections.forEach(id => {
                             if (id !== clientId) {
                                 newClientChannel.send(JSON.stringify({
@@ -437,16 +442,18 @@
                 const payload = { from: p2p.id, message };
         
                 if (p2p.id === 0) {
-                    if (id !== null && p2p.dataChannels[id]) {
+                    if (id !== null && p2p.dataChannels[id]?.readyState === "open") {
                         p2p.dataChannels[id].send(JSON.stringify(payload));
                     } else {
                         p2p.dataChannels.forEach((channel, i) => {
-                            if (i !== 0 && channel) channel.send(JSON.stringify(payload));
+                            if (i !== 0 && channel?.readyState === "open") {
+                                channel.send(JSON.stringify(payload));
+                            }
                         });
                     }
                 } else {
                     const hostChannel = p2p.dataChannels[0];
-                    if (hostChannel && hostChannel.readyState === "open") {
+                    if (hostChannel?.readyState === "open") {
                         hostChannel.send(JSON.stringify({ ...payload, to: id }));
                     }
                 }
@@ -456,6 +463,7 @@
                 console.log(`Message from ID ${from}:`, message);
             }
         };
+
         
 
 
