@@ -3,7 +3,7 @@ const CACHE_NAME = 'my-app-cache-v1';
 const urlsToPrecache = [
   '/',
   '/index.html',
-  '/icon-128x128.png',
+  '/icon-192x192.png',
   '/icon-512x512.png',
   '/manifest.json',
   '/qrCode.js',
