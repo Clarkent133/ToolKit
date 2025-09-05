@@ -25,6 +25,7 @@
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/qrCode.js"></script>
     
     <script>
         const textArea = document.getElementById("textArea");
@@ -246,6 +247,191 @@
                 }
             }
         }
+
+
+        function handleInputs(canvas) {
+            if (!canvas) throw new Error("Need a canvas");
+
+            if (window.inputs && window.inputs.destroy) window.inputs.destroy();
+
+            const keysDown = new Set(), keysConsumed = new Set();
+            let pointerDown = false, pointerPos = { x: 0, y: 0 };
+            const clickQueue = [];
+
+            const keyFromEvent = e => (e.key.length === 1 ? e.key.toLowerCase() : e.key);
+            const keyFromArg = k => (k.length === 1 ? k.toLowerCase() : k);
+            const coords = (cx, cy) => {
+                const r = canvas.getBoundingClientRect();
+                return { x: (cx - r.left) * (canvas.width / r.width), y: (cy - r.top) * (canvas.height / r.height) };
+            };
+            const inRect = (px, py, x, y, w, h) => px >= x && py >= y && px <= x + w && py <= y + h;
+
+            const inputs = {
+                btn(a, b, c, d) {
+                    if (arguments.length === 1 && typeof a === "string") return keysDown.has(keyFromArg(a));
+                    if (arguments.length === 4) return pointerDown && inRect(pointerPos.x, pointerPos.y, a, b, c, d);
+                    return false;
+                },
+                btnP(a, b, c, d) {
+                    if (arguments.length === 1 && typeof a === "string") {
+                        const k = keyFromArg(a);
+                        if (keysDown.has(k) && !keysConsumed.has(k)) return keysConsumed.add(k), true;
+                        return false;
+                    }
+                    if (arguments.length === 4) {
+                        for (let i = 0; i < clickQueue.length; i++) {
+                            const p = clickQueue[i];
+                            if (inRect(p.x, p.y, a, b, c, d)) return clickQueue.splice(i, 1), true;
+                        }
+                    }
+                    return false;
+                },
+                destroy() {
+                    window.removeEventListener("keydown", kd, true);
+                    window.removeEventListener("keyup", ku, true);
+                    window.removeEventListener("blur", bl, true);
+                    canvas.removeEventListener("pointermove", pm, true);
+                    canvas.removeEventListener("pointerdown", pd, true);
+                    canvas.removeEventListener("pointerup", pu, true);
+                    if (window.inputs === inputs) delete window.inputs;
+                }
+            };
+
+            const kd = e => keysDown.add(keyFromEvent(e));
+            const ku = e => { const k = keyFromEvent(e); keysDown.delete(k); keysConsumed.delete(k); };
+            const bl = () => { keysDown.clear(); keysConsumed.clear(); pointerDown = false; };
+            const pm = e => { pointerPos = coords(e.clientX, e.clientY); };
+            const pd = e => {
+                if (e.button !== 0) return;
+                if (!canvas.hasAttribute("tabindex")) canvas.setAttribute("tabindex", "0");
+                canvas.focus();
+                pointerDown = true;
+                pointerPos = coords(e.clientX, e.clientY);
+                clickQueue.push(pointerPos);
+            };
+            const pu = e => { if (e.button === 0) pointerDown = false; };
+
+            window.addEventListener("keydown", kd, true);
+            window.addEventListener("keyup", ku, true);
+            window.addEventListener("blur", bl, true);
+            canvas.addEventListener("pointermove", pm, true);
+            canvas.addEventListener("pointerdown", pd, true);
+            canvas.addEventListener("pointerup", pu, true);
+
+            return (window.inputs = inputs);
+        }
+
+
+
+        function P2P(role, onMsg) {
+            const ice = [{ urls: "stun:stun.l.google.com:19302" }];
+            const waitIce = (pc) => new Promise((r) => {
+                if (pc.iceGatheringState === "complete") return r();
+                pc.addEventListener("icegatheringstatechange", () => pc.iceGatheringState === "complete" && r());
+                setTimeout(r, 2000);
+            });
+
+            if (role === "host") {
+                let nextId = 1;
+                const peers = new Map(); // id -> { pc, dc }
+
+                return {
+                    id: 0,
+                    // 1) Call to start a new connection. Send returned offer to a client.
+                    offer: async () => {
+                        const id = nextId++;
+                        const pc = new RTCPeerConnection({ iceServers: ice });
+                        const dc = pc.createDataChannel("text");
+                        dc.onmessage = (e) => onMsg?.(id, String(e.data));
+                        peers.set(id, { pc, dc });
+
+                        const offer = await pc.createOffer();
+                        await pc.setLocalDescription(offer);
+                        await waitIce(pc);
+                        return { id, offer: JSON.stringify(pc.localDescription) };
+                    },
+                    // 2) Call after receiving that client's answer.
+                    finalize: async (id, answerStr) => {
+                        const p = peers.get(id);
+                        if (!p) throw new Error("Unknown peer: " + id);
+                        await p.pc.setRemoteDescription(JSON.parse(answerStr));
+                    },
+                    // Send to one peer or broadcast if id is undefined.
+                    send: (text, id) => {
+                        if (id == null) {
+                            for (const [pid, { dc }] of peers) if (dc.readyState === "open") dc.send(String(text));
+                            return;
+                        }
+                        const p = peers.get(id);
+                        if (!p || p.dc.readyState !== "open") throw new Error("Peer not ready: " + id);
+                        p.dc.send(String(text));
+                    },
+                    // Optional helpers
+                    peers: () => [...peers].map(([id, { pc }]) => ({ id, connected: pc.connectionState === "connected" })),
+                    close: (id) => {
+                        if (id == null) { for (const [pid, p] of peers) { p.dc.close(); p.pc.close(); peers.delete(pid); } return; }
+                        const p = peers.get(id); if (!p) return; p.dc.close(); p.pc.close(); peers.delete(id);
+                    }
+                };
+            }
+
+            if (role === "client") {
+                let pc, dc;
+                return {
+                    // Give it the host's offer string; returns your answer string to send back.
+                    answer: async (offerStr) => {
+                        pc = new RTCPeerConnection({ iceServers: ice });
+                        pc.ondatachannel = (e) => {
+                        dc = e.channel;
+                        dc.onmessage = (ev) => onMsg?.(0, String(ev.data));
+                        };
+                        await pc.setRemoteDescription(JSON.parse(offerStr));
+                        const ans = await pc.createAnswer();
+                        await pc.setLocalDescription(ans);
+                        await waitIce(pc);
+                        return JSON.stringify(pc.localDescription);
+                    },
+                    // Send to host (ID 0)
+                    send: (text) => {
+                        if (!dc || dc.readyState !== "open") throw new Error("Channel not open yet");
+                        dc.send(String(text));
+                    },
+                    close: () => { try { dc?.close(); } catch {} try { pc?.close(); } catch {} dc = pc = null; },
+                };
+            }
+
+            throw new Error('role must be "host" or "client"');
+        }
+
+
+
+        /*
+
+            Example Usage for Multiplayer
+
+            Host:
+                const host = P2P("host", (fromId, text) => console.log("From", fromId, text));
+                const { id, offer } = await host.offer(); 
+                SEND OFFER
+            
+            Client:
+                const client = P2P("client", (_fromHost, text) => console.log("Host:", text));
+                const answer = await client.answer(hostOfferString);
+                SEND NEW OFFER BACK TO HOST
+            
+            Host:
+                await host.finalize(id, clientAnswerString);
+            
+            !! CONNECTION ESTABLISHED !!
+
+            host.send("Direct message", id);
+            host.send("Broadcast message");
+
+            client.send("Message to Host.");
+
+        */
+
+
 
         progressVN(0);
         
