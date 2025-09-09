@@ -7,7 +7,6 @@ const urlsToPrecache = [
   '/icon-512x512.png',
   '/manifest.json',
   '/qrCode.js',
-  '/mathjax.js',
   '/Editor/',
   '/Editor/index.html',
   '/Editor/tic80.js',
