@@ -3,556 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/manifest.json">
+	<link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/icon-192x192.png">
     <title>CH</title>
-    <style>
-        .customStyling {
-            border-radius:4px;
-            border:solid black 2px;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="description" content="A simple site allowing custom HTML Widgets.">
+	<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body style="margin:0;">
-    <canvas id="cnv" style="width:100%; height:100dvh; position:fixed; z-index:1;"></canvas>
-    <div id="editButton" class="customStyling" style="width:34px; height:34px; position:fixed; top:10px; right:10px; cursor:pointer; z-index:30; display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px; background-color:white;">E</div>
+<body style="margin:0px; padding:0px; height:100dvh;">
 
-    <div id="mainArea" style="width:calc(100% - 10px); height:calc(25% - 10px); position:fixed; bottom:0px; display:flex; flex-direction:column-reverse; z-index:10; transition:height 0.6s ease-in-out; padding:5px; gap:5px;">
-        <div id="fullSelectionArea" style="width:100%; min-height:40px; display:flex; gap:5px;">
-            <div id="prevSelectionArea" class="customStyling" style="min-width:36px; height:calc(100% - 4px); display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px; cursor:pointer;">&lt;</div>
-            <div id="selectionArea" class="customStyling" style="width:calc(100% - 4px); height:calc(100% - 4px); display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px; cursor:pointer;"></div>
-            <div id="nextSelectionArea" class="customStyling" style="min-width:36px; height:calc(100% - 4px); display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px; cursor:pointer;">&gt;</div>
-        </div>
-        <div id="textArea" class="customStyling" style="width:calc(100% - 14px); height:calc(100% - 14px); padding:5px; font-size:16px; overflow-y:auto;"></div>
+    <div id="editWidgetWindow" onclick="editingWidget = null; resetWidgetPlacements();" style="display:none; width:100%; background-color:rgba(20,20,20,0.8); z-index:100; position:absolute; left:0px; transition:all 0.3s ease;">
+        <div id="moveWidgetUp" style="width:30px; height:30px; position:absolute; top:5px; right:5px; background-color:white; border:solid black 2px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; user-select:none;">^</div>
+        <div id="moveWidgetDown" style="width:30px; height:30px; position:absolute; bottom:5px; right:5px; background-color:white; border:solid black 2px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; user-select:none;">V</div>
+        <div id="decreaseWidget" style="width:30px; height:30px; position:absolute; top:5px; left:5px; background-color:white; border:solid black 2px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; user-select:none;">-</div>
+        <div id="increaseWidget" style="width:30px; height:30px; position:absolute; bottom:5px; left:5px; background-color:white; border:solid black 2px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; user-select:none;">+</div>
+        <div id="editWidget" style="width:50px; height:50px; position:absolute; top:calc(50% - 27px); left:calc(50% - 27px); background-color:white; border:solid black 2px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:38px; cursor:pointer; user-select:none;">E</div>
     </div>
 
-    <script src="/qrCode.js"></script>
-    
+    <div id="addWidgetDiv" style="display:none; width:100%; height:60px; justify-content:center; align-items:center; position:absolute; left:0px;">
+        <div onclick="addWidget();" style="width:40px; min-height:40px; max-height:40px; border:solid black 2px; border-radius:6px; background-color:grey; display:flex; justify-content:center; align-items:center; font-size:42px; cursor:pointer; color:white;">+</div>
+    </div>
+
+	<script src="/qrCode.js"></script>
+
     <script>
-        const textArea = document.getElementById("textArea");
-        const mainArea = document.getElementById("mainArea");
-        const menuButton = document.getElementById("editButton");
-        const fullSelectionArea = document.getElementById("fullSelectionArea");
-        const prevSelectionArea = document.getElementById("prevSelectionArea");
-        const selectionArea = document.getElementById("selectionArea");
-        const nextSelectionArea = document.getElementById("nextSelectionArea");
-        const cnv = document.getElementById("cnv");
-        const ctx = cnv.getContext("2d");
-        const DB_NAME = "VN_DB"
-        const STORE = "vnStore";
 
-        let flags = {};
-        let vars = {};
-        let code = "";
-        let multiLine = "";
-        let addingCode = false;
-        let addingText = false;
-        let textToDisplay = "";
-        let textDisplayed = "";
-        let renderedMath = false;
-        let persistent = {};
-        let vn = `
+        const editWidgetWindow = document.getElementById("editWidgetWindow");
+        const moveWidgetUp = document.getElementById("moveWidgetUp");
+        const moveWidgetDown = document.getElementById("moveWidgetDown");
+        const decreaseWidget = document.getElementById("decreaseWidget");
+        const increaseWidget = document.getElementById("increaseWidget");
+        const editWidget = document.getElementById("editWidget");
+        
+        const addWidgetDiv = document.getElementById("addWidgetDiv");
+		const DB_NAME = "Widgets_DB"
+        const STORE = "WidgetsStore";
+		
+        let widgets = [{"html":"<img src=\"https://www.skyweaver.net/images/media/wallpapers/wallpaper1.jpg\" style=\"width:100%; height:100%; object-fit:cover;\"></img>\n\n<div style=\"width:calc(100% - 10px); height:calc(100% - 12px); border-bottom:solid black 2px; display:flex; flex-direction:column; gap:5px; padding:5px; position:absolute;\">\n    <div style=\"width:100%; min-height:40px; display:flex; gap:5px;\">\n        <div id=\"prevDate\" style=\"min-width:36px; height:36px; border:solid black 2px; border-radius:6px; background-color:rgba(255,255,255,0.7); display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px;\">&lt;</div>\n        <div id=\"dateTitle\" style=\"width:calc(100% - 4px); height:36px; border:solid black 2px; border-radius:6px; background-color:rgba(255,255,255,0.7); display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px;\"></div>\n        <div id=\"nextDate\" style=\"min-width:36px; height:36px; border:solid black 2px; border-radius:6px; background-color:rgba(255,255,255,0.7); display:flex; justify-content:center; align-items:center; text-align:center; font-size:24px;\">&gt;</div>\n    </div>\n    <textarea id=\"diary\" style=\"width:calc(100% - 14px); height:calc(100% - 10px); padding:5px; border:solid black 2px; border-radius:6px; background-color:rgba(255,255,255,0.7); resize:none;\"></textarea>\n</div>\n\n\n\n\n\n\n<js>\n    const days = [\"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\", \"Saturday\"];\n    const dateEndings = [\"st\", \"nd\", \"rd\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"st\", \"nd\", \"rd\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"th\", \"st\"];\n    const months = [\"January\", \"February\", \"March\", \"April\", \"May\", \"June\", \"July\", \"August\", \"September\", \"October\", \"November\", \"December\"];\n    const date = new Date();\n    const dayOfWeek = days[date.getDay()];\n    const dayOfMonth = date.getDate();\n    const month = date.getMonth();\n    const year = date.getFullYear();\n    const fullDate = `${dayOfWeek} ${dayOfMonth}${dateEndings[dayOfMonth-1]} ${months[month]} ${year}`;\n    const dateTitle = document.getElementById(\"dateTitle\");\n    const diary = document.getElementById(\"diary\");\n\n    if (!(\"entries\" in widgets[index])) widgets[index][\"entries\"] = {};\n    if (!(fullDate in widgets[index].entries)) widgets[index].entries[fullDate] = \"\";\n    diary.value = widgets[index].entries[fullDate];\n\n    dateTitle.innerHTML = fullDate;\n\n    diary.oninput = function() {\n        widgets[index].entries[fullDate] = diary.value;\n        saveWidgets();\n    }\n    \n</js>","size":10,"id":"Widget_0","entries":{"Thursday 18th September 2025":""}},{"html":"<div style=\"width:calc(100% - 10px); height:calc(100% - 12px); border-bottom:solid black 2px; padding:5px; background-color:rgb(200,200,200); overflow-y:scroll;\">\n    <h2>Item Checklist</h2>\n    <h3>Journey's</h3>\n    <ul>\n    <li><b>3rd</b><br>Cross Keys Inn, Tebay, Penrith CA10 3UY<br><br><a href=\"https://www.google.com/maps/dir/?api=1&destination=54.4333583,-2.5950552\" target=\"_blank\" rel=\"noopener\" style=\"padding:5px; border:solid green 2px; ;\">Navigate</a><br><br>5:30 Hour drive approx from Home<br>Check in at 15:00<br>Check out 11:00<br>£80.00 Paid</li>\n    <li><b>4th</b><br>Redburn Steading, Belivat, Nairn IV12 5JE<br><br><a href=\"https://www.google.com/maps/dir/?api=1&destination=57.5038861,-3.7658357\" target=\"_blank\" rel=\"noopener\" style=\"padding:5px; border:solid green 2px; ;\">Navigate</a><br><br>4:30 Hour drive approx from Cross Keys Inn<br>Check in at 16:00<br>Check out at 10:00</li>\n    <li><b>11th</b><br>Ellerbeck Bridge, Carnforth LA6 2HR<br><br><a href=\"https://www.google.com/maps/dir/?api=1&destination=54.1860055,-2.5676927\" target=\"_blank\" rel=\"noopener\" style=\"padding:5px; border:solid green 2px; ;\">Navigate</a><br><br>5:30 Hour drive approx from Redburn Steading<br>Check in at 16:00<br>Check out at 10:00</li>\n    <li><b>16th</b><br>Carwinley Barn, Carwinley Mill House, Longtown, Carlisle CA6 5PE<br><br><a href=\"https://www.google.com/maps/dir/?api=1&destination=55.0472321,-2.9344822\" target=\"_blank\" rel=\"noopener\" style=\"padding:5px; border:solid green 2px; ;\">Navigate</a><br><br>1:15 Hour drive approx from Ellerbeck Bridge<br>Check in at 15:00<br>Check out at 10:00<br>£146.00 Paid, £231.00 Remaining from Joint on 4th</li>\n    <li><b>18th</b><br>39 Olivine Close, Home<br><br><a href=\"https://www.google.com/maps/dir/?api=1&destination=51.328679,0.528688\" target=\"_blank\" rel=\"noopener\" style=\"padding:5px; border:solid green 2px; ;\">Navigate</a><br><br>6:00 Hour drive approx from Carwinley Barn<br>Check in whenever<br>Check out RIP</li>\n    </ul>\n    <h3>To-Do's</h3>\n    <ul>\n    <li><strong>4th -> 11th</strong>\n    <ul>\n    <li>Paddle Boarding<br>Nairne</li>\n    <li>Secret Beach<br>Idk, Nairn IV12 5NU<br>22 Minute Drive</li>\n    <li>Bow Hunter Archery<br>Bowhunter Archery Woodland Adventures, Balnagowan Woods, B9092, Nairn IV2 7QX<br>20 Minute Drive</li>\n    <li>Killicrankie<br>The Pass of Killicrankie National Trust Visitor Centre, Killicrankie Visitor Centre, Perthshire, Killiecrankie, Pitlochry PH16 5LG<br>1:30 Hour Drive</li>\n    <li>Steall WaterFall (Ben Nevis)<br>Steall Waterfall, Old Military Rd, Fort William PH33 6SY<br>2:00 Hour Drive</li>\n    <li>Brodie Castle<br>Garden House - Brodie Castle (National Trust for Scotland), Brodie Castle, Forres IV36 2TE<br>18 Minute Drive</li>\n    <li>Dunrobin Castle<br>Dunrobin Castle, Golspie KW10 6SF<br>1:30 Hour Drive</li>\n    <li>Ardross Castle<br>Ardross Castle, Ardross, Alness IV17 0YE<br>1:00 Hour Drive</li>\n    <li>Riverside Path to Cawdor<br>Riverside Path to Cawdor, 29 Mill Rd, Nairn IV12 5EJ<br>15 Minute Drive</li>\n    </ul>\n    </li>\n    <li><b>7th</b><br>Scattering of Ashes (Looking after Zuri)</li>\n    <li><b>11th</b><br>Buttermere Walk<br>Buttermere, Cockermouth CA13 9XA<br>1:30 Hour Drive from Ellerbeck Bridge</li>\n    <li><b>12th</b><br>Honister Slate Mine, Honister Pass, Keswick CA12 5XN<br>1:30 Hour drive approx from Ellerbeck Bridge<br>9:00 Ferrata Extreme Experience<br>13:00 Climb the Mine</li>\n    </ul>\n</div>","size":10,"id":"Widget_1"}];
 
-        <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; text-align:center; font-size:32px;">Loading ...</div>
+        let editingWidget = null;
+        let widgetIdTracker = 0;
 
-        `;
         
 
-        prepareVN();
+		loadWidgets();
 
-        handleInputs(cnv);
-        inputUses();
+
 
         
-        function inputUses() {
-            if (inputs.btnP("ArrowUp")) textArea.click();
-            if (inputs.btnP("ArrowLeft")) prevSelectionArea.click();
-            if (inputs.btnP("ArrowDown")) selectionArea.click();
-            if (inputs.btnP("ArrowRight")) nextSelectionArea.click();
-            requestAnimationFrame(inputUses);
-        }
-
-        function typeLoop() {
-            if (textDisplayed !== textToDisplay) {
-                renderedMath = false;
-                if (textToDisplay.startsWith(textDisplayed)) {
-                    textDisplayed += textToDisplay[textDisplayed.length];
-                } else {
-                    textDisplayed = "";
-                }
-                textArea.innerHTML = textDisplayed;
-            } else if (!renderedMath) {
-                renderedMath = true;
-                MathJax.typeset();
+        function placeInitialWidgets() {
+            let heightAbove = 0;
+            for (let i=0; i<widgets.length; i++) {
+                placeWidget(i, heightAbove);
+                heightAbove += widgets[i].size;
             }
         }
 
-        const typing = setInterval(typeLoop, 5);
+        function placeWidget(i, heightAbove) {
+            const {html , size} = widgets[i];
+            const widget = document.createElement("div");
+            const id = widgetIdTracker;
+            widget.id = `Widget_${id}`;
+            widgets[i]["id"] = `Widget_${id}`;
+            widget.innerHTML = html.replace(/<js[\s\S]*?>[\s\S]*?<\/js>/gi, '');
+			const scripts = html.match(/<js[\s\S]*?>([\s\S]*?)<\/js>/gi);
+			if (scripts) {
+				for (let j=0; j<scripts.length; j++) {
+					requestAnimationFrame(() => {
+						const code = scripts[j].replace(/<js[\s\S]*?>|<\/js>/gi, '');
+						const fn = new Function("index", code);
+						fn(i)
+					});
 
+				}
+			};
+            widget.style.cssText = `position:absolute; top:${heightAbove*10}%; width:100%; min-height:${size*10}dvh; height:${size*10}dvh; max-height:${size*10}dvh; display:flex; justify-content:center; align-items:center; transition:all 0.3s ease; user-select:none; touch-action:manipulation;`;
+            document.body.appendChild(widget);
 
-        function prepareVN() {
-            vn = vn.split("\n").map(line => line.trim()).filter(line => line !== ""); // CONVERTS STRING TO ARRAY WITHOUT LEADING SPACES OR BLANK LINES
-            vn.forEach((elem, i) => {if (elem.startsWith("#")) flags[elem.substring(1).trim()] = i}); // POPULATES FLAGS 
-        }
-
-        function checkVar(str) {
-            if (str.includes("==")) {
-                let name = (!isNaN(parseInt(str.split("==")[0].trim()))) ? parseInt(str.split("==")[0].trim()) : str.split("==")[0].trim();
-                let val = (!isNaN(parseInt(str.split("==")[1].trim()))) ? parseInt(str.split("==")[1].trim()) : str.split("==")[1].trim();
-                if (name in vars) return (vars[name] == val)
-            } else if (str.includes("=")) {
-                let name = (!isNaN(parseInt(str.split("=")[0].trim()))) ? parseInt(str.split("=")[0].trim()) : str.split("=")[0].trim();
-                let val = (!isNaN(parseInt(str.split("=")[1].trim()))) ? parseInt(str.split("=")[1].trim()) : str.split("=")[1].trim();
-                vars[name] = val;
-                return true;
-            } else if (str.includes("<")) {
-                let name = (!isNaN(parseInt(str.split("<")[0].trim()))) ? parseInt(str.split("<")[0].trim()) : str.split("<")[0].trim();
-                let val = (!isNaN(parseInt(str.split("<")[1].trim()))) ? parseInt(str.split("<")[1].trim()) : str.split("<")[1].trim();
-                if (name in vars) return (vars[name] < val)
-            } else if (str.includes(">")) {
-                let name = (!isNaN(parseInt(str.split(">")[0].trim()))) ? parseInt(str.split(">")[0].trim()) : str.split(">")[0].trim();
-                let val = (!isNaN(parseInt(str.split(">")[1].trim()))) ? parseInt(str.split(">")[1].trim()) : str.split(">")[1].trim();
-                if (name in vars) return (vars[name] > val)
+            let holdTimer = null;
+            function onHoldComplete() {
+                editingWidget = (editingWidget == `Widget_${id}`) ? null : `Widget_${id}`;
+                resetWidgetPlacements();
+                holdTimer = null;
             }
-            return false;
-        }
-
-        function progressVN(track = 0) {
-
-            editButton.onclick = function() {
-                mainArea.style.height = "calc(100% - 10px)";
-                fullSelectionArea.style.display = "none";
-                textDisplayed = "";
-                textToDisplay = "";
-                textArea.innerHTML = "";
-                textArea.onclick = function() {};
-                let editor = document.createElement("textarea");
-                editor.wrap = "off";
-                editor.style.cssText = 'width:calc(100% - 10px); height:calc(100% - 14px); padding:5px; margin:0px; border:0px; resize:none; background-color:rgba(0,0,0,0);';
-                for (let i=0; i<vn.length; i++) {
-                    if (vn[i].startsWith("#")) vn[i] = "\n\n" + vn[i]
-                }
-                editor.value = vn.join("\n");
-                textArea.appendChild(editor);
-                editButton.innerHTML = "S";
-                editButton.onclick = function() {
-                    vn = editor.value;
-                    saveVN();
-                    flags = {};
-                    editButton.innerHTML = "E";
-                    prepareVN();
-                    textArea.innerHTML = "";
-                    progressVN();
+            function startHold(e) {
+                if (holdTimer !== null) return;
+                holdTimer = setTimeout(onHoldComplete, 500);
+            }
+            function cancelHold() {
+                if (holdTimer !== null) {
+                    clearTimeout(holdTimer);
+                    holdTimer = null;
                 }
             }
+            widget.addEventListener('mousedown', startHold);
+            widget.addEventListener('touchstart', startHold);
+            widget.addEventListener('mouseup',   cancelHold);
+            widget.addEventListener('mouseleave', cancelHold);
+            widget.addEventListener('touchend',   cancelHold);
+            widget.addEventListener('touchcancel', cancelHold);
 
-            textArea.onclick = function() {
-                if (textDisplayed != textToDisplay) {
-                    textDisplayed = textToDisplay;
-                    textArea.innerHTML = textDisplayed;
-                } else {
-                    mainArea.style.height = (mainArea.style.height == 'calc(100% - 10px)') ? "calc(25% - 10px)" : 'calc(100% - 10px)';
-                }
-            }
-
-            fullSelectionArea.style.display = "flex";
-
-            let line = vn[track];
-
-            if (addingCode) {
-                if (line.startsWith("]]")) {
-                    addingCode = false;
-                    let newJS = new Function(code);
-                    newJS();
-                } else {
-                    code += "\n" + line;
-                }
-                progressVN(track + 1);
-            } else if (line.startsWith('"""') && !addingText) {
-                addingText = true;
-                progressVN(track + 1);
-            } else if (line.startsWith("#")) { // FLAG
-                progressVN(track + 1);
-            } else if (line.startsWith("->")) { // JUMP
-                if (line.substring(2).trim() in flags) {
-                    progressVN(flags[line.substring(2).trim()]);
-                } else {
-                    progressVN(track + 1);
-                }
-            } else if (line.startsWith("?")) { // DECISION
-                console.log("Decisions need text prior.");
-                progressVN(track + 1);
-            } else if (line.startsWith("[[")) { // CODE
-                code = "\n";
-                addingCode = true;
-                progressVN(track + 1);
-            } else if (line.startsWith("[") && line.endsWith("]")) { // VAR DECLERATION
-                const broken = line.slice(1, line.length - 1).split("=")
-                const name = broken.shift().trim();
-                const value = broken.join("=").trim();
-                vars[name] = (!isNaN(parseInt(value))) ? parseInt(value) : value;
-                progressVN(track + 1);
-            } else if (line.startsWith(">>")) { // USER INPUT
-                const userInput = prompt(line.split("=")[1].trim());
-                vars[line.split("=")[0].substring(2).trim()] = (!isNaN(parseInt(userInput))) ? parseInt(userInput) : userInput;
-                progressVN(track + 1);
-            } else { // TEXT
-
-                if (addingText) {
-                    if (line.startsWith('"""')) {
-                        line = multiLine;
-                        addingText = false;
-                        multiLine = "";
-                    } else {
-                        multiLine += line;
-                        return progressVN(track + 1);
-                    }
-                }
-                
-                let result = line.replace(/\[(.+?)\]/g, (_, key) => {
-                    return vars[key] !== undefined ? vars[key] : `[${key}]`;
-                });
-
-                textToDisplay = result;
-
-                if (track < vn.length - 1) {
-                    selectionArea.style.display = "flex";
-                    if (vn[track + 1].startsWith("?")) {
-                        prevSelectionArea.style.display = "flex";
-                        nextSelectionArea.style.display = "flex";
-                        prevSelectionArea.onclick = function() {cycleSelections(-1)};
-                        nextSelectionArea.onclick = function() {cycleSelections(1)};
-                        let selections = vn[track + 1].substring(1).split("|").filter(option => option.split("->")[1].trim() in flags);
-                        for (let i=selections.length-1; i>=0; i--) {
-                            if (selections[i].split("->")[0].trim().includes("[")) {
-                                const varCheck = checkVar(selections[i].split("->")[0].trim().split("[")[1].split("]")[0].trim()); // REMOVES OPTIONS WITH FALSE VAR CHECKS
-                                if (!varCheck) selections.splice(i, 1)
-                            }
-                        }
-                        if (selections.length == 1) {
-                            prevSelectionArea.style.display = "none";
-                            nextSelectionArea.style.display = "none";
-                        }
-                        let sel = 0;
-                        function cycleSelections(dir) {
-                            if (dir == 1) sel = (sel < (selections.length - 1)) ? sel + 1 : 0;
-                            if (dir == -1) sel = (sel > 0) ? sel - 1 : (selections.length - 1);
-                            if (selections[sel].split("->")[0].trim().includes("[")) {
-                                const title = selections[sel].split("->")[0].trim().split("]")[1].trim();
-                                selectionArea.innerHTML = title.toUpperCase();
-                            } else {
-                                selectionArea.innerHTML = selections[sel].split("->")[0].trim().toUpperCase();
-                            }
-                            selectionArea.onclick = function() {
-                                progressVN(flags[selections[sel].split("->")[1].trim()]);
-                            }
-                        }
-                        cycleSelections(0);
-                    } else {
-                        prevSelectionArea.style.display = "none";
-                        nextSelectionArea.style.display = "none";
-                        selectionArea.innerHTML = "CONTINUE";
-                        selectionArea.onclick = function() {
-                            progressVN(track + 1);
-                        }
-                    }
-                } else {
-                    prevSelectionArea.style.display = "none";
-                    nextSelectionArea.style.display = "none";
-                    selectionArea.style.display = "none";
-                }
-            }
+            widgetIdTracker += 1;                
         }
 
+        function resetWidgetPlacements() {
+			saveWidgets();
+            let heightAbove = 0;
+            for (let i=0; i<widgets.length; i++) {
+                const {html , size , id} = widgets[i];
+                const widget = document.getElementById(id);
+                widget.style.top = `${heightAbove*10}%`;
+                widget.style.minHeight = `${size*10}dvh`;
+                widget.style.height = `${size*10}dvh`;
+                widget.style.maxHeight = `${size*10}dvh`;
+                if (editingWidget == id) {
+                    editWidgetWindow.style.display = "block";
+                    editWidgetWindow.style.top = widget.style.top; 
+                    editWidgetWindow.style.height = widget.style.height;
+                    
+                    moveWidgetUp.style.display = (i==0) ? "none" : "flex";
+                    moveWidgetDown.style.display = (i==(widgets.length - 1)) ? "none" : "flex";
+                    decreaseWidget.style.display = (size==1) ? "none" : "flex";
+                    increaseWidget.style.display = (size==10) ? "none" : "flex";
+                    
+                    moveWidgetUp.onclick = function(e) {moveWidget(i, -1); e.stopPropagation();};
+                    moveWidgetDown.onclick = function(e) {moveWidget(i, 1); e.stopPropagation();};
+                    decreaseWidget.onclick = function(e) {widgets[i].size -= 1; resetWidgetPlacements(); e.stopPropagation();};
+                    increaseWidget.onclick = function(e) {widgets[i].size += 1; resetWidgetPlacements(); e.stopPropagation();};
 
-        function handleInputs(canvas) {
-            if (!canvas) throw new Error("Need a canvas");
-
-            if (window.inputs && window.inputs.destroy) window.inputs.destroy();
-
-            const keysDown = new Set(), keysConsumed = new Set();
-            let pointerDown = false, pointerPos = { x: 0, y: 0 };
-            const clickQueue = [];
-
-            const keyFromEvent = e => (e.key.length === 1 ? e.key.toLowerCase() : e.key);
-            const keyFromArg = k => (k.length === 1 ? k.toLowerCase() : k);
-            const coords = (cx, cy) => {
-                const r = canvas.getBoundingClientRect();
-                return { x: (cx - r.left) * (canvas.width / r.width), y: (cy - r.top) * (canvas.height / r.height) };
-            };
-            const inRect = (px, py, x, y, w, h) => px >= x && py >= y && px <= x + w && py <= y + h;
-            
-            const inputs = {
-                btn(a, b, c, d) {
-                    if (arguments.length === 1 && typeof a === "string") return keysDown.has(keyFromArg(a));
-                    if (arguments.length === 4) return pointerDown && inRect(pointerPos.x, pointerPos.y, a, b, c, d);
-                    return false;
-                },
-                btnP(a, b, c, d) {
-                    if (arguments.length === 1 && typeof a === "string") {
-                        const k = keyFromArg(a);
-                        if (keysDown.has(k) && !keysConsumed.has(k)) return keysConsumed.add(k), true;
-                        return false;
-                    }
-                    if (arguments.length === 4) {
-                        for (let i = 0; i < clickQueue.length; i++) {
-                            const p = clickQueue[i];
-                            if (inRect(p.x, p.y, a, b, c, d)) return clickQueue.splice(i, 1), true;
-                        }
-                    }
-                    return false;
-                },
-                destroy() {
-                    window.removeEventListener("keydown", kd, true);
-                    window.removeEventListener("keyup", ku, true);
-                    window.removeEventListener("blur", bl, true);
-                    canvas.removeEventListener("pointermove", pm, true);
-                    canvas.removeEventListener("pointerdown", pd, true);
-                    canvas.removeEventListener("pointerup", pu, true);
-                    if (window.inputs === inputs) delete window.inputs;
-                }
-            };
-
-            const kd = e => keysDown.add(keyFromEvent(e));
-            const ku = e => { const k = keyFromEvent(e); keysDown.delete(k); keysConsumed.delete(k); };
-            const bl = () => { keysDown.clear(); keysConsumed.clear(); pointerDown = false; };
-            const pm = e => { pointerPos = coords(e.clientX, e.clientY); };
-            const pd = e => {
-                if (e.button !== 0) return;
-                if (!canvas.hasAttribute("tabindex")) canvas.setAttribute("tabindex", "0");
-                canvas.focus();
-                pointerDown = true;
-                pointerPos = coords(e.clientX, e.clientY);
-                clickQueue.push(pointerPos);
-            };
-            const pu = e => { if (e.button === 0) pointerDown = false; };
-
-            window.addEventListener("keydown", kd, true);
-            window.addEventListener("keyup", ku, true);
-            window.addEventListener("blur", bl, true);
-            canvas.addEventListener("pointermove", pm, true);
-            canvas.addEventListener("pointerdown", pd, true);
-            canvas.addEventListener("pointerup", pu, true);
-
-            return (window.inputs = inputs);
-        }
-
-
-        const p2p = {
-            id: 0,
-            connections: [],
-            peerConnections: [],
-            dataChannels: [],
-            stunServer: { urls: "stun:stun.l.google.com:19302" },
-        
-            host: function () {
-                const peer = new RTCPeerConnection({ iceServers: [p2p.stunServer] });
-                const dataChannel = peer.createDataChannel("data");
-        
-                const newId = p2p.connections.length + 1;
-                p2p.peerConnections[newId] = peer;
-                p2p.dataChannels[newId] = dataChannel;
-                p2p.connections.push(newId);
-        
-                dataChannel.onmessage = (event) => {
-                    const { from, to, message } = JSON.parse(event.data);
-        
-                    if (to === 0 || to === null || to === undefined) {
-                        p2p.onReceive(message, from);
-                        p2p.dataChannels.forEach((channel, i) => {
-                            if (i !== 0 && i !== from && channel?.readyState === "open") {
-                                channel.send(JSON.stringify({ from, message }));
-                            }
-                        });
-                    } else if (to === "all") {
-                        p2p.dataChannels.forEach((channel, i) => {
-                            if (i !== 0 && i !== from && channel?.readyState === "open") {
-                                channel.send(JSON.stringify({ from, message }));
-                            }
-                        });
-                    } else {
-                        const targetChannel = p2p.dataChannels[to];
-                        if (targetChannel?.readyState === "open") {
-                            targetChannel.send(JSON.stringify({ from, message }));
-                        }
-                    }
-                };
-        
-                peer.onicecandidate = (e) => {
-                    if (e.candidate === null) {
-                        console.log(`OFFER FOR CLIENT ID ${newId}:`, JSON.stringify(peer.localDescription));
-                    }
-                };
-        
-                peer.createOffer()
-                    .then(offer => peer.setLocalDescription(offer))
-                    .catch(err => console.error("Offer creation failed:", err));
-            },
-        
-            join: function (hostOfferObj) {
-                const hostOffer = hostOfferObj;
-                const peer = new RTCPeerConnection({ iceServers: [p2p.stunServer] });
-        
-                p2p.id = 1;
-                p2p.peerConnections[0] = peer;
-        
-                peer.ondatachannel = (event) => {
-                    const channel = event.channel;
-                    p2p.dataChannels[0] = channel;
-        
-                    channel.onopen = () => {
-                        console.log("Connected to host!");
+                    editWidget.onclick = function(e) {
+                        widget.innerHTML = "";
+                        editingWidget = null;
+                        let editor = document.createElement("textarea");
+						editor.wrap = "off";
+                        editor.style.cssText = `width:calc(100% - 20px); height:calc(100% - 20px); border:0px; padding:5px; border:solid black 5px; resize:none; background-color:rgba(0,0,0,0.9); color:white; scrollbar-color:white rgba(0,0,0,0);`;
+                        editor.value = widgets[i].html;
+						editor.onmousedown = function(e) {e.stopPropagation();};
+                        widget.appendChild(editor);
+						editor.addEventListener('keydown', function(e) {
+							if (e.key === 'Tab') {
+								e.preventDefault();
+								const start = this.selectionStart;
+								const end = this.selectionEnd;
+								this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+								this.selectionStart = this.selectionEnd = start + 4;
+							}
+						});
+                        let saveButton = document.createElement("div");
+                        saveButton.style.cssText = `width:60px; height:30px; position:absolute; bottom:8px; right:8px; background-color:white; border:solid black 2px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; user-select:none;`;
+                        saveButton.innerHTML = "Save";
+                        saveButton.onclick = function() {
+							if (editor.value == "") {
+								widget.remove();
+								widgets.splice(i, 1);
+								resetWidgetPlacements();
+							} else {
+								widgets[i].html = editor.value;
+								widget.innerHTML = editor.value.replace(/<js[\s\S]*?>[\s\S]*?<\/js>/gi, '');
+								const scripts = editor.value.match(/<js[\s\S]*?>([\s\S]*?)<\/js>/gi);
+								if (scripts) {
+									for (let j=0; j<scripts.length; j++) {
+										requestAnimationFrame(() => {
+											const code = scripts[j].replace(/<js[\s\S]*?>|<\/js>/gi, '');
+											const fn = new Function("index", code);
+											fn(i)
+										});
+									}
+								};
+								
+							}
+							saveWidgets();
+                            
+                        };
+                        widget.appendChild(saveButton);
                     };
-        
-                    channel.onmessage = (event) => {
-                        const { from, message } = JSON.parse(event.data);
-                        p2p.onReceive(message, from);
-                    };
-                };
-        
-                peer.onicecandidate = (e) => {
-                    if (e.candidate === null) {
-                        console.log("ANSWER FOR HOST:", JSON.stringify(peer.localDescription));
-                    }
-                };
-        
-                peer.setRemoteDescription(new RTCSessionDescription(hostOffer))
-                    .then(() => peer.createAnswer())
-                    .then(answer => peer.setLocalDescription(answer))
-                    .catch(err => console.error("Client join failed:", err));
-            },
-        
-            completeConnection: function (answerObj) {
-                const clientId = p2p.connections[p2p.connections.length - 1];
-                const answer = answerObj;
-                const peer = p2p.peerConnections[clientId];
-        
-                if (!peer) return;
-        
-                peer.setRemoteDescription(new RTCSessionDescription(answer)).then(() => {
-                    console.log(`Connection with client ${clientId} established.`);
-        
-                    p2p.dataChannels.forEach((channel, i) => {
-                        if (channel?.readyState === "open" && i !== 0 && i !== clientId) {
-                            channel.send(JSON.stringify({
-                                from: 0,
-                                message: `New player connected: ID ${clientId}`
-                            }));
-                        }
-                    });
-        
-                    const newClientChannel = p2p.dataChannels[clientId];
-                    if (newClientChannel?.readyState === "open") {
-                        p2p.connections.forEach(id => {
-                            if (id !== clientId) {
-                                newClientChannel.send(JSON.stringify({
-                                    from: 0,
-                                    message: `Existing player: ID ${id}`
-                                }));
-                            }
-                        });
-                    }
-                });
-            },
-        
-            send: function (message, id = null) {
-                const payload = { from: p2p.id, message };
-        
-                if (p2p.id === 0) {
-                    if (id !== null && p2p.dataChannels[id]?.readyState === "open") {
-                        p2p.dataChannels[id].send(JSON.stringify(payload));
-                    } else {
-                        p2p.dataChannels.forEach((channel, i) => {
-                            if (i !== 0 && channel?.readyState === "open") {
-                                channel.send(JSON.stringify(payload));
-                            }
-                        });
-                    }
-                } else {
-                    const hostChannel = p2p.dataChannels[0];
-                    if (hostChannel?.readyState === "open") {
-                        hostChannel.send(JSON.stringify({ ...payload, to: id }));
-                    }
                 }
-            },
-        
-            onReceive: function (message, from) {
-                console.log(`Message from ID ${from}:`, message);
+                heightAbove += size;
             }
-        };
+            if (editingWidget == null) {
+                editWidgetWindow.style.display = "none";
+                addWidgetDiv.style.display = "none";
+            } else {
+                addWidgetDiv.style.display = "flex";
+                addWidgetDiv.style.top = `${heightAbove*10}dvh`;
+            }
+        }
 
-        
+        function moveWidget(pos, dir) {
+            const [item] = widgets.splice(pos, 1);
+            widgets.splice(pos + dir, 0, item);
+            resetWidgetPlacements();
+        }
 
+        function addWidget() {
+            widgets.push({html:"<div style=\"width:100%; height:calc(100% - 2px); border-bottom:solid black 2px; background-color:rgb(200,200,200)\">\n\n</div>" , size:1});
+            placeWidget(widgets.length - 1);
+            resetWidgetPlacements();
+        }
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
-        progressVN(0);
-        
-        loadVN()
-
-        function saveVN() {
+        function saveWidgets() {
             const r = indexedDB.open(DB_NAME, 1);
             r.onupgradeneeded = () => r.result.createObjectStore(STORE);
             r.onsuccess = () => {
                 const tx = r.result.transaction(STORE, "readwrite");
-                tx.objectStore(STORE).put(persistent, "persistent");
-                tx.objectStore(STORE).put(vn.join("\n\n"), "vn");
+                tx.objectStore(STORE).put(widgets, "widgets");
                 console.log("Saved to Local Storage.");
             };
         }
 
-        function loadVN() {
+        function loadWidgets() {
             const r = indexedDB.open(DB_NAME, 1);
             r.onupgradeneeded = () => r.result.createObjectStore(STORE);
             r.onsuccess = () => {
                 const tx = r.result.transaction(STORE, "readonly");
-                tx.objectStore(STORE).get("persistent").onsuccess = e => {
-                    if (e.target.result !== undefined) persistent = e.target.result;
-                };
-                tx.objectStore(STORE).get("vn").onsuccess = e => {
-                    if (e.target.result !== undefined) {
-                        vn = e.target.result;
-                        prepareVN();
-                        progressVN(0);
-                        console.log("Loaded from Local Storage.");
-                    } else {
-                        fetch("https://script.google.com/macros/s/AKfycbxdUbPaleGPyvEonEleFWJD2uo7NuePYrOUhhuNGzU6vRkB_sSzbWO_KrNe17uDpkArdw/exec", { method: "POST" })
-                        .then(res => {
-                            if (res.ok) {
-                                console.log("Grabbed most recent copy from Server.")
-                                return res.text();
-                            } else {
-                                return "⚠️ Failed to fetch data (status " + res.status + ")";
-                            }
-                        })
-                        .then(text => {
-                            vn = text;
-                            saveVN();
-                            prepareVN();
-                            progressVN(0);
-                        })
-                        .catch(err => {
-                            alert("No Internet Connection.\n\nOne is needed for the initial download.")
-                        });
-                    }
+                tx.objectStore(STORE).get("widgets").onsuccess = e => {
+					if (e.target.result !== undefined) widgets = e.target.result;
+					console.log("Loaded from Local Storage.");
+					placeInitialWidgets();
                 };
             };
         }
 
-        function resetVN() {
+        function resetWidgets() {
             indexedDB.deleteDatabase(DB_NAME);
         }
 
 
 
-        /*
-        Flags start with #
-        Text is normal on one line
-        Jumps start with ->
-        Decisions start with ? and are split with |
-        [] are used for Variables , [Var1 = 3] , [Var1 > 2](Text) , [Var1 > 2] Text -> Flag
-        [[Code]] is used for custom JS code.
-
-        */
+        
     </script>
 
     <script>
@@ -567,7 +254,6 @@
             });
         }
     </script>
-
 
 </body>
 </html>
