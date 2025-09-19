@@ -203,11 +203,49 @@
 		
 		
 		
+		function uploadWidgets() {
+			const input = document.createElement("input");
+			input.type = "file";
+			input.accept = "application/json";
+			input.style.display = "none";
+			input.onchange = function (event) {
+				const file = event.target.files[0];
+				if (!file) return;
+				const reader = new FileReader();
+				reader.onload = function (e) {
+					try {
+						for (let j=0; j<widgets.length; j++) {
+							document.getElementById(widgets[j].id).remove();
+						}
+						const data = JSON.parse(e.target.result);
+						if (data) widgets = data;
+						editingWidget = null;
+						widgetIdTracker = 0;
+						placeInitialWidgets();
+					} catch (err) {
+						alert("Invalid JSON file.");
+						console.error(err);
+					}
+				};
+				reader.readAsText(file);
+			};
+			input.click();
+		}	
 		
 		
 		
-		
-		
+		function downloadWidgets() {
+			const json = JSON.stringify(widgets, null, 2);
+			const blob = new Blob([json], { type: "application/json" });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement("a");
+			a.href = url;
+			let fileName = prompt("Please enter the name of the file or leave blank for default.");
+			a.download = `${(fileName != "") ? fileName : "WidgetSaveFile"}.json`;
+			a.click();
+			URL.revokeObjectURL(url);
+    
+		}
 		
 
         function saveWidgets() {
